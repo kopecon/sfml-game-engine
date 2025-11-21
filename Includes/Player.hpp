@@ -29,14 +29,14 @@ namespace entities {
         };
         enum PlayerStates {
             isIDLE,
-            isWINKING,
-            isWALKING,
-            isRUNNING,
-            isCROUCHING,
-            isJUMPING,
-            isDISAPPEARING,
-            isDYING,
-            isATTACKING
+            WINKING,
+            WALKING,
+            RUNNING,
+            CROUCHING,
+            JUMPING,
+            DISAPPEARING,
+            DYING,
+            ATTACKING
         };
 #pragma region constructors
         Player();
@@ -56,9 +56,9 @@ namespace entities {
         float health {100.f};
         float attackDamage{20.f};
         sf::Vector2f size = {250, 250};
-        sf::Vector2f walkingSpeed{size.x*3.f, size.x*2.f};
-        sf::Vector2f runningSpeed{walkingSpeed.x*2.f, walkingSpeed.y*1.25f};
-        sf::Vector2f speed{walkingSpeed};
+        sf::Vector2f maxWalkingSpeed{size.x*2, size.x*1.5f};
+        sf::Vector2f maxRunningSpeed{maxWalkingSpeed.x*2.f, maxWalkingSpeed.y*1.25f};
+        sf::Vector2f maxSpeed{maxWalkingSpeed};
 
         // Rendering
         sf::Texture *pTexture{};
@@ -77,14 +77,11 @@ namespace entities {
         void take_damage(const float &damage);
         void walkLeft();
         void walkRight();
-        void brake();
-        void brake(const float &breakFactor);
         void jump();
         void turn();
         void attack();
         void die();
         void manageAnimations();
-        Controls controls{};
     };
 } // entities
 

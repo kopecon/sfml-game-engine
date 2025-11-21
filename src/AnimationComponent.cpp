@@ -94,21 +94,26 @@ sf::IntRect AnimationComponent::getFrame() const {
 }
 
 void AnimationComponent::selectAnimation(const entities::Player &player) {
+    using enum entities::Player::PlayerAnimations;
+    using enum entities::Player::PlayerStates;
     switch (player.state) {
-        case entities::Player::isJUMPING : {
-            set(entities::Player::JUMP);
+        case JUMPING : {
+            set(JUMP);
+            animationSet[JUMP].fps = std::fabs(player.maxWalkingSpeed.y / player.maxSpeed.y)*24.f;
             break;
         }
-        case entities::Player::isWALKING : {
-            set(entities::Player::WALK);
+        case WALKING : {
+            set(WALK);
+            pCurrentAnimation->fps = std::fabs(player.velocity.x / player.maxWalkingSpeed.x) * static_cast<float>(pCurrentAnimation->framesPerRow) * 2.f;
             break;
         }
-        case entities::Player::isRUNNING : {
-            set(entities::Player::RUN);
+        case RUNNING : {
+            set(RUN);
+            pCurrentAnimation->fps = std::fabs(player.velocity.x / player.maxRunningSpeed.x) * static_cast<float>(pCurrentAnimation->framesPerRow) * 2.f;
             break;
         }
         default: {
-            set(entities::Player::IDLE);
+            set(IDLE);
         }
     }
 }

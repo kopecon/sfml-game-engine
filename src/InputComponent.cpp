@@ -3,6 +3,9 @@
 //
 
 #include "../Includes/InputComponent.hpp"
+
+#include <iostream>
+
 #include "../Includes/Player.hpp"
 
 
@@ -15,9 +18,11 @@ void InputComponent::update(entities::Player &player) const {
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
+
     using enum entities::Player::PlayerStates;
 
-    if (player.state == isJUMPING) {
+    // STOP JUMP
+    if (player.state == JUMPING) {
         // Exit jump when animation ends
         if (player.animation.animationSet[entities::Player::JUMP].state == AnimationEntry::FINISHED) {
             player.state = isIDLE;
@@ -25,25 +30,20 @@ void InputComponent::update(entities::Player &player) const {
         return; // Jump locks out all other inputs
     }
 
+    // JUMP
     if (jump) {
         player.jump();
-        player.state = isJUMPING;
+        player.state = JUMPING;
         return; // Jump overrides movement in same frame
     }
 
     // RUNNING SPEED
-    if (run) {
-        player.speed = player.runningSpeed;
-        player.state = isRUNNING;
-    }
-    // WALKING SPEED
-    else {
-        player.speed = player.walkingSpeed;
-    }
+    player.maxSpeed = run ? player.maxRunningSpeed : player.maxWalkingSpeed;
+    if (run && std::fabs(player.velocity.x )> 0.f) player.state = RUNNING;
 
     // STOP
     if (left && right) {
-        player.brake();
+        player.physics.brake(player, 2.f);
     }
 
     // WALK LEFT
@@ -54,5 +54,15 @@ void InputComponent::update(entities::Player &player) const {
     // WALK RIGHT
     else if (right) {
         player.walkRight();
+    }
+
+    // SOFT STOP
+    else {
+        player.physics.brake(player);
+    }
+
+    // SLOW DOWN
+    if (!run && std::fabs(player.velocity.x) > player.maxWalkingSpeed.x) {
+        player.acceleration.x /= 2.f;
     }
 }

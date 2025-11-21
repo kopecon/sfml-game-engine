@@ -40,7 +40,7 @@ namespace entities {
             turn();
         }
         else {
-            acceleration.x = -speed.x*physics.GROUND_FRICTION;
+            physics.calculateAcceleration(*this, -maxSpeed, 20.f);
         }
     }
 
@@ -49,61 +49,47 @@ namespace entities {
             turn();
         }
         else {
-            acceleration.x = speed.x*physics.GROUND_FRICTION;
+            physics.calculateAcceleration(*this, maxSpeed, 20.f);
         }
     }
 
     void Player::turn() {
-        brake(2.f);
+        physics.brake(*this, 2.f);
         if (std::fabs(velocity.x) <= 100.f){
             if (facingRight) {
                 shape.setScale({-1,1});
             }
-            else
-            {
+            else {
                 shape.setScale({1, 1});
             }
             facingRight = !facingRight;
         }
     }
 
-    void Player::brake() {
-        if (std::fabs(velocity.x) >= 1) {
-            acceleration.x = -std::copysign(speed.x, velocity.x)*physics.GROUND_FRICTION;
-        }
-    }
-
-    void Player::brake(const float &breakFactor) {
-        if (std::fabs(velocity.x) >= 1) {
-            acceleration.x = -std::copysign(speed.x, velocity.x)*physics.GROUND_FRICTION*breakFactor;
-        }
-    }
-
     void Player::jump() {
         if (position.y == physics.GROUND_LEVEL) {
-            velocity.y = -physics.GRAVITY/5.f*speed.y/500.f;
-            animation.animationSet[JUMP].fps = std::fabs(walkingSpeed.y/speed.y*24.f);
+            velocity.y = -physics.GRAVITY*maxSpeed.y/2500.f;
+            animation.animationSet[JUMP].fps = std::fabs(maxWalkingSpeed.y/maxSpeed.y*24.f);
         }
     }
 
     void Player::update(const float &dt) {
         acceleration = {0.f, physics.GRAVITY};  // Reset acceleration
 
-        input.update(*this);
+        if (state != JUMPING) {
+            if (std::fabs(velocity.x) > 0.f && std::fabs(velocity.x) - 1 <= maxWalkingSpeed.x) {
+                state = WALKING;
+            }
+            else if (std::fabs(velocity.x) - 1 > maxWalkingSpeed.x) {
+                state = RUNNING;
+            }
 
-        if (state != isJUMPING) {
-            if (std::fabs(velocity.x + 1) <= walkingSpeed.x) {
-                state = isWALKING;
-            }
-            else if (std::fabs(velocity.x + 1) > walkingSpeed.x) {
-                state = isRUNNING;
-            }
-            else if (std::fabs(velocity.x) <= speed.x/2.f) {
-                brake();
+            else {
                 state = isIDLE;
             }
         }
 
+        input.update(*this);
         physics.update(*this, dt);
         animation.update(*this, dt);
     }

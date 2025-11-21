@@ -24,6 +24,22 @@ void PhysicsComponent::update(entities::Player &player, const float &dt) const {
     printPhysics(player);
 }
 
+void PhysicsComponent::calculateAcceleration(entities::Player &player, const sf::Vector2f &desiredVelocity, const float &snap) const {
+    player.acceleration.x = std::copysign(snap, desiredVelocity.x)*(std::fabs(desiredVelocity.x) - std::fabs(player.velocity.x)) * GROUND_FRICTION;
+}
+
+void PhysicsComponent::brake(entities::Player &player) const {
+    if (std::fabs(player.velocity.x) >= 1) {
+        player.acceleration.x = -std::copysign(player.maxRunningSpeed.x, player.velocity.x)*GROUND_FRICTION;
+    }
+}
+
+void PhysicsComponent::brake(entities::Player &player, const float &breakFactor) const {
+    if (std::fabs(player.velocity.x) >= 1) {
+        player.acceleration.x = -std::copysign(player.maxRunningSpeed.x, player.velocity.x)*GROUND_FRICTION*breakFactor;
+    }
+}
+
 void PhysicsComponent::printPhysics(const entities::Player &player) {
     std::cout << "Px: " << player.position.x << " Vx: " << player.velocity.x << " Ax: " << player.acceleration.x << "\n";
     std::cout << "Py: " << player.position.y << " Vy: " << player.velocity.y << " Ay: " << player.acceleration.y << "\n";
