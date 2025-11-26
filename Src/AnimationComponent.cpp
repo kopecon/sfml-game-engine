@@ -41,6 +41,14 @@ AnimationComponent::AnimationComponent(const AnimationSheet &animationSheet, sf:
 animationSheet(animationSheet),
 target(&target) {}
 
+sf::IntRect AnimationComponent::getFrame() const {
+    auto frameCoord = sf::Vector2i(
+        pCurrentAnimation->frameIndex.x*animationSheet.frameSize.x,
+        pCurrentAnimation->frameIndex.y*animationSheet.frameSize.y
+    );
+    return {frameCoord, animationSheet.frameSize};
+}
+
 void AnimationComponent::set(const int &animationID) {
     auto *pNewAnimation = &animationSet[animationID];
     if (pCurrentAnimation == nullptr) {
@@ -65,6 +73,12 @@ void AnimationComponent::add(const AnimationEntry &animation) {
     }
 }
 
+void AnimationComponent::onEnd(const int &animationID, const std::function<void()> &function) {
+    if (animationSet[animationID].state == AnimationEntry::FINISHED) {
+        function();
+    }
+}
+
 void AnimationComponent::update(const float &dt) {
     target->setTextureRect(getFrame());
     pCurrentAnimation->state = AnimationEntry::PLAYING;
@@ -84,12 +98,4 @@ void AnimationComponent::update(const float &dt) {
             pCurrentAnimation = pPreviousAnimation;  // Continue previous animation such as "Idle" etc...
         }
     }
-}
-
-sf::IntRect AnimationComponent::getFrame() const {
-    auto frameCoord = sf::Vector2i(
-        pCurrentAnimation->frameIndex.x*animationSheet.frameSize.x,
-        pCurrentAnimation->frameIndex.y*animationSheet.frameSize.y
-    );
-    return {frameCoord, animationSheet.frameSize};
 }

@@ -93,6 +93,11 @@ namespace entities {
                 state = IDLE;
             }
         }
+        else if (state == ATTACKING) {
+            animation.onEnd(ATTACKING, [this] {
+                this->state=IDLE;
+            });
+        }
         else {  // ACTIONS NEED TO BE SORTED BY PRIORITY
             if (desiredState == JUMPING) {
                 state = JUMPING;

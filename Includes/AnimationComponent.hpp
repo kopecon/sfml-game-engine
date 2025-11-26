@@ -5,6 +5,7 @@
 #ifndef BONK_GAME_ANIMATED_HPP
 #define BONK_GAME_ANIMATED_HPP
 
+#include <functional>
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
@@ -63,13 +64,15 @@ public:
     std::unordered_map<int, AnimationEntry> animationSet;
     sf::Shape *target{};
 
+    [[nodiscard]] sf::IntRect getFrame() const;
+
     void set(const int &animationID);
 
     void add(const AnimationEntry &animation);
 
-    void update(const float &dt);
+    void onEnd(const int &animationID, const std::function<void()> &function);
 
-    [[nodiscard]] sf::IntRect getFrame() const;
+    void update(const float &dt);
 };
 
 #endif //BONK_GAME_ANIMATED_HPP
