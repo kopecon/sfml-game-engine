@@ -13,16 +13,16 @@ PhysicsComponent::PhysicsComponent() = default;
 
 #pragma endregion
 
-void PhysicsComponent::updateAcceleration(entities::Player &player, const sf::Vector2f &desiredVelocity, const float &snap) const {
+void PhysicsComponent::updateAcceleration(Player &player, const sf::Vector2f &desiredVelocity, const float &snap) const {
     player.acceleration.x = snap*(desiredVelocity.x - player.velocity.x) * GROUND_FRICTION;
 }
 
-void PhysicsComponent::printPhysics(const entities::Player &player) {
+void PhysicsComponent::printPhysics(const Player &player) {
     std::cout << "Px: " << player.position.x << " Vx: " << player.velocity.x << " Ax: " << player.acceleration.x << "\n";
     std::cout << "Py: " << player.position.y << " Vy: " << player.velocity.y << " Ay: " << player.acceleration.y << "\n";
 }
 
-void PhysicsComponent::update(entities::Player &player, const float &dt) const {
+void PhysicsComponent::update(Player &player, const float &dt) const {
     kinematics::motionEquation(player.acceleration, player.velocity, player.position,
                                dt, AIR_RESISTANCE);
     player.setPosition(player.position);  // Update position

@@ -14,14 +14,14 @@ InputComponent::InputComponent(const Controls &controls): controls(controls) {}
 
 #pragma endregion
 
-int InputComponent::update(entities::Player &player) const {
+int InputComponent::update(Player &player) const {
     const bool left = sf::Keyboard::isKeyPressed(controls.left);
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
     const bool attack = sf::Keyboard::isKeyPressed(controls.attack);
 
-    using enum entities::Player::PlayerStates;
+    using enum Player::PlayerStates;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
     if (jump) return JUMPING;

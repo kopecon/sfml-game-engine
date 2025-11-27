@@ -11,10 +11,6 @@
 
 #include "../Includes/AnimationComponent.hpp"
 
-namespace entities {
-    class Player;
-}
-
 struct AnimationSheet {
     sf::Texture *pTexture{};
     sf::Vector2i frameSize{};

@@ -43,7 +43,7 @@ int main() {
 
 #pragma region player
     auto playerTexture(sf::Texture(RESOURCES_PATH "Custom/AnimationSheet_Character.png"));
-    entities::Player player_1(playerTexture, {
+    Player player_1(playerTexture, {
     sf::Keyboard::Scancode::A,
     sf::Keyboard::Scancode::D,
     sf::Keyboard::Scancode::W,
@@ -53,7 +53,7 @@ int main() {
     player_1.setPosition({background_1.shape.getGeometricCenter().x-200,
         background_1.floor.top.getPosition().y-player_1.size.y/2.f});
     player_1.physics.GROUND_LEVEL = player_1.position.y;
-    entities::Player player_2(playerTexture, {
+    Player player_2(playerTexture, {
         sf::Keyboard::Scancode::Left,
         sf::Keyboard::Scancode::Right,
         sf::Keyboard::Scancode::Up,

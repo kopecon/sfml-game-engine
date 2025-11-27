@@ -6,9 +6,8 @@
 #define BONK_GAME_INPUTCOMPONENT_HPP
 #include "SFML/Window/Keyboard.hpp"
 
-namespace entities {
-    class Player;
-}
+
+class Player;
 
 #pragma region controls
 struct Controls {
@@ -28,7 +27,7 @@ public:
 
     Controls controls{};
 
-    int update(entities::Player &player) const;
+    int update(Player &player) const;
 };
 
 #endif //BONK_GAME_INPUTCOMPONENT_HPP
