@@ -40,6 +40,8 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/InputComponent.hpp
         utils/utils.cpp
         Includes/utils.hpp
+        src/World.cpp
+        Includes/World.hpp
 )
 
 if (PRODUCTION_BUILD)
