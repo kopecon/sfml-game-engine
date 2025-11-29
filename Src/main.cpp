@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "../Includes/Game.hpp"
 #include "../Includes/World.hpp"
 #include "../Includes/Player.hpp"
 #include "../Includes/Background.hpp"
@@ -11,23 +12,10 @@
 int main() {
 #pragma region window settup
 
-    constexpr auto title = "Bonk Game";
-    sf::ContextSettings settings;
-    settings.depthBits = 24;
-    settings.stencilBits = 8;
-    settings.antiAliasingLevel = 4;
-    settings.majorVersion = 3;
-    settings.minorVersion = 0;
-    [[maybe_unused]] bool fullscreen = false;  // [[maybe_unused]] to prevent cLion from complaining
-    auto windowState = sf::State::Windowed;
+    Game game{};
 
-    // Create the window
-    auto window = sf::RenderWindow(sf::VideoMode(sf::VideoMode::getDesktopMode()), title,
-        sf::Style::Default,
-        windowState,
-        settings);
-
-    window.setFramerateLimit(144);
+    // Reference the window
+    sf::RenderWindow &window = game.videoComponent.window;
 
 #pragma endregion
 
@@ -84,25 +72,23 @@ int main() {
         close();
     };
 
-    const auto onKeyPressed = [&close, &window, &windowState, &settings, &fullscreen]
-    (const sf::Event::KeyPressed& keyPressed)
-    {
+    const auto onKeyPressed = [&close, &game](const sf::Event::KeyPressed& keyPressed) {
         switch (keyPressed.scancode)
         {
             case sf::Keyboard::Scancode::Escape : close(); break;
             case sf::Keyboard::Scancode::U :
                 {
-                    fullscreen = !fullscreen;
-                    if (fullscreen) {
-                        windowState = sf::State::Fullscreen;
+                    game.videoComponent.fullscreen = !game.videoComponent.fullscreen;
+                    if (game.videoComponent.fullscreen) {
+                        game.videoComponent.windowState = sf::State::Fullscreen;
                     }
-                    else if (!fullscreen) {
-                        windowState = sf::State::Windowed;
+                    else if (!game.videoComponent.fullscreen) {
+                        game.videoComponent.windowState = sf::State::Windowed;
                     }
-                    window.create(sf::VideoMode(sf::VideoMode::getDesktopMode()), title,
+                    game.videoComponent.window.create(sf::VideoMode(sf::VideoMode::getDesktopMode()), game.videoComponent.title,
                     sf::Style::Default,
-                    windowState,
-                    settings);
+                    game.videoComponent.windowState,
+                    game.videoComponent.settings);
                 }
             default: {
             }
