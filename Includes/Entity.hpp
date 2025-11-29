@@ -11,21 +11,18 @@ class World;
 
 class Entity {
 public:
-    virtual ~Entity() = default;
+    virtual ~Entity();
 
     sf::Shape *pShape{nullptr};
-    std::vector<sf::Shape*> pShapes{};
-    World *pWorld{};
+    std::vector<sf::Shape*> pShapes{nullptr};
+    World *pWorld{nullptr};
     bool markedForRemoval = false;
 
-    virtual void update(const float &dt) = 0;
+    virtual void update(const float &dt);
 
-    bool operator==(const Entity &other) const {
-        return this == &other;
-    }
-    bool operator!=(const Entity &other) const {
-        return this != &other;
-    }
+    bool operator==(const Entity &other) const;
+
+    bool operator!=(const Entity &other) const;
 };
 
 
