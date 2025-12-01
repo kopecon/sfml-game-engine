@@ -78,13 +78,13 @@ int main() {
             case sf::Keyboard::Scancode::Escape : close(); break;
             case sf::Keyboard::Scancode::U :
                 {
-                    game.videoComponent.fullscreen = !game.videoComponent.fullscreen;
-                    if (game.videoComponent.fullscreen) {
+                    if (game.videoComponent.windowState == sf::State::Windowed) {
                         game.videoComponent.windowState = sf::State::Fullscreen;
                     }
-                    else if (!game.videoComponent.fullscreen) {
+                    else if (game.videoComponent.windowState == sf::State::Fullscreen) {
                         game.videoComponent.windowState = sf::State::Windowed;
                     }
+                    // Recreate the window
                     game.videoComponent.window.create(sf::VideoMode(sf::VideoMode::getDesktopMode()), game.videoComponent.title,
                     sf::Style::Default,
                     game.videoComponent.windowState,
@@ -105,14 +105,14 @@ int main() {
 
         // Update data
         world.update(game.dt);
-        background.loop(game.camera);
-        ground.loop(game.camera);
+        background.loop(game.videoComponent.camera);
+        ground.loop(game.videoComponent.camera);
 
         // Camera
-        game.camera.follow_point(player_1.shape.getPosition());
+        game.videoComponent.camera.follow_point(player_1.shape.getPosition());
 
         // Update the view to follow player
-        window.setView(game.camera.view);
+        window.setView(game.videoComponent.camera.view);
 
         // Clear and draw
         window.clear();

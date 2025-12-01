@@ -7,25 +7,29 @@
 
 #include "../Includes/VideoComponent.hpp"
 #include "../Includes/AudioComponent.hpp"
-#include "../Includes/Camera.hpp"
 
 
 class Game {
 public:
+#pragma region constructors
     Game();
     explicit Game(const char* &title) :
+#pragma endregion
     title(title),
-    videoComponent(VideoComponent(title)),
-    camera(Camera(videoComponent.window))
+    videoComponent(VideoComponent(title))
     {}
 
-    float dt{};
+    // META DATA
     const char* title{};
+
+    // COMPONENTS
     VideoComponent videoComponent;
     AudioComponent audioComponent;
 
+
     sf::Clock clock;
-    Camera camera;
+    float dt{};
+
 };
 
 #endif //BONK_GAME_GAME_HPP
