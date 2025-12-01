@@ -4,8 +4,6 @@
 
 #include "../Includes/Camera.hpp"
 
-#include <iostream>
-
 
 Camera::Camera() = default;
 

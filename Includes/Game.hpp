@@ -7,7 +7,6 @@
 
 #include "VideoComponent.hpp"
 #include "AudioComponent.hpp"
-#include "World.hpp"
 
 
 class World;

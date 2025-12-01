@@ -4,13 +4,11 @@
 
 #ifndef BONK_GAME_VIDEOCOMPONENT_HPP
 #define BONK_GAME_VIDEOCOMPONENT_HPP
-#include <string>
 #include <SFML/Graphics.hpp>
-
 #include "Camera.hpp"
-#include "World.hpp"
 
 class World;
+
 
 class VideoComponent {
 public:

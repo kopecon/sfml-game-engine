@@ -3,6 +3,8 @@
 //
 
 #include "../Includes/VideoComponent.hpp"
+#include "../Includes/World.hpp"
+
 
 VideoComponent::VideoComponent() = default;
 
