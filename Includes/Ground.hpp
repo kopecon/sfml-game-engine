@@ -5,26 +5,22 @@
 #ifndef BONK_GAME_GROUND_HPP
 #define BONK_GAME_GROUND_HPP
 
-#include "../Includes/Entity.hpp"
-#include "../Includes/Camera.hpp"
-#include "../Includes/World.hpp"
+#include "Scenery.hpp"
 
 
-class Ground final : public Entity {
+class Ground final : public Scenery {
 public:
-    sf::Vector2f size{};
     sf::Shape *shapes[2]{};
     sf::Texture *pTexture{};
     sf::Texture *pTextureTop{};
     sf::RectangleShape body{};
     sf::RectangleShape top{};
-    bool looping{true};
 
     Ground();
 
-    Ground(sf::Texture &groundTextureRef, sf::Texture &topGroundTextureRef, const sf::Vector2u &window, const float &groundLevel);
+    Ground(sf::Texture &bodyTexture, sf::Texture &topTexture, const sf::Vector2u &windowSize);
 
-    void loop(const Camera &camera);
+    void setGroundLevel();
 
     void update() override;
 };

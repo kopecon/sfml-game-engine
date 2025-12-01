@@ -18,6 +18,7 @@ class World {
     std::vector<Entity*> entities{};
 public:
     Game *pGame{nullptr};
+    float groundLevel{0};
 
     void add(Entity &entity);
 

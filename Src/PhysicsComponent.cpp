@@ -5,6 +5,7 @@
 #include <iostream>
 #include "../Includes/PhysicsComponent.hpp"
 #include "../Includes/Player.hpp"
+#include "../Includes/World.hpp"
 
 
 #pragma region constructors
@@ -27,8 +28,8 @@ void PhysicsComponent::update(Player &player, const float &dt) const {
                                dt, AIR_RESISTANCE);
     player.setPosition(player.position);  // Update position
 
-    if (player.position.y + player.size.y / 2.f > player.physics.GROUND_LEVEL) {
-        player.setPosition({player.position.x, player.physics.GROUND_LEVEL - player.size.y / 2.f});
+    if (player.position.y + player.size.y / 2.f > player.pWorld->groundLevel) {
+        player.setPosition({player.position.x, player.pWorld->groundLevel - player.size.y / 2.f});
         player.acceleration.y = 0;
         player.velocity.y = 0;
     }

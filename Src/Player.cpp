@@ -13,12 +13,9 @@
 Player::Player() = default;
 
 Player::Player(sf::Texture &texture, const Controls &controls) : input(controls) {
-    this->pTexture = &texture;
+    Entity::init(shape, texture);
     this->animation.animationSheet = {pTexture, {32, 32}};
     this->animation.target = &shape;
-    this->pTexture->setRepeated(false);
-    this->shape.setTexture(&texture);
-    this->shape.setOrigin(shape.getGeometricCenter());
     animation.add(AnimationEntry(IDLE,         2, true));
     animation.add(AnimationEntry(WINKING,      2, true));
     animation.add(AnimationEntry(WALKING,      4, true));
@@ -28,8 +25,6 @@ Player::Player(sf::Texture &texture, const Controls &controls) : input(controls)
     animation.add(AnimationEntry(DYING,        8, false));
     animation.add(AnimationEntry(DISAPPEARING, 4, false));
     animation.add(AnimationEntry(ATTACKING,    8, false));
-    this->shape.setTextureRect(animation.currentFrame());
-    this->pShape = &shape;  // Give reference to the shape to the entity parent class
 }
 #pragma endregion
 
@@ -41,10 +36,6 @@ void Player::setPosition(const sf::Vector2f &newPosition) {
 void Player::moveShape(const sf::Vector2f distance) {
     shape.move(distance);
     position = shape.getPosition();
-}
-
-void Player::setGroundLevel(const float &groundLevel) {
-    physics.GROUND_LEVEL = groundLevel;
 }
 
 void Player::turn() {
@@ -83,7 +74,7 @@ void Player::brake() {
 }
 
 void Player::jump() {
-    if (position.y + size.y / 2.f >= physics.GROUND_LEVEL) {
+    if (position.y + size.y / 2.f >= pWorld->groundLevel) {
         velocity.y = -physics.GRAVITY*maxSpeed.y/2500.f;  // Magic number is tweaked experimentally
     }
 }
@@ -113,7 +104,7 @@ void Player::declareState() {
         return;
     }
     if (state == JUMPING) {
-        if (position.y  + size.y / 2.f >= physics.GROUND_LEVEL) {
+        if (position.y  + size.y / 2.f >= pWorld->groundLevel) {
             state = IDLE;
         }
     }

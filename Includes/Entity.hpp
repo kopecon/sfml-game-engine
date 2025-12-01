@@ -12,11 +12,14 @@ class World;
 class Entity {
 public:
     virtual ~Entity();
-
     sf::Shape *pShape{nullptr};
+    sf::Texture *pTexture{nullptr};
     std::vector<sf::Shape*> pShapes{};
+    std::vector<sf::Texture*> pTextures{};
     World *pWorld{nullptr};
     bool markedForRemoval = false;
+
+    virtual void init(sf::Shape &shape, sf::Texture &texture);
 
     virtual void update();
 

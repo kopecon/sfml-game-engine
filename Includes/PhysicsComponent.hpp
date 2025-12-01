@@ -27,7 +27,6 @@ public:
     const float GRAVITY = 10000;
     const float AIR_RESISTANCE = 0.f;
     const float GROUND_FRICTION = 1.f;
-    float GROUND_LEVEL = {};
     void update(Player &player,const float &dt) const;
 
     void updateAcceleration(Player &player, const sf::Vector2f &desiredVelocity, const float &snap) const;

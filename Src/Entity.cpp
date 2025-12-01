@@ -4,7 +4,17 @@
 
 #include "../Includes/Entity.hpp"
 
+#include "SFML/Graphics/Texture.hpp"
+
 Entity::~Entity() = default;
+
+
+void Entity::init(sf::Shape &shape, sf::Texture &texture) {
+    pShape = &shape;
+    pTexture = &texture;
+    shape.setOrigin(shape.getGeometricCenter());
+    shape.setTexture(&texture);
+}
 
 void Entity::update() {
 }

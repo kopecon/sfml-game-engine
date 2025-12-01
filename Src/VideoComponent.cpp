@@ -26,18 +26,41 @@ void VideoComponent::onClose(const sf::Event::Closed &) {
     window.close();
 }
 
-void VideoComponent::update(const World &world) {
+void VideoComponent::onKeyPressed(const sf::Event::KeyPressed &keyPressed) {
+    switch (keyPressed.scancode)
+    {
+        case sf::Keyboard::Scancode::Escape : window.close(); break;
+        case sf::Keyboard::Scancode::U :
+        {
+            if (windowState == sf::State::Windowed) {
+                windowState = sf::State::Fullscreen;
+            }
+            else if (windowState == sf::State::Fullscreen) {
+                windowState = sf::State::Windowed;
+            }
+            // Recreate the window
+            recreate();
+        }
+        default: {
+        }
+    }
+}
+
+void VideoComponent::update(World &world) {
     window.handleEvents(
         [&](const sf::Event::Closed &event){onClose(event);},
         [&](const sf::Event::KeyPressed &keyPressed){onKeyPressed(keyPressed);}
     );
 
-    // Camera
-    camera.followTarget();
 
-    // Update the view to follow player
+    // Update entities in the world
+    world.update();
+
+    // Update the view to follow the target
+    camera.followTarget();
     window.setView(camera.view);
 
+    // Draw on screen
     window.clear();
     world.draw();
     window.display();

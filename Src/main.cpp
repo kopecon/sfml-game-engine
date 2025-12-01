@@ -15,13 +15,15 @@ int main() {
     sf::RenderWindow &window = game.video.window;
 #pragma endregion
 
-#pragma region background
+#pragma region textures
     sf::Texture backgroundTexture(RESOURCES_PATH "Custom/background.jpg");
-    Background background(backgroundTexture, {window.getSize().x*3,window.getSize().y});
     sf::Texture groundTexture(RESOURCES_PATH "kenney_new-platformer-pack-1.0/Sprites/Tiles/Double/terrain_dirt_block_center.png");
     sf::Texture topGroundTexture(RESOURCES_PATH "kenney_new-platformer-pack-1.0/Sprites/Tiles/Double/terrain_dirt_block_top.png");
-    const float groundLevel = static_cast<float>(window.getSize().y) - static_cast<float>(window.getSize().y)/5.f;
-    Ground ground(groundTexture, topGroundTexture, {window.getSize().x*3, window.getSize().y}, groundLevel);
+#pragma endregion
+
+#pragma region background
+    Background background(backgroundTexture, window.getSize());
+    Ground ground(groundTexture, topGroundTexture, window.getSize());
 #pragma endregion
 
 #pragma region player
@@ -31,25 +33,19 @@ int main() {
         sf::Keyboard::Scancode::D,
         sf::Keyboard::Scancode::W,
         sf::Keyboard::Scancode::LShift,
-        sf::Keyboard::Scancode::F
-    });
-    player1.setGroundLevel(groundLevel);
-    player1.setPosition({background.shape.getSize().x-background.shape.getSize().x/3.f,
-        player1.physics.GROUND_LEVEL-player1.size.y});
-
-    game.video.camera.pTarget = &player1;
+        sf::Keyboard::Scancode::F});
 
     Player player2(playerTexture, {
         sf::Keyboard::Scancode::Left,
         sf::Keyboard::Scancode::Right,
         sf::Keyboard::Scancode::Up,
         sf::Keyboard::Scancode::RShift,
-        sf::Keyboard::Scancode::Numpad0
-    });
+        sf::Keyboard::Scancode::Numpad0});
+
     player2.shape.setFillColor(sf::Color({10,100,250}));
-    player2.setGroundLevel(groundLevel);
-    player2.setPosition({background.shape.getSize().x-background.shape.getSize().x/6.f,
-        player2.physics.GROUND_LEVEL-player2.size.y});
+
+    player1.moveShape({-static_cast<float>(window.getSize().x)/10.f, 0});
+    player2.moveShape({ static_cast<float>(window.getSize().x)/10.f, 0});
 
 #pragma endregion
 
@@ -61,9 +57,13 @@ int main() {
     world.add(player1);
     world.pGame = &game;
     game.pWorld = &world;
+    world.groundLevel = window.getSize().y/4.f;
+    ground.setGroundLevel();
 #pragma endregion
 
 #pragma region window loop
+    game.video.camera.pTarget = &player1;
+
     while (window.isOpen()) {
         game.update();
     }

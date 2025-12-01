@@ -39,7 +39,9 @@ public:
     // CHARACTERISTICS
     float health {100.f};
     float attackDamage{20.f};
-    sf::Vector2f size = {250/2.f, 250/2.f};
+    float height{250};
+    float width{height};
+    sf::Vector2f size{height, width};
     sf::Vector2f maxWalkingSpeed{size.x*2, size.x*1.5f};
     sf::Vector2f maxRunningSpeed{maxWalkingSpeed.x*2.f, maxWalkingSpeed.y*1.25f};
     sf::Vector2f maxSpeed{maxWalkingSpeed};
@@ -58,13 +60,10 @@ public:
     AnimationComponent animation{};
     PhysicsComponent physics{};
     // RENDERING
-    sf::Texture *pTexture{};
     sf::RectangleShape shape = sf::RectangleShape(size);
-
     // UTILITY
     void setPosition(const sf::Vector2f &newPosition);
     void moveShape(sf::Vector2f distance);
-    void setGroundLevel(const float &groundLevel);
     // MOVEMENT
     void turn();
     std::function<void()> walk;

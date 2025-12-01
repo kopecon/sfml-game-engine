@@ -6,22 +6,15 @@
 #define BONK_GAME_BACKGROUND_HPP
 #include <SFML/Graphics.hpp>
 
-#include "Entity.hpp"
-#include "Camera.hpp"
-#include "World.hpp"
+#include "Scenery.hpp"
 
-class Background final : public Entity {
+class Background final : public Scenery {
 public:
-    sf::Vector2u size{};
-    sf::Texture* pTexture{};
     sf::RectangleShape shape{};
-    bool looping{true};
 
     Background();
 
-    explicit Background(sf::Texture &backgroundTextureRef, const sf::Vector2u &window);
-
-    void loop(const Camera &camera);
+    explicit Background(sf::Texture &texture, const sf::Vector2u &windowSize);
 
     void update() override;
 };
