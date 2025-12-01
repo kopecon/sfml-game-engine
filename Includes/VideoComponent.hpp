@@ -7,6 +7,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+#include "Camera.hpp"
+
 
 class VideoComponent {
 public:
@@ -19,18 +21,23 @@ public:
         sf::Style::Default,
         windowState,
         settings
-    ) {
+    ),
+    camera(Camera(window))
+    {
         window.setFramerateLimit(fps);
     }
 
+    // METADATA
     std::string title{};
+
+    // VIDEO SETTINGS
     sf::ContextSettings settings;
     unsigned int fps{144};
-
-    bool fullscreen = false;  // [[maybe_unused]] to prevent cLion from complaining
-    sf::State windowState = sf::State::Windowed;
+    sf::State windowState = sf::State::Windowed;  // Initial state when game starts
 
     sf::RenderWindow window;
+    Camera camera;
+
 };
 
 
