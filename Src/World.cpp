@@ -19,10 +19,10 @@ void World::draw() const {
     for (const auto *entity : entities) {
         if (!entity->pShapes.empty()) {
             for (const auto *shape : entity->pShapes) {
-                pGame->videoComponent.window.draw(*shape);
+                pGame->video.window.draw(*shape);
             }
         }
-        else pGame->videoComponent.window.draw(*entity->pShape);
+        else pGame->video.window.draw(*entity->pShape);
     }
 }
 

@@ -11,8 +11,10 @@
 
 class Camera {
 public:
-    explicit Camera(const sf::Window &window);
-    const sf::Window &window{};
+    Camera();
+    explicit Camera(sf::Window &window);
+
+    sf::Window *pWindow{nullptr};
     sf::View view{};
     Entity *pTarget{};
 

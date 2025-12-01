@@ -12,7 +12,7 @@ int main() {
     Game game(title);
 
     // Reference the window
-    sf::RenderWindow &window = game.videoComponent.window;
+    sf::RenderWindow &window = game.video.window;
 #pragma endregion
 
 #pragma region background
@@ -37,7 +37,7 @@ int main() {
     player1.setPosition({background.shape.getSize().x-background.shape.getSize().x/3.f,
         player1.physics.GROUND_LEVEL-player1.size.y});
 
-    game.videoComponent.camera.pTarget = &player1;
+    game.video.camera.pTarget = &player1;
 
     Player player2(playerTexture, {
         sf::Keyboard::Scancode::Left,
@@ -66,13 +66,6 @@ int main() {
 #pragma region window loop
     while (window.isOpen()) {
         game.update();
-
-        // Update data
-        world.update();
-
-        window.clear();
-        world.draw();
-        window.display();
     }
 #pragma endregion
 }

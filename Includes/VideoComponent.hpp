@@ -8,18 +8,14 @@
 #include <SFML/Graphics.hpp>
 
 #include "Camera.hpp"
+#include "World.hpp"
 
+class World;
 
 class VideoComponent {
 public:
-    explicit VideoComponent(const std::string &title)
-    : title(title),
-    settings(24, 8, 4, 3, 0),   // depth, stencil, antiAlias, major, minor
-    window(sf::VideoMode(initScreenSize), title, sf::Style::Default, windowState, settings),
-    camera(window)
-    {
-        window.setFramerateLimit(fps);
-    }
+    VideoComponent();
+    explicit VideoComponent(const std::string &title);
 
     // METADATA
     std::string title{};
@@ -30,18 +26,12 @@ public:
     unsigned int fps{144};
     sf::State windowState = sf::State::Windowed;  // Initial state when game starts
 
-    sf::RenderWindow window;
-    Camera camera;
+    sf::RenderWindow window{};
+    Camera camera{};
 
-    void recreate() {
-        window.create(sf::VideoMode::getDesktopMode(), title, sf::Style::Default, windowState, settings);
-    }
+    void recreate();
 
-    void onClose(const sf::Event::Closed&)
-    {
-        // Pre-closing procedures implement here.
-        window.close();
-    }
+    void onClose(const sf::Event::Closed&);
 
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed) {
         switch (keyPressed.scancode)
@@ -63,18 +53,7 @@ public:
         }
     }
 
-    void update() {
-        window.handleEvents(
-            [&](const sf::Event::Closed &event){onClose(event);},
-            [&](const sf::Event::KeyPressed &keyPressed){onKeyPressed(keyPressed);}
-        );
-
-        // Camera
-        camera.followTarget();
-
-        // Update the view to follow player
-        window.setView(camera.view);
-    }
+    void update(const World &world);
 };
 
 

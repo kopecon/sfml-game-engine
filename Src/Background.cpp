@@ -33,6 +33,6 @@ void Background::loop(const Camera &camera) {
 
 void Background::update() {
     if (looping) {
-        loop(pWorld->pGame->videoComponent.camera);
+        loop(pWorld->pGame->video.camera);
     }
 }
