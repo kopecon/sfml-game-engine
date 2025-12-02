@@ -37,7 +37,7 @@ public:
 
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
 
-    void update(World &world);
+    void update(World *world);
 };
 
 

@@ -5,9 +5,10 @@
 #include "../Includes/Ground.hpp"
 #include "../Includes/World.hpp"
 
-Ground::Ground() = default;
+Ground::Ground(const char* name) : Scenery(name){}
 
-Ground::Ground(sf::Texture &bodyTexture, sf::Texture &topTexture, const sf::Vector2u &windowSize) {
+Ground::Ground(const char* name, const sf::Vector2u &windowSize, sf::Texture &bodyTexture, sf::Texture &topTexture) :
+Scenery(name) {
     // TOP
     top.setSize({
         static_cast<float>(windowSize.x*3),

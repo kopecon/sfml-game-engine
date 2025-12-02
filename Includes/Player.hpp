@@ -33,8 +33,8 @@ public:
         STOPPING,
     };
 #pragma region constructors
-    Player();
-    explicit Player(sf::Texture &texture, const Controls &controls);
+    explicit Player(const char* name);
+    explicit Player(const char* name, const Controls &controls, sf::Texture &texture);
 #pragma endregion
     // CHARACTERISTICS
     float health {100.f};

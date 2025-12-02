@@ -8,9 +8,8 @@
 
 int main() {
 #pragma region game settup
-    const auto* title = "Bonk Game";
+    const char* title = "Bonk Game";
     Game game(title);
-
     // Reference the game window
     sf::RenderWindow &window = game.video.window;
 #pragma endregion
@@ -19,50 +18,42 @@ int main() {
     sf::Texture backgroundTexture(RESOURCES_PATH "Custom/background.jpg");
     sf::Texture bodyGroundTexture(RESOURCES_PATH "kenney_new-platformer-pack-1.0/Sprites/Tiles/Double/terrain_dirt_block_center.png");
     sf::Texture topGroundTexture(RESOURCES_PATH "kenney_new-platformer-pack-1.0/Sprites/Tiles/Double/terrain_dirt_block_top.png");
-    auto playerTexture(sf::Texture(RESOURCES_PATH "Custom/AnimationSheet_Character.png"));
-#pragma endregion
-
-#pragma region background
-    Background background(backgroundTexture, window.getSize());
-    Ground ground(bodyGroundTexture, topGroundTexture, window.getSize());
-#pragma endregion
-
-#pragma region player
-    Player player1(playerTexture, {
-        sf::Keyboard::Scancode::A,
-        sf::Keyboard::Scancode::D,
-        sf::Keyboard::Scancode::W,
-        sf::Keyboard::Scancode::LShift,
-        sf::Keyboard::Scancode::F});
-
-    Player player2(playerTexture, {
-        sf::Keyboard::Scancode::Left,
-        sf::Keyboard::Scancode::Right,
-        sf::Keyboard::Scancode::Up,
-        sf::Keyboard::Scancode::RShift,
-        sf::Keyboard::Scancode::Numpad0});
-
-    player2.shape.setFillColor(sf::Color({10,100,250}));
-
-    player1.moveShape({-static_cast<float>(window.getSize().x)/10.f, 0});
-    player2.moveShape({ static_cast<float>(window.getSize().x)/10.f, 0});
-
+    sf::Texture playerTexture(sf::Texture(RESOURCES_PATH "Custom/AnimationSheet_Character.png"));
 #pragma endregion
 
 #pragma region world
-    World world{};
-    world.add(background);
-    world.add(ground);
-    world.add(player2);
-    world.add(player1);
-    world.pGame = &game;
-    game.pWorld = &world;
-    world.groundLevel = window.getSize().y/4.f;
-    ground.setGroundLevel();
+    game.createWorld("Forest");
+    const auto forest = game.getWorld("Forest");
+    forest->createEntity<Background>("Forest", window.getSize(), backgroundTexture);
+
+    Controls p1controls;
+    p1controls.left   = sf::Keyboard::Scancode::A;
+    p1controls.right  = sf::Keyboard::Scancode::D;
+    p1controls.jump   = sf::Keyboard::Scancode::W;
+    p1controls.run    = sf::Keyboard::Scancode::LShift;
+    p1controls.attack = sf::Keyboard::Scancode::F;
+
+    Controls p2controls;
+    p2controls.left   = sf::Keyboard::Scancode::Left;
+    p2controls.right  = sf::Keyboard::Scancode::Right;
+    p2controls.jump   = sf::Keyboard::Scancode::Up;
+    p2controls.run    = sf::Keyboard::Scancode::RShift;
+    p2controls.attack = sf::Keyboard::Scancode::Numpad0;
+
+    forest->createEntity<Player>("player1", p1controls, playerTexture);
+    forest->createEntity<Player>("player2", p2controls, playerTexture);
+
+    game.video.camera.pTarget = forest->findEntities<Player>()[0];
+#pragma endregion
+
+#pragma region background
+#pragma endregion
+
+#pragma region player
 #pragma endregion
 
 #pragma region window loop
-    game.video.camera.pTarget = &player1;
+    // game.video.camera.pTarget = &player1;
 
     while (window.isOpen()) {
         game.update();

@@ -5,6 +5,7 @@
 #ifndef BONK_GAME_WORLD_HPP
 #define BONK_GAME_WORLD_HPP
 #include <iostream>
+#include <ranges>
 #include <vector>
 #include "Entity.hpp"
 #include "Game.hpp"
@@ -15,15 +16,26 @@ class Game;
 class Entity;
 
 class World {
-    std::vector<Entity*> entities{};
+    std::unordered_map<std::string, std::unique_ptr<Entity>> entities{};
 public:
+    World();
+    explicit World(const char* name);
+
+    const char *name{};
     Game *pGame{nullptr};
     float groundLevel{0};
+
+    template<typename T, typename... Args>
+    void createEntity(Args&&... args) {
+        auto pEntity = std::make_unique<T>(std::forward<Args>(args)...);
+        pEntity->pWorld = this;
+        entities.emplace(pEntity->name, std::move(pEntity));
+    }
 
     void add(Entity &entity);
 
     template<typename T>
-    std::vector<T*> findTypes();
+    std::vector<T*> findEntities();
 
     void remove(const Entity *entity);
 
@@ -33,14 +45,14 @@ public:
 };
 
 template<typename T>
-std::vector<T *> World::findTypes() {
-    std::vector<T*> listOfTypes{};
-    for (auto *entity : entities) {
-        if (auto it = dynamic_cast<T*>(entity)) {
-            listOfTypes.emplace(listOfTypes.end(), it);
+std::vector<T *> World::findEntities() {
+    std::vector<T*> entitiesOfType{};
+    for (auto &entity: entities | std::views::values) {
+        if (auto it = dynamic_cast<T*>(entity.get())) {
+            entitiesOfType.emplace(entitiesOfType.end(), it);
         }
     }
-    return listOfTypes;
+    return entitiesOfType;
 }
 
 #endif //BONK_GAME_WORLD_HPP

@@ -54,6 +54,8 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/AudioComponent.hpp
         Src/Scenery.cpp
         Includes/Scenery.hpp
+        Src/TimeComponent.cpp
+        Includes/TimeComponent.hpp
 )
 
 if (PRODUCTION_BUILD)

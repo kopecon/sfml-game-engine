@@ -16,9 +16,8 @@ public:
     sf::RectangleShape body{};
     sf::RectangleShape top{};
 
-    Ground();
-
-    Ground(sf::Texture &bodyTexture, sf::Texture &topTexture, const sf::Vector2u &windowSize);
+    explicit Ground(const char* name);
+    explicit Ground(const char* name, const sf::Vector2u &windowSize, sf::Texture &bodyTexture, sf::Texture &topTexture);
 
     void setGroundLevel();
 

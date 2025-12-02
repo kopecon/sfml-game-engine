@@ -10,9 +10,9 @@
 
 
 #pragma region constructors
-Player::Player() = default;
+Player::Player(const char* name) : Entity(name){}
 
-Player::Player(sf::Texture &texture, const Controls &controls) : input(controls) {
+Player::Player(const char* name, const Controls &controls, sf::Texture &texture) : Entity(name), input(controls) {
     Entity::init(shape, texture);
     this->animation.animationSheet = {pTexture, {32, 32}};
     this->animation.target = &shape;
@@ -80,7 +80,7 @@ void Player::jump() {
 }
 
 void Player::attack() {
-    auto pPlayers = pWorld->findTypes<Player>();
+    auto pPlayers = pWorld->findEntities<Player>();
     std::erase(pPlayers, this);
     for (Player *player : pPlayers) {
         if (std::fabs(player->position.x - position.x) <= attackRange) {
@@ -227,6 +227,6 @@ void Player::update() {
     selectAnimation();
     takeAction();
 
-    physics.update(*this, pWorld->pGame->dt);
-    animation.update(pWorld->pGame->dt);
+    physics.update(*this, pWorld->pGame->time.dt);
+    animation.update(pWorld->pGame->time.dt);
 }

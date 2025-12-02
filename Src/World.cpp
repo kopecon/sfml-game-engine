@@ -4,19 +4,12 @@
 
 #include "../Includes/World.hpp"
 
-void World::add(Entity &entity) {
-    entities.emplace(entities.end(), &entity);
-    entity.pWorld = this;
-}
+World::World() = default;
 
-void World::remove(const Entity *entity) {
-    // If the element is found, erase it
-    // Removes all occurrences
-    std::erase(entities, entity);
-}
+World::World(const char *name): name(name) {}
 
 void World::draw() const {
-    for (const auto *entity : entities) {
+    for (auto &entity: entities | std::views::values) {
         if (!entity->pShapes.empty()) {
             for (const auto *shape : entity->pShapes) {
                 pGame->video.window.draw(*shape);
@@ -27,11 +20,11 @@ void World::draw() const {
 }
 
 void World::update() {
-    for (auto *entity : entities) {
+    for (auto &entity : entities | std::views::values) {
         entity->update();
         // Clear removed entities
         if (entity->markedForRemoval) {
-            remove(entity);
+            // remove(entity);
         }
     }
 }

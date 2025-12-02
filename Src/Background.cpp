@@ -6,15 +6,16 @@
 #include "../Includes/World.hpp"
 
 
-Background::Background() = default;
+Background::Background(const char* name) : Scenery(name){};
 
-Background::Background(sf::Texture &texture, const sf::Vector2u &windowSize) {
+Background::Background(const char* name, const sf::Vector2u &windowSize, sf::Texture &texture) : Scenery(name) {
     shape.setSize({
             static_cast<float>(windowSize.x)*3,
             static_cast<float>(windowSize.y),
         });
     Scenery::init(shape, texture);
 }
+
 void Background::update() {
     if (looping) {
         loop();

@@ -12,9 +12,9 @@ class Background final : public Scenery {
 public:
     sf::RectangleShape shape{};
 
-    Background();
+    explicit Background(const char* name);
 
-    explicit Background(sf::Texture &texture, const sf::Vector2u &windowSize);
+    explicit Background(const char* name, const sf::Vector2u &windowSize, sf::Texture &texture);
 
     void update() override;
 };

@@ -7,6 +7,7 @@
 
 #include "VideoComponent.hpp"
 #include "AudioComponent.hpp"
+#include "TimeComponent.hpp"
 
 
 class World;
@@ -22,10 +23,13 @@ public:
     // COMPONENTS
     VideoComponent video{};
     AudioComponent audio{};
-    sf::Clock clock{};
-    float dt{};
+    TimeComponent time{};
+    // WORLDS
+    std::unordered_map<std::string, std::unique_ptr<World>> worlds{};
 
-    World *pWorld{};
+    void createWorld(const char* name);
+
+    World* getWorld(const char* name);
 
     void update();
 };

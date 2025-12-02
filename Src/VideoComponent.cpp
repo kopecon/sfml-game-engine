@@ -51,7 +51,7 @@ void VideoComponent::onKeyPressed(const sf::Event::KeyPressed &keyPressed) {
     }
 }
 
-void VideoComponent::update(World &world) {
+void VideoComponent::update(World *world) {
     window.handleEvents(
         [&](const sf::Event::Closed &event){onClose(event);},
         [&](const sf::Event::KeyPressed &keyPressed){onKeyPressed(keyPressed);}
@@ -59,14 +59,14 @@ void VideoComponent::update(World &world) {
 
 
     // Update entities in the world
-    world.update();
+    world->update();
 
     // Update the view to follow the target
-    camera.followTarget();
+    if (camera.pTarget != nullptr) camera.followTarget();
     window.setView(camera.view);
 
     // Draw on screen
     window.clear();
-    world.draw();
+    world->draw();
     window.display();
 }

@@ -12,6 +12,9 @@ class World;
 class Entity {
 public:
     virtual ~Entity();
+
+    explicit Entity (const char* name);
+    const char* name{};
     sf::Shape *pShape{nullptr};
     sf::Texture *pTexture{nullptr};
     std::vector<sf::Shape*> pShapes{};

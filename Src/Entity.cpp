@@ -8,6 +8,8 @@
 
 Entity::~Entity() = default;
 
+Entity::Entity(const char *name): name(name) {}
+
 
 void Entity::init(sf::Shape &shape, sf::Texture &texture) {
     pShape = &shape;

@@ -11,6 +11,7 @@
 
 class Scenery : public Entity {
 public:
+    explicit Scenery(const char* name) : Entity(name){};
     bool looping{false};
     Camera *pCamera{};
 
