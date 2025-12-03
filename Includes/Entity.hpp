@@ -5,7 +5,9 @@
 #ifndef BONK_GAME_ENTITY_HPP
 #define BONK_GAME_ENTITY_HPP
 
+#include <string>
 #include <SFML/Graphics/Shape.hpp>
+
 
 class World;
 
@@ -13,8 +15,9 @@ class Entity {
 public:
     virtual ~Entity();
 
-    explicit Entity (const char* name);
-    const char* name{};
+    explicit Entity(std::string name);
+
+    const std::string name{};
     sf::Shape *pShape{nullptr};
     sf::Texture *pTexture{nullptr};
     std::vector<sf::Shape*> pShapes{};

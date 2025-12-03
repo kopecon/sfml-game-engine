@@ -2,14 +2,15 @@
 // Created by Andrew on 27/11/2025.
 //
 
+#include <utility>
 #include "../Includes/Entity.hpp"
-
 #include "SFML/Graphics/Texture.hpp"
+
 
 Entity::~Entity() = default;
 
-Entity::Entity(const char *name): name(name) {}
-
+Entity::Entity(std::string name) : name(std::move(name)){
+}
 
 void Entity::init(sf::Shape &shape, sf::Texture &texture) {
     pShape = &shape;

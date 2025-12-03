@@ -16,7 +16,7 @@ public:
 
     sf::Window *pWindow{nullptr};
     sf::View view{};
-    Entity *pTarget{};
+    Entity *pTarget{nullptr};
 
     void followTarget();
 };

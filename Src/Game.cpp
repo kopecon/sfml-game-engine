@@ -9,17 +9,18 @@
 
 Game::Game() = default;
 
-Game::Game(const char *&title):
+Game::Game(const std::string &title):
     title(title),
     video(title) {}
 
-void Game::createWorld(const char* name) {
-    auto world = std::make_unique<World>(name);
-    world->pGame = this;
-    worlds.emplace(world->name, std::move(world));
+World* Game::createWorld(const std::string &name) {
+    auto pWorld = std::make_unique<World>(name);
+    pWorld->pGame = this;
+    worlds.emplace(pWorld->name, std::move(pWorld));
+    return getWorld(name);
 }
 
-World* Game::getWorld(const char* name) {
+World* Game::getWorld(const std::string &name) {
     const auto it = worlds.find(name);
     if (it != worlds.end())
         return it->second.get();

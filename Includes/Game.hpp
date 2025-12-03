@@ -13,23 +13,24 @@
 class World;
 
 class Game {
+    // WORLDS
+    std::unordered_map<std::string, std::unique_ptr<World>> worlds{};
 public:
 #pragma region constructors
     Game();
-    explicit Game(const char* &title);
+    explicit Game(const std::string &title);
 #pragma endregion
     // META DATA
-    const char* title{};
+    const std::string title{};
     // COMPONENTS
     VideoComponent video{};
     AudioComponent audio{};
     TimeComponent time{};
-    // WORLDS
-    std::unordered_map<std::string, std::unique_ptr<World>> worlds{};
 
-    void createWorld(const char* name);
 
-    World* getWorld(const char* name);
+    World* createWorld(const std::string &name);
+
+    World* getWorld(const std::string &name);
 
     void update();
 };

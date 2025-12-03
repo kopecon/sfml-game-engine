@@ -8,10 +8,8 @@
 
 int main() {
 #pragma region game settup
-    const char* title = "Bonk Game";
-    Game game(title);
-    // Reference the game window
-    sf::RenderWindow &window = game.video.window;
+    Game game("Bonk Game");
+    const sf::RenderWindow &window = game.video.window;  // Reference the game window
 #pragma endregion
 
 #pragma region textures
@@ -22,8 +20,7 @@ int main() {
 #pragma endregion
 
 #pragma region world
-    game.createWorld("Forest");
-    const auto forest = game.getWorld("Forest");
+    const auto forest = game.createWorld("Forest");
     forest->createEntity<Background>("Forest", window.getSize(), backgroundTexture);
 
     Controls p1controls;
@@ -43,7 +40,7 @@ int main() {
     forest->createEntity<Player>("player1", p1controls, playerTexture);
     forest->createEntity<Player>("player2", p2controls, playerTexture);
 
-    game.video.camera.pTarget = forest->findEntities<Player>()[0];
+    // game.video.camera.pTarget = forest->findEntities<Player>()[0];
 #pragma endregion
 
 #pragma region background

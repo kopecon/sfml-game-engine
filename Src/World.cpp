@@ -2,11 +2,13 @@
 // Created by Andrew on 27/11/2025.
 //
 
+#include <utility>
 #include "../Includes/World.hpp"
+
 
 World::World() = default;
 
-World::World(const char *name): name(name) {}
+World::World(std::string name): name(std::move(name)) {}
 
 void World::draw() const {
     for (auto &entity: entities | std::views::values) {

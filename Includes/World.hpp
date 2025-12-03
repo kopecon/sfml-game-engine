@@ -4,55 +4,60 @@
 
 #ifndef BONK_GAME_WORLD_HPP
 #define BONK_GAME_WORLD_HPP
-#include <iostream>
 #include <ranges>
 #include <vector>
 #include "Entity.hpp"
 #include "Game.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
 
 
 class Game;
 class Entity;
 
 class World {
+    // ENTITIES
     std::unordered_map<std::string, std::unique_ptr<Entity>> entities{};
 public:
     World();
-    explicit World(const char* name);
+    explicit World(std::string name);
 
-    const char *name{};
+    const std::string name{};
     Game *pGame{nullptr};
     float groundLevel{0};
 
-    template<typename T, typename... Args>
-    void createEntity(Args&&... args) {
+    template<typename T, typename ... Args>
+    T* createEntity(Args&&... args) {
         auto pEntity = std::make_unique<T>(std::forward<Args>(args)...);
         pEntity->pWorld = this;
-        entities.emplace(pEntity->name, std::move(pEntity));
+
+        const std::string entityName = pEntity->name;
+
+        entities.emplace(entityName, std::move(pEntity));
+
+        return getEntity<T>(entityName); // FIXED
     }
 
-    void add(Entity &entity);
+    template<typename T>
+    T* getEntity(const std::string &entityName) {
+        const auto it = entities.find(entityName);
+        if (it == entities.end()) return nullptr;
+        return dynamic_cast<T*>(it->second.get());
+    }
 
     template<typename T>
-    std::vector<T*> findEntities();
+    std::vector<T *> findEntities() {
+        std::vector<T*> entitiesOfType{};
+        for (auto &entity: entities | std::views::values) {
+            if (auto it = dynamic_cast<T*>(entity.get())) {
+                entitiesOfType.emplace(entitiesOfType.end(), it);
+            }
+        }
+        return entitiesOfType;
+    }
 
-    void remove(const Entity *entity);
+    void remove();
 
     void draw() const;
 
     void update();
 };
-
-template<typename T>
-std::vector<T *> World::findEntities() {
-    std::vector<T*> entitiesOfType{};
-    for (auto &entity: entities | std::views::values) {
-        if (auto it = dynamic_cast<T*>(entity.get())) {
-            entitiesOfType.emplace(entitiesOfType.end(), it);
-        }
-    }
-    return entitiesOfType;
-}
-
 #endif //BONK_GAME_WORLD_HPP

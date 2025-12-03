@@ -8,9 +8,9 @@
 Camera::Camera() = default;
 
 Camera::Camera(sf::Window &window): pWindow(&window) {
-    view.setCenter(static_cast<sf::Vector2f>(window.getSize())/2.f);
+    view.setCenter({0, 0});
     view.setSize(static_cast<sf::Vector2f>(window.getSize()));
-    view.zoom(0.75);
+    view.zoom(1);
 }
 
 void Camera::followTarget() {
