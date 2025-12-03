@@ -30,7 +30,7 @@ public:
 
     World* createWorld(const std::string &name);
 
-    World* getWorld(const std::string &name);
+    World* getWorld(std::string name);
 
     void update();
 };

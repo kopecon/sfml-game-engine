@@ -17,7 +17,7 @@ public:
 
     explicit Entity(std::string name);
 
-    const std::string name{};
+    std::string name{};
     sf::Shape *pShape{nullptr};
     sf::Texture *pTexture{nullptr};
     std::vector<sf::Shape*> pShapes{};

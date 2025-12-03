@@ -4,9 +4,8 @@
 
 #ifndef BONK_GAME_UTILS_HPP
 #define BONK_GAME_UTILS_HPP
-#include <cmath>
 #include <limits>
-
+#include <string>
 #include "SFML/System/Vector2.hpp"
 
 
@@ -20,6 +19,15 @@ inline bool areClose(const sf::Vector2f &num1, const sf::Vector2f &num2, const f
         std::abs(num1.y - num2.y) <= epsilon )
         return true;
     return false;
+}
+
+namespace string {
+    inline void up(std::string &string) {
+        // INPLACE UPPERCASE
+        for (char &c : string) {
+            c = static_cast<char>(toupper(c));
+        }
+    }
 }
 
 #endif //BONK_GAME_UTILS_HPP

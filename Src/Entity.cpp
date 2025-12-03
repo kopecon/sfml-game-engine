@@ -4,12 +4,15 @@
 
 #include <utility>
 #include "../Includes/Entity.hpp"
+#include "../Includes/utils.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
 
 Entity::~Entity() = default;
 
-Entity::Entity(std::string name) : name(std::move(name)){
+Entity::Entity(std::string name) {
+    string::up(name);
+    this->name = std::move(name);
 }
 
 void Entity::init(sf::Shape &shape, sf::Texture &texture) {

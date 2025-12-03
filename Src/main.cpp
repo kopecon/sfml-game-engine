@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "../Includes/Game.hpp"
 #include "../Includes/World.hpp"
@@ -21,7 +22,7 @@ int main() {
 
 #pragma region world
     const auto forest = game.createWorld("Forest");
-    forest->createEntity<Background>("Forest", window.getSize(), backgroundTexture);
+    forest->createEntity<Background>("FOREST", window.getSize(), backgroundTexture);
 
     Controls p1controls;
     p1controls.left   = sf::Keyboard::Scancode::A;

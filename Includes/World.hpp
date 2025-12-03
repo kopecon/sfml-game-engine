@@ -8,6 +8,7 @@
 #include <vector>
 #include "Entity.hpp"
 #include "Game.hpp"
+#include "utils.hpp"
 
 
 class Game;
@@ -20,7 +21,7 @@ public:
     World();
     explicit World(std::string name);
 
-    const std::string name{};
+    std::string name{};
     Game *pGame{nullptr};
     float groundLevel{0};
 
@@ -33,11 +34,12 @@ public:
 
         entities.emplace(entityName, std::move(pEntity));
 
-        return getEntity<T>(entityName); // FIXED
+        return getEntity<T>(entityName);
     }
 
     template<typename T>
-    T* getEntity(const std::string &entityName) {
+    T* getEntity(std::string entityName) {
+        string::up(entityName);
         const auto it = entities.find(entityName);
         if (it == entities.end()) return nullptr;
         return dynamic_cast<T*>(it->second.get());
