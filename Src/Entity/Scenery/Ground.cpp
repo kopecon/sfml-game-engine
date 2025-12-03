@@ -23,5 +23,5 @@ void Ground::init() {
     shape.setOrigin(hadamard(
         shape.getGeometricCenter(),
         {0.f, shape.getGlobalBounds().size.y/2.f},
-        std::minus<float>()));
+        std::minus<>()));
 }

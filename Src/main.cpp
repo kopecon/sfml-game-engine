@@ -32,9 +32,9 @@ int main() {
     p2controls.run    = sf::Keyboard::Scancode::RShift;
     p2controls.attack = sf::Keyboard::Scancode::Numpad0;
 
-    auto player1 = worldForest->createEntity<Player>("player1", p1controls);
-    worldForest->createEntity<Player>("player2", p2controls);
-
+    const auto player1 = worldForest->createEntity<Player>("player1", p1controls);
+    const auto player2 = worldForest->createEntity<Player>("player2", p2controls);
+    player2->shape.setFillColor(sf::Color({40,30,100}));
     game.video.camera.pTarget = player1;
 #pragma endregion
 
