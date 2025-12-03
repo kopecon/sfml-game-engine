@@ -6,28 +6,16 @@
 #include "../../../Includes/World/World.hpp"
 
 
-Ground::Ground(std::string name) : Scenery(std::move(name)){}
+Ground::Ground(std::string name) : Scenery(std::move(name)) {}
 
-Ground::Ground(std::string name, const sf::Vector2u &windowSize, sf::Texture &bodyTexture, sf::Texture &topTexture) :
-Scenery(std::move(name)) {
-    // TOP
-    top.setSize({
-        static_cast<float>(windowSize.x*3),
-        static_cast<float>(topTexture.getSize().y)});
-    top.setFillColor(sf::Color({40,30,100}));
-    // BODY
-    body.setSize({
-        static_cast<float>(windowSize.x*3),
-        static_cast<float>(bodyTexture.getSize().y)});
-    body.setFillColor(sf::Color({40,30,100}));
 
-    pShapes.emplace(pShapes.end(), &body);
-    pShapes.emplace(pShapes.end(), &top);
-    pTextures.emplace(pTextures.end(), &topTexture);
-    pTextures.emplace(pTextures.end(), &bodyTexture);
+sf::Texture * Ground::getTexture() {
+    return &pWorld->pGame->textures.topGround;
 }
 
-void Ground::setGroundLevel() {
-    top.setPosition({top.getPosition().x, pWorld->groundLevel+top.getSize().y/2.f});
-    body.setPosition({body.getPosition().x, top.getPosition().y+top.getSize().y});
+void Ground::init() {
+    Scenery::init();
+    const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio();
+    shape.setScale({sizeRatio.x * stretchFactor, 1});
+    shape.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(shape.getGlobalBounds().size)));
 }

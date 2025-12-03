@@ -8,20 +8,7 @@
 #include <iostream>
 
 
-Background::Background(const char* name) : Scenery(name){}
-
-void Background::initShapeSize() {
-    shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
-    const sf::Vector2f sizeRatio = {
-        static_cast<float>(pWorld->pGame->video.windowSize.x) / static_cast<float>(pTexture->getSize().x),
-        static_cast<float>(pWorld->pGame->video.windowSize.y) / static_cast<float>(pTexture->getSize().y),
-    };
-    pShape->setScale(sizeRatio);
-}
-
-sf::Shape * Background::getShape() {
-    return &shape;
-}
+Background::Background(std::string name) : Scenery(std::move(name)){}
 
 sf::Texture * Background::getTexture() {
     return &pWorld->pGame->textures.background;
@@ -29,4 +16,9 @@ sf::Texture * Background::getTexture() {
 
 void Background::init() {
     Scenery::init();
+    shape.setScale({static_cast<float>(stretchFactor), 1});
+    shape.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(shape.getGlobalBounds().size)));
+    const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio();
+    shape.setScale({shape.getScale().x * sizeRatio.x * stretchFactor, shape.getScale().y * sizeRatio.y});
 }
+

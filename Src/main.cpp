@@ -15,7 +15,8 @@ int main() {
 
 #pragma region world
     const auto worldForest = game.createWorld("Forest");
-    (void) worldForest->createEntity<Background>("Forest");
+    (void) worldForest->createEntity<Background>("bForest");
+    (void) worldForest->createEntity<Ground>("gForest");
 
     Controls p1controls;
     p1controls.left   = sf::Keyboard::Scancode::A;
@@ -31,10 +32,10 @@ int main() {
     p2controls.run    = sf::Keyboard::Scancode::RShift;
     p2controls.attack = sf::Keyboard::Scancode::Numpad0;
 
-    worldForest->createEntity<Player>("player1", p1controls);
-    // worldForest->createEntity<Player>("player2", p2controls);
+    auto player1 = worldForest->createEntity<Player>("player1", p1controls);
+    worldForest->createEntity<Player>("player2", p2controls);
 
-    // game.video.camera.pTarget = forest->findEntities<Player>()[0];
+    game.video.camera.pTarget = player1;
 #pragma endregion
 
 #pragma region background

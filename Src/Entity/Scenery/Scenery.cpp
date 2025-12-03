@@ -12,25 +12,41 @@ void Scenery::setCamera() {
     pCamera = &pWorld->pGame->video.camera;
 }
 
+sf::Shape * Scenery::getShape() {
+    return &shape;
+}
+
 void Scenery::loop() {
     if (pCamera == nullptr) setCamera();
     else {
-        const auto camera_center = pCamera->view.getCenter();
-        const auto camera_right_border = camera_center.x + pCamera->view.getSize().x / 2.f;
-        const auto camera_left_border = camera_center.x - pCamera->view.getSize().x / 2.f;
+        const auto cameraCenter = pCamera->view.getCenter();
+        const auto cameraRBorder = cameraCenter.x + pCamera->view.getSize().x / 2.f;
+        const auto cameraLBorder = cameraCenter.x - pCamera->view.getSize().x / 2.f;
 
         // If camera is viewing outside of background
-        if (camera_right_border >= pShape->getPosition().x + pShape->getGlobalBounds().size.x) {
-            pShape->setPosition({camera_right_border-pShape->getGlobalBounds().size.x/2.f, pShape->getPosition().y});
+        if (cameraRBorder >= pShape->getPosition().x + pShape->getGlobalBounds().size.x/2.f) {
+         pShape->setPosition({
+             cameraRBorder-pCamera->view.getSize().x/2.f+pShape->getGlobalBounds().size.x/stretchFactor,
+             pShape->getPosition().y});
         }
-        else if (camera_left_border <= pShape->getPosition().x) {
-            pShape->setPosition({camera_left_border-pShape->getGlobalBounds().size.x/2.f, pShape->getPosition().y});
+        else if (cameraLBorder <= pShape->getPosition().x - pShape->getGlobalBounds().size.x/2.f) {
+         pShape->setPosition({
+             cameraLBorder+pCamera->view.getSize().x/2.f-pShape->getGlobalBounds().size.x/stretchFactor,
+             pShape->getPosition().y});
         }
     }
 }
 
+void Scenery::initShapeSize() {
+    shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
+}
+
+void Scenery::init() {
+    Entity::init();
+    pTexture->setRepeated(true);
+    pShape->setTextureRect(sf::IntRect({0,0}, {static_cast<sf::Vector2i>(shape.getGlobalBounds().size)}));
+}
+
 void Scenery::update() {
-    if (looping) {
-        loop();
-    }
+    loop();
 }

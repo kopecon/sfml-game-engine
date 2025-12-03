@@ -16,12 +16,7 @@ World::World(std::string name) {
 
 void World::draw() const {
     for (auto &entity: entities | std::views::values) {
-        if (!entity->pShapes.empty()) {
-            for (const auto *shape : entity->pShapes) {
-                pGame->video.window.draw(*shape);
-            }
-        }
-        else pGame->video.window.draw(*entity->pShape);
+        pGame->video.window.draw(*entity->pShape);
     }
 }
 

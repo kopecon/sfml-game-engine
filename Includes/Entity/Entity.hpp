@@ -21,14 +21,14 @@ public:
     sf::Vector2f *pSize{nullptr};
     sf::Shape *pShape{nullptr};
     sf::Texture *pTexture{nullptr};
-    std::vector<sf::Shape*> pShapes{};
-    std::vector<sf::Texture*> pTextures{};
     World *pWorld{nullptr};
     bool markedForRemoval = false;
 
     virtual void initShapeSize() = 0;
 
-    virtual sf::Shape* getShape() {return pShape;}
+    virtual sf::Shape* getShape() = 0;
+
+    virtual sf::Vector2f getWindowToShapeSizeRatio() const;
 
     virtual sf::Texture* getTexture() {return pTexture;}
 

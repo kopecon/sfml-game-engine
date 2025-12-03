@@ -10,13 +10,7 @@
 
 class Background final : public Scenery {
 public:
-    sf::RectangleShape shape{};
-
-    explicit Background(const char* name);
-
-    void initShapeSize() override;
-
-    sf::Shape* getShape() override;
+    explicit Background(std::string name);
 
     sf::Texture* getTexture() override;
 

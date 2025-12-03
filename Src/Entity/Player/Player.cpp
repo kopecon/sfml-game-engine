@@ -224,15 +224,6 @@ void Player::selectAnimation() {
 
 void Player::initShapeSize() {
     shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
-    const sf::Vector2f window = sf::Vector2f(pWorld->pGame->video.windowSize);
-    const sf::Vector2f texSize = sf::Vector2f(pTexture->getSize());
-
-    const sf::Vector2f sizeRatio = {
-        static_cast<float>(window.x) / static_cast<float>(texSize.x) / 5.f,
-        static_cast<float>(window.y) / static_cast<float>(texSize.y) / 5.f,
-    };
-
-    pShape->setScale(sizeRatio);
 }
 
 sf::Shape * Player::getShape() {
@@ -245,6 +236,8 @@ sf::Texture * Player::getTexture() {
 
 void Player::init() {
     Entity::init();
+    const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio() * height;
+    pShape->setScale(sizeRatio);
 }
 
 void Player::update() {

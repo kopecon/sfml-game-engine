@@ -11,13 +11,20 @@
 
 class Scenery : public Entity {
 public:
-    explicit Scenery(std::string name);;
-    bool looping{false};
+    explicit Scenery(std::string name);
+    sf::RectangleShape shape{};
+    int stretchFactor = 3;
     Camera *pCamera{};
 
     void setCamera();
 
+    sf::Shape *getShape() override;
+
     void loop();
+
+    void initShapeSize() override;
+
+    void init() override;
 
     void update() override;
 };

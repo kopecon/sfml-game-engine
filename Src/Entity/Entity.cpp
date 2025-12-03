@@ -18,6 +18,16 @@ Entity::Entity(std::string name) {
     this->name = std::move(name);
 }
 
+sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
+        const sf::Vector2f windowSize = static_cast<sf::Vector2f>(pWorld->pGame->video.windowSize);
+        const sf::Vector2f shapeSize = pShape->getGlobalBounds().size;
+        const sf::Vector2f sizeRatio = {
+            windowSize.x / shapeSize.x,
+            windowSize.y / shapeSize.y,
+        };
+        return sizeRatio;
+    }
+
 void Entity::init() {
     std::cout << "Base Init: " << name << " ...Start" << "\n";
     pShape = getShape();
