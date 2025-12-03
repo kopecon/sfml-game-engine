@@ -6,9 +6,9 @@
 #define BONK_GAME_WORLD_HPP
 #include <ranges>
 #include <vector>
-#include "Entity.hpp"
-#include "Game.hpp"
-#include "utils.hpp"
+#include "../Entity/Entity.hpp"
+#include "../Game/Game.hpp"
+#include "../../Utils/utils.hpp"
 
 
 class Game;
@@ -29,6 +29,7 @@ public:
     T* createEntity(Args&&... args) {
         auto pEntity = std::make_unique<T>(std::forward<Args>(args)...);
         pEntity->pWorld = this;
+        pEntity->init();
         const std::string entityName = pEntity->name;
         entities.emplace(entityName, std::move(pEntity));
         return getEntity<T>(entityName);

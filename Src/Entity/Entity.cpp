@@ -3,8 +3,12 @@
 //
 
 #include <utility>
-#include "../Includes/Entity.hpp"
-#include "../Includes/utils.hpp"
+#include "../../Includes/Entity/Entity.hpp"
+
+#include <iostream>
+
+#include "../../Utils/utils.hpp"
+#include "../../Includes/World/World.hpp"
 #include "SFML/Graphics/Texture.hpp"
 
 
@@ -15,15 +19,13 @@ Entity::Entity(std::string name) {
     this->name = std::move(name);
 }
 
-void Entity::init(sf::Shape &shape, sf::Texture &texture) {
-    pShape = &shape;
-    pTexture = &texture;
-    shape.setOrigin(shape.getGeometricCenter());
-    shape.setTexture(&texture);
+void Entity::init() {
+    std::cout << "Base Init: " << this->name << " ...Start" << "\n";
+    this->pShape->setOrigin(pShape->getGeometricCenter());
+    std::cout << "Base Init: " << this->name << " ...Finish" << "\n";
 }
 
-void Entity::update() {
-}
+void Entity::update() {}
 
 bool Entity::operator==(const Entity &other) const {
     return this == &other;

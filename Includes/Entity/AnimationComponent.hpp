@@ -9,7 +9,6 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
-#include "../Includes/AnimationComponent.hpp"
 
 struct AnimationSheet {
     sf::Texture *pTexture{};

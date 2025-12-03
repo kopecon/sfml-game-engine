@@ -25,9 +25,9 @@ public:
     World *pWorld{nullptr};
     bool markedForRemoval = false;
 
-    virtual void init(sf::Shape &shape, sf::Texture &texture);
+    virtual void init();
 
-    virtual void update();
+    virtual void update() = 0;
 
     bool operator==(const Entity &other) const;
 

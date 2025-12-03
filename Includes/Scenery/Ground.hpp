@@ -16,12 +16,10 @@ public:
     sf::RectangleShape body{};
     sf::RectangleShape top{};
 
-    explicit Ground(const char* name);
-    explicit Ground(const char* name, const sf::Vector2u &windowSize, sf::Texture &bodyTexture, sf::Texture &topTexture);
+    explicit Ground(std::string name);
+    explicit Ground(std::string name, const sf::Vector2u &windowSize, sf::Texture &bodyTexture, sf::Texture &topTexture);
 
     void setGroundLevel();
-
-    void update() override;
 };
 
 

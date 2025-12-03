@@ -2,11 +2,11 @@
 // Created by Andrew on 17/11/2025.
 //
 
-#include "../Includes/AnimationComponent.hpp"
+#include "../../Includes/Entity/AnimationComponent.hpp"
 
 #include <iostream>
 
-#include "../Includes/Player.hpp"
+#include "../../Includes/Entity/Player.hpp"
 
 
 [[nodiscard]] sf::Vector2i AnimationSheet::getFrameSize(const int &framesPerRow, const int &framesPerColumn) const {

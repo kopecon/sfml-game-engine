@@ -3,8 +3,8 @@
 //
 
 #include <utility>
-#include "../Includes/World.hpp"
-#include "../Includes/utils.hpp"
+#include "../../Includes/World/World.hpp"
+#include "../../Utils/utils.hpp"
 
 
 World::World() = default;

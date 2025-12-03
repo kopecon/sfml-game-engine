@@ -26,36 +26,36 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
-        src/Player.cpp
-        Includes/Player.hpp
-        src/background.cpp
-        Includes/background.hpp
-        src/Camera.cpp
-        Includes/Camera.hpp
-        src/AnimationComponent.cpp
-        Includes/AnimationComponent.hpp
-        src/PhysicsComponent.cpp
-        Includes/PhysicsComponent.hpp
-        src/InputComponent.cpp
-        Includes/InputComponent.hpp
+        Src/Entity/Player.cpp
+        Includes/Entity/Player.hpp
+        Src/Scenery/Background.cpp
+        Includes/Scenery/Background.hpp
+        Src/Game/Camera.cpp
+        Includes/Game/Camera.hpp
+        Src/Entity/AnimationComponent.cpp
+        Includes/Entity/AnimationComponent.hpp
+        Src/Entity/PhysicsComponent.cpp
+        Includes/Entity/PhysicsComponent.hpp
+        Src/Entity/InputComponent.cpp
+        Includes/Entity/InputComponent.hpp
         utils/utils.cpp
-        Includes/utils.hpp
-        src/World.cpp
-        Includes/World.hpp
-        Src/Entity.cpp
-        Includes/Entity.hpp
-        Src/Ground.cpp
-        Includes/Ground.hpp
-        Src/Game.cpp
-        Includes/Game.hpp
-        Src/VideoComponent.cpp
-        Includes/VideoComponent.hpp
-        Src/AudioComponent.cpp
-        Includes/AudioComponent.hpp
-        Src/Scenery.cpp
-        Includes/Scenery.hpp
-        Src/TimeComponent.cpp
-        Includes/TimeComponent.hpp
+        Utils/utils.hpp
+        Src/World/World.cpp
+        Includes/World/World.hpp
+        Src/Entity/Entity.cpp
+        Includes/Entity/Entity.hpp
+        Src/Scenery/Ground.cpp
+        Includes/Scenery/Ground.hpp
+        Src/Game/Game.cpp
+        Includes/Game/Game.hpp
+        Src/Game/VideoComponent.cpp
+        Includes/Game/VideoComponent.hpp
+        Src/Game/AudioComponent.cpp
+        Includes/Game/AudioComponent.hpp
+        Src/Scenery/Scenery.cpp
+        Includes/Scenery/Scenery.hpp
+        Src/Game/TimeComponent.cpp
+        Includes/Game/TimeComponent.hpp
 )
 
 if (PRODUCTION_BUILD)

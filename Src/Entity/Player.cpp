@@ -2,18 +2,17 @@
 // Created by Andrew on 13/11/2025.
 //
 
-#include "../Includes/Player.hpp"
-#include "../Includes/utils.hpp"
+#include "../../Includes/Entity/Player.hpp"
+#include "../../Utils/utils.hpp"
 #include <iostream>
 
-#include "../Includes/World.hpp"
+#include "../../Includes/World/World.hpp"
 
 
 #pragma region constructors
 Player::Player(const char* name) : Entity(name){}
 
 Player::Player(const char* name, const Controls &controls, sf::Texture &texture) : Entity(name), input(controls) {
-    Entity::init(shape, texture);
     this->animation.animationSheet = {pTexture, {32, 32}};
     this->animation.target = &shape;
     animation.add(AnimationEntry(IDLE,         2, true));
@@ -218,6 +217,11 @@ void Player::selectAnimation() {
             animation.set(IDLE);
         }
     }
+}
+
+void Player::init() {
+    pShape = &shape;
+    Entity::init();
 }
 
 void Player::update() {

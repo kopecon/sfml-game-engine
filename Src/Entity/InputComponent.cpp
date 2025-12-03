@@ -4,8 +4,8 @@
 
 
 #include <iostream>
-#include "../Includes/InputComponent.hpp"
-#include "../Includes/Player.hpp"
+#include "../../Includes/Entity/InputComponent.hpp"
+#include "../../Includes/Entity/Player.hpp"
 
 #pragma region constructors
 

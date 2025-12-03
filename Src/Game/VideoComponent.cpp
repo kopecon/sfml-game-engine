@@ -2,8 +2,8 @@
 // Created by Andrew on 29/11/2025.
 //
 
-#include "../Includes/VideoComponent.hpp"
-#include "../Includes/World.hpp"
+#include "../../Includes/Game/VideoComponent.hpp"
+#include "../../Includes/World/World.hpp"
 
 
 VideoComponent::VideoComponent() = default;

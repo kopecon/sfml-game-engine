@@ -6,7 +6,7 @@
 #define BONK_GAME_CAMERA_HPP
 
 #include <SFML/Graphics.hpp>
-#include "Entity.hpp"
+#include "../Entity/Entity.hpp"
 
 
 class Camera {

@@ -13,6 +13,7 @@
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
 #include "Entity.hpp"
+#include "../World/World.hpp"
 
 
 class World;
@@ -80,6 +81,7 @@ public:
     void declareState();
     void takeAction();
     void selectAnimation();
+    void init() override;
     void update() override;
 };
 

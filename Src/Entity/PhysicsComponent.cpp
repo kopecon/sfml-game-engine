@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "../Includes/PhysicsComponent.hpp"
-#include "../Includes/Player.hpp"
-#include "../Includes/World.hpp"
+#include "../../Includes/Entity/PhysicsComponent.hpp"
+#include "../../Includes/Entity/Player.hpp"
+#include "../../Includes/World/World.hpp"
 
 
 #pragma region constructors

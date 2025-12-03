@@ -1,10 +1,10 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "../Includes/Game.hpp"
-#include "../Includes/World.hpp"
-#include "../Includes/Player.hpp"
-#include "../Includes/Background.hpp"
-#include "../Includes/Ground.hpp"
+#include "../Includes/Game/Game.hpp"
+#include "../Includes/World/World.hpp"
+#include "../Includes/Entity/Player.hpp"
+#include "../Includes/Scenery/Background.hpp"
+#include "../Includes/Scenery/Ground.hpp"
 
 
 int main() {
@@ -21,8 +21,8 @@ int main() {
 #pragma endregion
 
 #pragma region world
-    const auto forest = game.createWorld("Forest");
-    forest->createEntity<Background>("FOREST", window.getSize(), backgroundTexture);
+    const auto worldForest = game.createWorld("Forest");
+    // (void) worldForest->createEntity<Background>("Forest", window.getSize(), backgroundTexture);
 
     Controls p1controls;
     p1controls.left   = sf::Keyboard::Scancode::A;
@@ -38,8 +38,8 @@ int main() {
     p2controls.run    = sf::Keyboard::Scancode::RShift;
     p2controls.attack = sf::Keyboard::Scancode::Numpad0;
 
-    forest->createEntity<Player>("player1", p1controls, playerTexture);
-    forest->createEntity<Player>("player2", p2controls, playerTexture);
+    worldForest->createEntity<Player>("player1", p1controls, playerTexture);
+    // worldForest->createEntity<Player>("player2", p2controls, playerTexture);
 
     // game.video.camera.pTarget = forest->findEntities<Player>()[0];
 #pragma endregion

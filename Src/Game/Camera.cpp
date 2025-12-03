@@ -2,7 +2,7 @@
 // Created by Andrew on 14/11/2025.
 //
 
-#include "../Includes/Camera.hpp"
+#include "../../Includes/Game/Camera.hpp"
 
 
 Camera::Camera() = default;
