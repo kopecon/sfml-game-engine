@@ -30,4 +30,17 @@ namespace text {
     }
 }
 
+template<typename T>
+sf::Vector2<T> hadamard(const sf::Vector2<T> &num1, const sf::Vector2<T> &num2) {
+    return {num1.x * num2.x, num1.y * num2.y};
+}
+
+template<typename T, typename Op>
+sf::Vector2<T> hadamard(const sf::Vector2<T> &num1, const sf::Vector2<T> &num2, Op op) {
+    return {
+        op(num1.x, num2.x),
+        op(num1.y, num2.y)
+    };
+}
+
 #endif //BONK_GAME_UTILS_HPP
