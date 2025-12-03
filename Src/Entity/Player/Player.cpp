@@ -224,10 +224,14 @@ void Player::selectAnimation() {
 
 void Player::initShapeSize() {
     shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
+    const sf::Vector2f window = sf::Vector2f(pWorld->pGame->video.windowSize);
+    const sf::Vector2f texSize = sf::Vector2f(pTexture->getSize());
+
     const sf::Vector2f sizeRatio = {
-        static_cast<float>(pWorld->pGame->video.windowSize.x) / static_cast<float>(pTexture->getSize().x) / 5.f,
-        static_cast<float>(pWorld->pGame->video.windowSize.y) / static_cast<float>(pTexture->getSize().y) / 5.f,
+        static_cast<float>(window.x) / static_cast<float>(texSize.x) / 5.f,
+        static_cast<float>(window.y) / static_cast<float>(texSize.y) / 5.f,
     };
+
     pShape->setScale(sizeRatio);
 }
 

@@ -39,6 +39,7 @@ public:
     // CHARACTERISTICS
     float health {100.f};
     float attackDamage{20.f};
+    float height{0.2f};  // As a factor of the window height. (from 0 to 1)
     sf::Vector2f maxWalkingSpeed{};
     sf::Vector2f maxRunningSpeed{};
     sf::Vector2f maxSpeed{};
