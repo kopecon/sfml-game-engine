@@ -58,6 +58,8 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/Game/TimeComponent.hpp
         Src/Game/TextureComponent.cpp
         Includes/Game/TextureComponent.hpp
+        Src/Game/PhysicsEngine.cpp
+        Includes/Game/PhysicsEngine.hpp
 )
 
 if (PRODUCTION_BUILD)

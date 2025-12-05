@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "../../../Includes/Entity/Player/PhysicsComponent.hpp"
+#include "../../../Includes/Game/PhysicsEngine.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
 #include "../../../Includes/World/World.hpp"
 
@@ -41,13 +42,15 @@ void PhysicsComponent::printPhysics() const {
 }
 
 void PhysicsComponent::update() {
+
     const float &dt = pPlayer->pWorld->pGame->time.dt;
     const float &groundLevel = pPlayer->pWorld->pGame->time.dt;
     const float &airFriction = pPlayer->pWorld->airFriction;
+    const PhysicsEngine &engine = pPlayer->pWorld->pGame->engine;
 
     updateSpeed();
 
-    kinematics::motionEquation(dt, acceleration, velocity, position, airFriction);
+    engine.motionEquation(dt, acceleration, velocity, position, airFriction);
     pPlayer->setPosition(position);  // Update position
 
     if (position.y + pPlayer->getSize().y / 2.f > groundLevel) {
