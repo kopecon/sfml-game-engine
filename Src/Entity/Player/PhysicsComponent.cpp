@@ -27,6 +27,9 @@ void PhysicsComponent::updateSpeed() {
 }
 
 void PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
+    const float &airFriction = pPlayer->pWorld->airFriction;
+    const float &groundFriction = pPlayer->pWorld->groundFriction;
+
     const sf::Vector2f velDiff = targetVelocity - velocity;
     const sf::Vector2f environment{groundFriction, airFriction};
     acceleration = hd::multiply<float>(walkingSpeed, snap, velDiff, environment);
@@ -40,7 +43,10 @@ void PhysicsComponent::printPhysics() const {
 void PhysicsComponent::update() {
     const float &dt = pPlayer->pWorld->pGame->time.dt;
     const float &groundLevel = pPlayer->pWorld->pGame->time.dt;
+    const float &airFriction = pPlayer->pWorld->airFriction;
+
     updateSpeed();
+
     kinematics::motionEquation(dt, acceleration, velocity, position, airFriction);
     pPlayer->setPosition(position);  // Update position
 

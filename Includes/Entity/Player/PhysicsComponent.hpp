@@ -35,10 +35,6 @@ public:
     sf::Vector2f speed{};
     sf::Vector2f snap{0.05f, 0.05f};  // How aggressively player changes speed
 
-    const float gravity = 10000;
-    const float airFriction = 0.f;
-    const float groundFriction = 1.f;
-
     void updateWalkingSpeed();
 
     void updateRunningSpeed();

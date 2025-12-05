@@ -21,10 +21,15 @@ class World {
 public:
     World();
     explicit World(std::string name);
-
+    // METADATA
     std::string name{};
+    // GAME POINTER
     Game *pGame{nullptr};
-    float groundLevel{};
+    // ENVIRONMENT CHARACTERISTIC
+    const float gravity = 10000;
+    const float airFriction = 0.f;
+    const float groundFriction = 1.f;
+    const float groundLevel{};
 
     template<typename T, typename ... Args>
     T* createEntity(Args&&... args) {

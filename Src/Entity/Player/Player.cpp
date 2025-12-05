@@ -64,7 +64,7 @@ void Player::brake() {
 
 void Player::jump() {
     if (physics.position.y + getSize().y / 2.f >= pWorld->groundLevel) {
-        physics.velocity.y = -physics.gravity*physics.speed.y/2500.f;  // Magic number is tweaked experimentally
+        physics.velocity.y = -pWorld->gravity*physics.speed.y/2500.f;  // Magic number is tweaked experimentally
     }
 }
 
@@ -229,7 +229,7 @@ void Player::init() {
 }
 
 void Player::update() {
-    physics.acceleration = {0.f, physics.gravity};  // Reset acceleration
+    physics.acceleration = {0.f, pWorld->gravity};  // Reset acceleration
     declareState();
     selectAnimation();
     takeAction();
