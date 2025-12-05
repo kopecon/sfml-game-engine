@@ -29,7 +29,7 @@ public:
     const float gravity = 10000;
     const float airFriction = 0.f;
     const float groundFriction = 1.f;
-    const float groundLevel{};
+    float groundLevel{};
 
     template<typename T, typename ... Args>
     T* createEntity(Args&&... args) {

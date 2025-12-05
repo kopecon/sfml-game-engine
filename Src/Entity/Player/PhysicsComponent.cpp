@@ -44,8 +44,9 @@ void PhysicsComponent::printPhysics() const {
 void PhysicsComponent::update() {
 
     const float &dt = pPlayer->pWorld->pGame->time.dt;
-    const float &groundLevel = pPlayer->pWorld->pGame->time.dt;
+    const float &groundLevel = pPlayer->pWorld->groundLevel;
     const float &airFriction = pPlayer->pWorld->airFriction;
+    // ReSharper disable once CppUseStructuredBinding
     const PhysicsEngine &engine = pPlayer->pWorld->pGame->engine;
 
     updateSpeed();

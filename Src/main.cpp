@@ -15,11 +15,12 @@ int main() {
 
     #pragma region world
     const auto worldForest = game.createWorld("Forest");
+    worldForest->groundLevel = window.getSize().y*0.9f/2.f;
     #pragma endregion
 
     #pragma region background
     (void) worldForest->createEntity<Background>("bForest");
-    (void) worldForest->createEntity<Ground>({0.f, 0.f}, "gForest");
+    (void) worldForest->createEntity<Ground>({0.f, worldForest->groundLevel}, "gForest");
     #pragma endregion
 
     #pragma region player
