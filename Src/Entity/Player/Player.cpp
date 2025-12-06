@@ -13,7 +13,7 @@
 Player::Player(std::string name) : Entity(std::move(name)){}
 
 Player::Player(std::string name, const Controls &controls) :
-Entity(std::move(name)), input(*this, controls), physics(*this), animation(*this), movement(*this), combat(*this) {
+Entity(std::move(name)), input(*this, controls), physics(*this), animation(*this), actions(*this) {
     this->animation.animationSheet = {pTexture, {32, 32}};
     this->animation.target = &shape;
     animation.add(AnimationEntry(IDLE,         2, true));
@@ -92,38 +92,38 @@ void Player::takeAction() {
         }
         case WALKING: {
             physics.speed = physics.walkingSpeed;
-            movement.walk();
+            actions.movement.walk();
             break;
         }
         case RUNNING: {
             physics.speed = physics.runningSpeed;
-            movement.walk();
+            actions.movement.walk();
             break;
         }
         case CROUCHING: {
             break;
         }
         case JUMPING: {
-            movement.jump();
+            actions.movement.jump();
             break;
         }
         case DISAPPEARING: {
             break;
         }
         case DYING: {
-            combat.die();
+            actions.combat.die();
             break;
         }
         case ATTACKING: {
-            combat.attack();
+            actions.combat.attack();
             break;
         }
         case BRAKING: {
-            movement.brake();
+            actions.movement.brake();
             break;
         }
         case STOPPING: {
-            movement.brake();
+            actions.movement.brake();
             break;
         }
         default: {

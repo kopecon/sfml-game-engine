@@ -66,6 +66,8 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/Entity/Player/MovementComponent.hpp
         Includes/Entity/Player/CombatComponent.cpp
         Includes/Entity/Player/CombatComponent.hpp
+        Includes/Entity/Player/ActionsComponent.cpp
+        Includes/Entity/Player/ActionsComponent.hpp
 )
 
 if (PRODUCTION_BUILD)

@@ -9,11 +9,10 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 
+#include "ActionsComponent.hpp"
 #include "AnimationComponent.hpp"
-#include "CombatComponent.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
-#include "MovementComponent.hpp"
 #include "../Entity.hpp"
 
 
@@ -52,8 +51,7 @@ public:
     InputComponent input{};
     PhysicsComponent physics{};
     AnimationComponent animation{};
-    MovementComponent movement{};
-    CombatComponent combat{};
+    ActionsComponent actions{};
     // RENDERING
     sf::RectangleShape shape{};
     // GETTERS
@@ -61,8 +59,6 @@ public:
     sf::Vector2f getPosition() const;
     // SETTERS
     void setPosition(const sf::Vector2f &position);
-    // COMBAT
-
     // UPDATE
     void declareState();
     void takeAction();

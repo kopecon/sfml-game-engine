@@ -28,12 +28,12 @@ int InputComponent::update() const {
     if (attack) return ATTACKING;
     if (left && right) return STOPPING;
     if (left) {
-        pPlayer->movement.walk = [&]{pPlayer->movement.walkLeft();};
+        pPlayer->actions.movement.walk = [&]{pPlayer->actions.movement.walkLeft();};
         if (run) return RUNNING;
         return WALKING;
         }
     if (right) {
-        pPlayer->movement.walk = [&]{pPlayer->movement.walkRight();};
+        pPlayer->actions.movement.walk = [&]{pPlayer->actions.movement.walkRight();};
         if (run) return RUNNING;
         return WALKING;
         }
