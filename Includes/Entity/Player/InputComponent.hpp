@@ -23,11 +23,12 @@ class InputComponent {
 public:
     InputComponent();
 
-    explicit InputComponent(const Controls &controls);
+    explicit InputComponent(Player &player, const Controls &controls);
 
+    Player *pPlayer{nullptr};
     Controls controls{};
 
-    int update(Player &player) const;
+    [[nodiscard]] int update() const;
 };
 
 #endif //BONK_GAME_INPUTCOMPONENT_HPP

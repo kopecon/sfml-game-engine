@@ -12,7 +12,8 @@
 #pragma region constructors
 Player::Player(std::string name) : Entity(std::move(name)){}
 
-Player::Player(std::string name, const Controls &controls) : Entity(std::move(name)), input(controls) {
+Player::Player(std::string name, const Controls &controls) :
+Entity(std::move(name)), input(*this, controls), physics(*this), animation(*this) {
     this->animation.animationSheet = {pTexture, {32, 32}};
     this->animation.target = &shape;
     animation.add(AnimationEntry(IDLE,         2, true));
@@ -88,7 +89,7 @@ void Player::die() {
 }
 
 void Player::declareState() {
-    const int desiredState = input.update(*this);
+    const int desiredState = input.update();
     if (health <= 0) {
         state = DYING;
         return;

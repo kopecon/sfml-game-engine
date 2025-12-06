@@ -17,6 +17,7 @@
 
 class World;
 
+
 class Player final : public Entity {
 public:
     enum PlayerStates {
@@ -47,7 +48,7 @@ public:
     float eyeDryness{};
     // COMPONENTS
     InputComponent input{};
-    PhysicsComponent physics{*this};
+    PhysicsComponent physics{};
     AnimationComponent animation{};
     // RENDERING
     sf::RectangleShape shape{};

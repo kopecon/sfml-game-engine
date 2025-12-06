@@ -10,11 +10,11 @@
 #pragma region constructors
 
 InputComponent::InputComponent() = default;
-InputComponent::InputComponent(const Controls &controls): controls(controls) {}
+InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
 
 #pragma endregion
 
-int InputComponent::update(Player &player) const {
+int InputComponent::update() const {
     const bool left = sf::Keyboard::isKeyPressed(controls.left);
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
@@ -28,12 +28,12 @@ int InputComponent::update(Player &player) const {
     if (attack) return ATTACKING;
     if (left && right) return STOPPING;
     if (left) {
-        player.walk = [&player]{player.walkLeft();};
+        pPlayer->walk = [&]{pPlayer->walkLeft();};
         if (run) return RUNNING;
         return WALKING;
         }
     if (right) {
-        player.walk = [&player]{player.walkRight();};
+        pPlayer->walk = [&]{pPlayer->walkRight();};
         if (run) return RUNNING;
         return WALKING;
         }
