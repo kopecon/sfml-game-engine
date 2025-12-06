@@ -2,10 +2,10 @@
 // Created by Andrew on 06/12/2025.
 //
 
-#include "CombatComponent.hpp"
+#include "../../../Includes/Entity/Player/CombatComponent.hpp"
 
-#include "Player.hpp"
-#include "../../World/World.hpp"
+#include "../../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/World/World.hpp"
 
 using enum Player::States;
 

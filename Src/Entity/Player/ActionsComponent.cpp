@@ -2,7 +2,7 @@
 // Created by Andrew on 06/12/2025.
 //
 
-#include "ActionsComponent.hpp"
+#include "../../../Includes/Entity/Player/ActionsComponent.hpp"
 
 ActionsComponent::ActionsComponent() = default;
 
