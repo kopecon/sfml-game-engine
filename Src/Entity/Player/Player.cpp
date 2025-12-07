@@ -11,18 +11,18 @@ using enum StateManager::States;
 #pragma region constructors
 Player::Player(std::string name) : Entity(std::move(name)){}
 Player::Player(std::string name, const Controls &controls) :
-Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this), combat(*this), animation(*this), state(*this) {
-    this->animation.animationSheet = {pTexture, {32, 32}};
-    this->animation.target = &shape;
-    animation.add(AnimationEntry(IDLE,         2, true));
-    animation.add(AnimationEntry(WINKING,      2, true));
-    animation.add(AnimationEntry(WALKING,      4, true));
-    animation.add(AnimationEntry(RUNNING,      8, true));
-    animation.add(AnimationEntry(CROUCHING,    6, true));
-    animation.add(AnimationEntry(JUMPING,      8, false));
-    animation.add(AnimationEntry(DYING,        8, false));
-    animation.add(AnimationEntry(DISAPPEARING, 4, false));
-    animation.add(AnimationEntry(ATTACKING,    8, false));
+Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this), combat(*this), animationManager(*this), stateManager(*this) {
+    this->animationManager.animationSheet = {pTexture, {32, 32}};
+    this->animationManager.target = &shape;
+    animationManager.add(AnimationEntry(IDLE,         2, true));
+    animationManager.add(AnimationEntry(WINKING,      2, true));
+    animationManager.add(AnimationEntry(WALKING,      4, true));
+    animationManager.add(AnimationEntry(RUNNING,      8, true));
+    animationManager.add(AnimationEntry(CROUCHING,    6, true));
+    animationManager.add(AnimationEntry(JUMPING,      8, false));
+    animationManager.add(AnimationEntry(DYING,        8, false));
+    animationManager.add(AnimationEntry(DISAPPEARING, 4, false));
+    animationManager.add(AnimationEntry(ATTACKING,    8, false));
 }
 #pragma endregion
 
@@ -59,9 +59,9 @@ void Player::init() {
 
 void Player::update() {
     physics.acceleration = {0.f, pWorld->gravity};  // Reset acceleration
-    state.declareState();
-    animation.selectAnimation();
-    state.act();
+    stateManager.changeState();
+    animationManager.selectAnimation();
+    stateManager.act();
     physics.update();
-    animation.update(pWorld->pGame->time.dt);
+    animationManager.update(pWorld->pGame->time.dt);
 }

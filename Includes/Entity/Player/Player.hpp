@@ -36,8 +36,8 @@ public:
     MovementComponent movement{};
     CombatComponent combat{};
     // MANAGERS
-    AnimationManager animation{};
-    StateManager state{};
+    AnimationManager animationManager{};
+    StateManager stateManager{};
     // RENDERING
     sf::RectangleShape shape{};
     // GETTERS

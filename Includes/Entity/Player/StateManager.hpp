@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "CombatComponent.hpp"
-#include "States/Walking.hpp"
+#include "States/Jumping.hpp"
 
 
 class Player;
@@ -32,21 +32,12 @@ public:
     explicit StateManager(Player &player);
 
     Player *pPlayer{nullptr};
-    State *pState{nullptr};
+    std::unique_ptr<State> pState{nullptr};
     States state{States::IDLE};
 
-    Walking walking{};
-    void declareState();
+    void changeState();
 
-    void act();
-
-    void changeState(State *newState) {
-        pState = newState;
-    }
-
-    void takeAction() {
-        if (pState != nullptr) pState->act();
-    }
+    void act() const;
 };
 
 

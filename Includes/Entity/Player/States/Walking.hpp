@@ -9,7 +9,7 @@
 
 class Walking final : public State {
 public:
-    explicit Walking();
+    Walking();
     explicit Walking(Player &player);
     void act() override;
 };

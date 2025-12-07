@@ -6,10 +6,11 @@
 #include "../Player.hpp"
 
 
-Walking::Walking() : State("Walking") {}
+Walking::Walking() : State("WALKING") {}
 
-Walking::Walking(Player &player): State(player, "Walking") {}
+Walking::Walking(Player &player) : State(player, "WALKING") {}
 
 void Walking::act() {
+    pPlayer->physics.speed = pPlayer->physics.walkingSpeed;
     pPlayer->movement.walk();
 }

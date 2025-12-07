@@ -3,9 +3,6 @@
 //
 
 #include "../../Includes/Entity/Animations.hpp"
-
-#include <iostream>
-
 #include "../../Includes/Entity/Player/Player.hpp"
 
 
@@ -99,7 +96,7 @@ void Animations::update(const float &dt) const {
         pCurrentAnimation->frameIndex.x += 1;
         pCurrentAnimation->timer = 0.f;  // Reset timer
     }
-    // Evaluate the end of animation
+    // Evaluate the end of animationManager
     if (pCurrentAnimation->frameIndex.x+1 > pCurrentAnimation->framesPerRow) {
         // LOOP
         if (pCurrentAnimation->looping) pCurrentAnimation->frameIndex.x = 0;

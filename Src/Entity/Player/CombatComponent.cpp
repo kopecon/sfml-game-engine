@@ -18,7 +18,7 @@ void CombatComponent::attack() const {
     for (Player *opponent : pPlayers) {
         if (hd::abs(opponent->physics.position - pPlayer->physics.position).x <= attackRange &&
             hd::abs(opponent->physics.position - pPlayer->physics.position).y <= attackRange) {
-            pPlayer->animation.onEnd(ATTACKING, [&opponent, this]{opponent->combat.takeDamage(pPlayer->attackDamage);});
+            pPlayer->animationManager.onEnd(ATTACKING, [&opponent, this]{opponent->combat.takeDamage(pPlayer->attackDamage);});
             }
     }
 }
@@ -28,5 +28,5 @@ void CombatComponent::takeDamage(const float &damage) const {
 }
 
 void CombatComponent::die() const {
-    pPlayer->animation.onEnd(DYING, [this]{pPlayer->markedForRemoval=true;});
+    pPlayer->animationManager.onEnd(DYING, [this]{pPlayer->markedForRemoval=true;});
 }

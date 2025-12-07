@@ -14,8 +14,8 @@ protected:
     Player *pPlayer{nullptr};
 public:
     virtual ~State();
-    explicit State (std::string name);
-    explicit State (Player &player, std::string name);
+    explicit State(std::string name);
+    explicit State(Player &player, std::string name);
 
     std::string name{};
 
