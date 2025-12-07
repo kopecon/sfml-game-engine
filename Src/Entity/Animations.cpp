@@ -3,9 +3,6 @@
 //
 
 #include "../../Includes/Entity/Animations.hpp"
-
-#include <iostream>
-
 #include "../../Includes/Entity/Player/Player.hpp"
 
 
@@ -17,10 +14,10 @@
 
 AnimationEntry::AnimationEntry() = default;
 
-AnimationEntry::AnimationEntry(const ActionsComponent::States &id, const int &framesPerRow, const bool &looping):
+AnimationEntry::AnimationEntry(const StateManager::States &id, const int &framesPerRow, const bool &looping):
     id(id), framesPerRow(framesPerRow), fps(static_cast<float>(framesPerRow)), looping(looping) {}
 
-AnimationEntry::AnimationEntry(const ActionsComponent::States &id, const int &framesPerRow, const float &fps, const bool &looping):
+AnimationEntry::AnimationEntry(const StateManager::States &id, const int &framesPerRow, const float &fps, const bool &looping):
     id(id), framesPerRow(framesPerRow), fps(fps), looping(looping) {}
 
 bool AnimationEntry::operator!=(const AnimationEntry &other) const {
@@ -32,7 +29,7 @@ bool AnimationEntry::operator==(const AnimationEntry &other) const {
 }
 
 size_t AnimationEntry::Hash::operator()(const AnimationEntry &anim) const noexcept {
-    return std::hash<ActionsComponent::States>()(anim.id);
+    return std::hash<StateManager::States>()(anim.id);
 }
 
 Animations::Animations() = default;
@@ -49,7 +46,7 @@ sf::IntRect Animations::currentFrame() const {
     return {frameCoord, animationSheet.frameSize};
 }
 
-void Animations::set(const ActionsComponent::States &animationID) {
+void Animations::set(const StateManager::States &animationID) {
     auto *pNewAnimation = &animationSet[animationID];
     if (pCurrentAnimation == nullptr) {
         pCurrentAnimation = pNewAnimation;
@@ -73,13 +70,13 @@ void Animations::add(const AnimationEntry &animation) {
     }
 }
 
-void Animations::onEnd(const ActionsComponent::States &animationID, const std::function<void()> &function) {
+void Animations::onEnd(const StateManager::States &animationID, const std::function<void()> &function) {
     if (animationSet[animationID].state == AnimationEntry::END) {
         function();
     }
 }
 
-bool Animations::completed(const ActionsComponent::States &animationID) {
+bool Animations::completed(const StateManager::States &animationID) {
     if (animationSet[animationID].state == AnimationEntry::COMPLETED) {
         return true;
     }
@@ -99,7 +96,7 @@ void Animations::update(const float &dt) const {
         pCurrentAnimation->frameIndex.x += 1;
         pCurrentAnimation->timer = 0.f;  // Reset timer
     }
-    // Evaluate the end of animation
+    // Evaluate the end of animationManager
     if (pCurrentAnimation->frameIndex.x+1 > pCurrentAnimation->framesPerRow) {
         // LOOP
         if (pCurrentAnimation->looping) pCurrentAnimation->frameIndex.x = 0;

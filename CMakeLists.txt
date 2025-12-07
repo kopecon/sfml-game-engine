@@ -60,14 +60,24 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/Game/TextureComponent.hpp
         Src/Game/PhysicsEngine.cpp
         Includes/Game/PhysicsEngine.hpp
-        Src/Entity/Player/AnimationComponent.cpp
-        Includes/Entity/Player/AnimationComponent.hpp
+        Src/Entity/Player/AnimationManager.cpp
+        Includes/Entity/Player/AnimationManager.hpp
         Src/Entity/Player/MovementComponent.cpp
         Includes/Entity/Player/MovementComponent.hpp
         Src/Entity/Player/CombatComponent.cpp
         Includes/Entity/Player/CombatComponent.hpp
-        Src/Entity/Player/ActionsComponent.cpp
-        Includes/Entity/Player/ActionsComponent.hpp
+        Src/Entity/Player/StateManager.cpp
+        Includes/Entity/Player/StateManager.hpp
+        Src/Entity/Player/States/State.cpp
+        Includes/Entity/Player/States/State.hpp
+        Includes/Entity/Player/States/Idle.cpp
+        Includes/Entity/Player/States/Idle.hpp
+        Includes/Entity/Player/States/Walking.cpp
+        Includes/Entity/Player/States/Walking.hpp
+        Includes/Entity/Player/States/Jumping.cpp
+        Includes/Entity/Player/States/Jumping.hpp
+        Includes/Entity/Player/States/Running.cpp
+        Includes/Entity/Player/States/Running.hpp
 )
 
 if (PRODUCTION_BUILD)
