@@ -23,7 +23,7 @@ public:
     float windowSizeRatio = 2.f;  // Screen size / window size
     unsigned int fps{144};
     // WINDOW
-    sf::State windowState = sf::State::Windowed;  // Initial stateManager when game starts
+    sf::State windowState = sf::State::Windowed;  // Initial state when game starts
     sf::Vector2u windowSize = {
         static_cast<unsigned>(static_cast<float>(screenSize.x)/windowSizeRatio),
         static_cast<unsigned>(static_cast<float>(screenSize.y)/windowSizeRatio)};

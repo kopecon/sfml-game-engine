@@ -2,18 +2,15 @@
 // Created by Andrew on 06/12/2025.
 //
 
-#ifndef BONK_GAME_STATE_MANAGER_HPP
-#define BONK_GAME_STATE_MANAGER_HPP
-
-#include <iostream>
-
+#ifndef BONK_GAME_ACTIONS_COMPONENT_HPP
+#define BONK_GAME_ACTIONS_COMPONENT_HPP
 #include "CombatComponent.hpp"
-#include "States/Jumping.hpp"
+#include "MovementComponent.hpp"
 
 
 class Player;
 
-class StateManager {
+class ActionsComponent {
 public:
     enum class States {
         IDLE,
@@ -28,17 +25,16 @@ public:
         BRAKING,
         STOPPING,
     };
-    StateManager();
-    explicit StateManager(Player &player);
+    ActionsComponent();
+
+    explicit ActionsComponent(Player &player);
 
     Player *pPlayer{nullptr};
-    std::unique_ptr<State> pState{nullptr};
     States state{States::IDLE};
+    MovementComponent movement{};
+    CombatComponent combat{};
 
-    void changeState();
-
-    void act() const;
 };
 
 
-#endif //BONK_GAME_STATE_MANAGER_HPP
+#endif //BONK_GAME_ACTIONS_COMPONENT_HPP

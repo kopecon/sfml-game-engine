@@ -5,12 +5,15 @@
 #ifndef BONK_GAME_PLAYER_HPP
 #define BONK_GAME_PLAYER_HPP
 
+
+#include <functional>
 #include <SFML/Graphics.hpp>
-#include "StateManager.hpp"
-#include "AnimationManager.hpp"
+
+#include "ActionsComponent.hpp"
+#include "ActionsComponent.hpp"
+#include "AnimationComponent.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
-#include "MovementComponent.hpp"
 #include "../Entity.hpp"
 
 
@@ -33,11 +36,8 @@ public:
     // COMPONENTS
     InputComponent input{};
     PhysicsComponent physics{};
-    MovementComponent movement{};
-    CombatComponent combat{};
-    // MANAGERS
-    AnimationManager animationManager{};
-    StateManager stateManager{};
+    AnimationComponent animation{};
+    ActionsComponent actions{};
     // RENDERING
     sf::RectangleShape shape{};
     // GETTERS
@@ -46,6 +46,8 @@ public:
     // SETTERS
     void setPosition(const sf::Vector2f &position);
     // UPDATE
+    void declareState();
+    void takeAction();
     // OVERRIDES
     void initShapeSize() override;
     sf::Shape* getShape() override;
