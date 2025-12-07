@@ -8,6 +8,7 @@
 
 #include "../../../Includes/World/World.hpp"
 
+using enum ActionsComponent::States;
 
 #pragma region constructors
 Player::Player(std::string name) : Entity(std::move(name)){}
@@ -42,48 +43,48 @@ void Player::setPosition(const sf::Vector2f &position) {
 }
 
 void Player::declareState() {
-    const int desiredState = input.update();
+    const ActionsComponent::States desiredState = input.update();
     if (health <= 0) {
-        state = DYING;
+        actions.state = DYING;
         return;
     }
-    if (state == JUMPING) {
+    if (actions.state == JUMPING) {
         if (physics.position.y  + getSize().y / 2.f >= pWorld->groundLevel) {
-            state = IDLE;
+            actions.state = IDLE;
         }
     }
-    else if (state == ATTACKING) {
+    else if (actions.state == ATTACKING) {
         if (animation.completed(ATTACKING)) {
-            this->state=IDLE;
+            this->actions.state=IDLE;
         }
     }
     else {  // ACTIONS NEED TO BE SORTED BY PRIORITY
         if (desiredState == JUMPING) {
-            state = JUMPING;
+            actions.state = JUMPING;
         }
         else if (desiredState == ATTACKING) {
-            state = ATTACKING;
+            actions.state = ATTACKING;
         }
         else if (desiredState == WALKING) {
-            state = WALKING;
+            actions.state = WALKING;
         }
         else if (desiredState == RUNNING) {
-            state = RUNNING;
+            actions.state = RUNNING;
         }
         else if (desiredState == STOPPING) {
-            state = STOPPING;
+            actions.state = STOPPING;
         }
         else if (desiredState == IDLE) {
             if (std::fabs(physics.velocity.x) > 0) {
-                state = BRAKING;
+                actions.state = BRAKING;
             }
-            else state = IDLE;
+            else actions.state = IDLE;
         }
     }
 }
 
 void Player::takeAction() {
-    switch (state) {
+    switch (actions.state) {
         case IDLE: {
             break;
         }

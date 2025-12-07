@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ActionsComponent.hpp"
+#include "ActionsComponent.hpp"
 #include "AnimationComponent.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
@@ -21,19 +22,6 @@ class World;
 
 class Player final : public Entity {
 public:
-    enum States {
-        IDLE,
-        WINKING,
-        WALKING,
-        RUNNING,
-        CROUCHING,
-        JUMPING,
-        DISAPPEARING,
-        DYING,
-        ATTACKING,
-        BRAKING,
-        STOPPING,
-    };
 #pragma region constructors
     explicit Player(std::string name);
     explicit Player(std::string name, const Controls &controls);
@@ -42,8 +30,6 @@ public:
     float health {100.f};
     float attackDamage{20.f};
     float height{0.2f};  // As a factor of the window height. (from 0 to 1)
-    // STATES
-    States state{IDLE};
     // CONDITIONS
     bool facingRight{true};
     float eyeDryness{};

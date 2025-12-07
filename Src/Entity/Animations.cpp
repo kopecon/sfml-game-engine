@@ -17,10 +17,10 @@
 
 AnimationEntry::AnimationEntry() = default;
 
-AnimationEntry::AnimationEntry(const int &id, const int &framesPerRow, const bool &looping):
+AnimationEntry::AnimationEntry(const ActionsComponent::States &id, const int &framesPerRow, const bool &looping):
     id(id), framesPerRow(framesPerRow), fps(static_cast<float>(framesPerRow)), looping(looping) {}
 
-AnimationEntry::AnimationEntry(const int &id, const int &framesPerRow, const float &fps, const bool &looping):
+AnimationEntry::AnimationEntry(const ActionsComponent::States &id, const int &framesPerRow, const float &fps, const bool &looping):
     id(id), framesPerRow(framesPerRow), fps(fps), looping(looping) {}
 
 bool AnimationEntry::operator!=(const AnimationEntry &other) const {
@@ -32,7 +32,7 @@ bool AnimationEntry::operator==(const AnimationEntry &other) const {
 }
 
 size_t AnimationEntry::Hash::operator()(const AnimationEntry &anim) const noexcept {
-    return std::hash<int>()(anim.id);
+    return std::hash<ActionsComponent::States>()(anim.id);
 }
 
 Animations::Animations() = default;
@@ -49,7 +49,7 @@ sf::IntRect Animations::currentFrame() const {
     return {frameCoord, animationSheet.frameSize};
 }
 
-void Animations::set(const int &animationID) {
+void Animations::set(const ActionsComponent::States &animationID) {
     auto *pNewAnimation = &animationSet[animationID];
     if (pCurrentAnimation == nullptr) {
         pCurrentAnimation = pNewAnimation;
@@ -73,13 +73,13 @@ void Animations::add(const AnimationEntry &animation) {
     }
 }
 
-void Animations::onEnd(const int &animationID, const std::function<void()> &function) {
+void Animations::onEnd(const ActionsComponent::States &animationID, const std::function<void()> &function) {
     if (animationSet[animationID].state == AnimationEntry::END) {
         function();
     }
 }
 
-bool Animations::completed(const int &animationID) {
+bool Animations::completed(const ActionsComponent::States &animationID) {
     if (animationSet[animationID].state == AnimationEntry::COMPLETED) {
         return true;
     }

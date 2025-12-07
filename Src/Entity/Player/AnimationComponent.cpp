@@ -11,9 +11,8 @@ AnimationComponent::AnimationComponent() = default;
 AnimationComponent::AnimationComponent(Player &player): pPlayer(&player) {}
 
 void AnimationComponent::selectAnimation() const {
-    using enum Player::States;
-
-    switch (pPlayer->state) {
+    using enum ActionsComponent::States;
+    switch (pPlayer->actions.state) {
         case JUMPING : {
             pPlayer->animation.set(JUMPING);
             pPlayer->animation.animationSet[JUMPING].fps = std::fabs(pPlayer->physics.walkingSpeed.y / pPlayer->physics.speed.y)*24.f;

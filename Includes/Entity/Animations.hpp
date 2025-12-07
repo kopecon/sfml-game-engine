@@ -9,6 +9,8 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
+#include "Player/ActionsComponent.hpp"
+
 
 struct AnimationSheet {
     sf::Texture *pTexture{};
@@ -23,13 +25,13 @@ public:
     };
 #pragma region constructors
     AnimationEntry();
-    AnimationEntry(const int&id, const int &framesPerRow, const bool &looping=true);
+    AnimationEntry(const ActionsComponent::States &id, const int &framesPerRow, const bool &looping=true);
 
-    AnimationEntry(const int&id, const int &framesPerRow, const float &fps, const bool &looping=true);
+    AnimationEntry(const ActionsComponent::States &id, const int &framesPerRow, const float &fps, const bool &looping=true);
 
 #pragma endregion
-    int id{0};  // Represents row index starting from 0;
-    sf::Vector2i frameIndex = {0, id};
+    ActionsComponent::States id{0};  // Represents row index starting from 0;
+    sf::Vector2i frameIndex = {0, static_cast<int>(id)};
     sf::Vector2i *pIndex = &frameIndex;
     int framesPerRow{8};
     float timer{0.0f};  // tracks elapsed time
@@ -56,18 +58,18 @@ public:
     AnimationSheet animationSheet{};
     AnimationEntry *pPreviousAnimation{nullptr};
     AnimationEntry *pCurrentAnimation{nullptr};
-    std::unordered_map<int, AnimationEntry> animationSet;
+    std::unordered_map<ActionsComponent::States, AnimationEntry> animationSet;
     sf::Shape *target{};
 
     [[nodiscard]] sf::IntRect currentFrame() const;
 
-    void set(const int &animationID);
+    void set(const ActionsComponent::States &animationID);
 
     void add(const AnimationEntry &animation);
 
-    void onEnd(const int &animationID, const std::function<void()> &function);
+    void onEnd(const ActionsComponent::States &animationID, const std::function<void()> &function);
 
-    bool completed(const int &animationID);
+    bool completed(const ActionsComponent::States &animationID);
 
     void update(const float &dt) const;
 };

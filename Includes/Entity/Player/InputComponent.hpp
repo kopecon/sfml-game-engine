@@ -2,8 +2,9 @@
 // Created by Andrew on 20/11/2025.
 //
 
-#ifndef BONK_GAME_INPUTCOMPONENT_HPP
-#define BONK_GAME_INPUTCOMPONENT_HPP
+#ifndef BONK_GAME_INPUT_COMPONENT_HPP
+#define BONK_GAME_INPUT_COMPONENT_HPP
+#include "ActionsComponent.hpp"
 #include "SFML/Window/Keyboard.hpp"
 
 
@@ -28,7 +29,7 @@ public:
     Player *pPlayer{nullptr};
     Controls controls{};
 
-    [[nodiscard]] int update() const;
+    [[nodiscard]] ActionsComponent::States update() const;
 };
 
-#endif //BONK_GAME_INPUTCOMPONENT_HPP
+#endif //BONK_GAME_INPUT_COMPONENT_HPP
