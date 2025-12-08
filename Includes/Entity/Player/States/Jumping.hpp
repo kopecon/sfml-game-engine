@@ -13,6 +13,8 @@ public:
 
     explicit Jumping(StateManager *stateManager);
 
+    bool inAir{false};
+
     void enter() override;
 
     void act() override;
