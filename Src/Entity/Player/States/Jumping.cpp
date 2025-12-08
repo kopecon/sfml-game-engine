@@ -19,18 +19,16 @@ void Jumping::act() {
     }
 }
 
-void Jumping::exit(const StateManager::States &condition) {
+void Jumping::exit() {
     if (pStateManager->pPlayer->physics.velocity.y == 0 && inAir) {
         // RESET JUMPING ANIMATION TODO:FIND CLEANER WAY
         pStateManager->pPlayer->animationManager.animationSet[StateManager::States::JUMPING].frameIndex.x = 0;
-
-        State::exit(condition);
         inAir = false;
-        if (condition == StateManager::States::IDLE)
+        if (pStateManager->targetState == StateManager::States::IDLE)
             enter<Idle>();
-        else if (condition == StateManager::States::WALKING)
+        else if (pStateManager->targetState == StateManager::States::WALKING)
             enter<Walking>();
-        else if (condition == StateManager::States::RUNNING)
+        else if (pStateManager->targetState == StateManager::States::RUNNING)
             enter<Running>();
     }
 }

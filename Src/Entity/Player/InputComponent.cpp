@@ -11,28 +11,28 @@ InputComponent::InputComponent() = default;
 InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
 #pragma endregion
 
-StateManager::States InputComponent::update() const {
+    void InputComponent::update() const {
     const bool left = sf::Keyboard::isKeyPressed(controls.left);
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
     const bool attack = sf::Keyboard::isKeyPressed(controls.attack);
-
     using enum StateManager::States;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
-    if (jump) return JUMPING;
-    if (attack) return ATTACKING;
-    if (left && right) return STOPPING;
-    if (left) {
+    if (jump) pPlayer->stateManager.targetState = JUMPING;
+    else if (attack) pPlayer->stateManager.targetState = ATTACKING;
+    else if (left && right) pPlayer->stateManager.targetState = STOPPING;
+    else if (left) {
         pPlayer->movement.walk = [&]{pPlayer->movement.walkLeft();};
-        if (run) return RUNNING;
-        return WALKING;
+        if (run) pPlayer->stateManager.targetState = RUNNING;
+        else pPlayer->stateManager.targetState = WALKING;
         }
-    if (right) {
+    else if (right) {
         pPlayer->movement.walk = [&]{pPlayer->movement.walkRight();};
-        if (run) return RUNNING;
-        return WALKING;
+        if (run) pPlayer->stateManager.targetState = RUNNING;
+        else pPlayer->stateManager.targetState = WALKING;
         }
-    return IDLE;
+    else
+    pPlayer->stateManager.targetState = IDLE;
 }

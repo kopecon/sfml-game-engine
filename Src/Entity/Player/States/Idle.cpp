@@ -16,21 +16,17 @@ void Idle::act() {
     pStateManager->pPlayer->movement.brake();
 }
 
-void Idle::exit(const StateManager::States &condition) {
-    if (condition == StateManager::States::WALKING) {
-        State::exit(condition);
+void Idle::exit() {
+    if (pStateManager->targetState == StateManager::States::WALKING) {
         enter<Walking>();
     }
-    else if (condition == StateManager::States::JUMPING) {
-        State::exit(condition);
+    else if (pStateManager->targetState == StateManager::States::JUMPING) {
         enter<Jumping>();
     }
-    else if (condition == StateManager::States::RUNNING) {
-        State::exit(condition);
+    else if (pStateManager->targetState == StateManager::States::RUNNING) {
         enter<Running>();
     }
-    else if (condition == StateManager::States::STOPPING) {
-        State::exit(condition);
+    else if (pStateManager->targetState == StateManager::States::STOPPING) {
         enter<Stopping>();
     }
 }

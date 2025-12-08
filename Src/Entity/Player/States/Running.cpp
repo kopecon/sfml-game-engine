@@ -19,21 +19,17 @@ void Running::act() {
     pStateManager->pPlayer->movement.walk();
 }
 
-void Running::exit(const StateManager::States &condition) {
-    if (condition == StateManager::States::IDLE) {
-        State::exit(condition);
+void Running::exit() {
+    if (pStateManager->targetState == StateManager::States::IDLE) {
         enter<Idle>();
     }
-    else if (condition == StateManager::States::WALKING) {
-        State::exit(condition);
+    else if (pStateManager->targetState == StateManager::States::WALKING) {
         enter<Walking>();
     }
-    else if (condition == StateManager::States::JUMPING) {
-        State::exit(condition);
+    else if (pStateManager->targetState == StateManager::States::JUMPING) {
         enter<Jumping>();
     }
-    else if (condition == StateManager::States::STOPPING) {
-        State::exit(condition);
+    else if (pStateManager->targetState == StateManager::States::STOPPING) {
         enter<Stopping>();
     }
 }

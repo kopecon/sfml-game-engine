@@ -58,6 +58,7 @@ void Player::init() {
 }
 
 void Player::update() {
+    input.update();
     physics.update();
     stateManager.update();
     animationManager.update();

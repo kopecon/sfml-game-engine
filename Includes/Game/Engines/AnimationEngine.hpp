@@ -2,14 +2,14 @@
 // Created by Andrew on 17/11/2025.
 //
 
-#ifndef BONK_GAME_ANIMATIONS_HPP
-#define BONK_GAME_ANIMATIONS_HPP
+#ifndef BONK_GAME_ANIMATION_ENGINE_HPP
+#define BONK_GAME_ANIMATION_ENGINE_HPP
 
 #include <functional>
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
-#include "Player/States/State.hpp"
+#include "../../Entity/Player/States/State.hpp"
 
 
 struct AnimationSheet {
@@ -48,12 +48,12 @@ public:
     struct Hash {size_t operator()(const AnimationEntry& anim) const noexcept;};
 };
 
-class Animations {
+class AnimationEngine {
 public:
 #pragma region constructors
-    virtual ~Animations() = default;
-    Animations();
-    explicit Animations(const AnimationSheet &animationSheet, sf::Shape &target);
+    virtual ~AnimationEngine() = default;
+    AnimationEngine();
+    explicit AnimationEngine(const AnimationSheet &animationSheet, sf::Shape &target);
 #pragma endregion
 
     AnimationSheet animationSheet{};
@@ -75,4 +75,4 @@ public:
     virtual void update(const float &dt) const;
 };
 
-#endif //BONK_GAME_ANIMATIONS_HPP
+#endif //BONK_GAME_ANIMATION_ENGINE_HPP

@@ -18,7 +18,6 @@ void StateManager::act() const {
 }
 
 void StateManager::update() const {
-    const States desiredState = pPlayer->input.update();
-    if (pState != nullptr) pState->exit(desiredState), act();
+    if (pState != nullptr) pState->exit(), act();
     else std::cout << "Can't update empty state pointer\n";
 }

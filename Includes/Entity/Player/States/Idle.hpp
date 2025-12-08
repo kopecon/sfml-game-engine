@@ -14,7 +14,7 @@ public:
 
     void act() override;
 
-    void exit(const StateManager::States &condition) override;
+    void exit() override;
 };
 
 #endif //BONK_GAME_IDLE_HPP

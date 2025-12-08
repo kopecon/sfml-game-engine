@@ -2,8 +2,8 @@
 // Created by Andrew on 17/11/2025.
 //
 
-#include "../../Includes/Entity/Animations.hpp"
-#include "../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/Game/Engines/AnimationEngine.hpp"
+#include "../../../Includes/Entity/Player/Player.hpp"
 
 
 [[nodiscard]] sf::Vector2i AnimationSheet::getFrameSize(const int &framesPerRow, const int &framesPerColumn) const {
@@ -32,13 +32,13 @@ size_t AnimationEntry::Hash::operator()(const AnimationEntry &anim) const noexce
     return std::hash<StateManager::States>()(anim.id);
 }
 
-Animations::Animations() = default;
+AnimationEngine::AnimationEngine() = default;
 
-Animations::Animations(const AnimationSheet &animationSheet, sf::Shape &target) :
+AnimationEngine::AnimationEngine(const AnimationSheet &animationSheet, sf::Shape &target) :
 animationSheet(animationSheet),
 target(&target) {}
 
-sf::IntRect Animations::currentFrame() const {
+sf::IntRect AnimationEngine::currentFrame() const {
     auto frameCoord = sf::Vector2i(
         pCurrentAnimation->frameIndex.x*animationSheet.frameSize.x,
         pCurrentAnimation->frameIndex.y*animationSheet.frameSize.y
@@ -46,7 +46,7 @@ sf::IntRect Animations::currentFrame() const {
     return {frameCoord, animationSheet.frameSize};
 }
 
-void Animations::set(const StateManager::States &animationID) {
+void AnimationEngine::set(const StateManager::States &animationID) {
     auto *pNewAnimation = &animationSet[animationID];
     if (pCurrentAnimation == nullptr) {
         pCurrentAnimation = pNewAnimation;
@@ -62,7 +62,7 @@ void Animations::set(const StateManager::States &animationID) {
     }
 }
 
-void Animations::add(const AnimationEntry &animation) {
+void AnimationEngine::add(const AnimationEntry &animation) {
     animationSet.emplace(animation.id, animation);
 
     if (pCurrentAnimation == nullptr) {
@@ -70,20 +70,20 @@ void Animations::add(const AnimationEntry &animation) {
     }
 }
 
-void Animations::onEnd(const StateManager::States &animationID, const std::function<void()> &function) {
+void AnimationEngine::onEnd(const StateManager::States &animationID, const std::function<void()> &function) {
     if (animationSet[animationID].state == AnimationEntry::END) {
         function();
     }
 }
 
-bool Animations::completed(const StateManager::States &animationID) {
+bool AnimationEngine::completed(const StateManager::States &animationID) {
     if (animationSet[animationID].state == AnimationEntry::COMPLETED) {
         return true;
     }
     return false;
 }
 
-void Animations::update(const float &dt) const {
+void AnimationEngine::update(const float &dt) const {
     if (pCurrentAnimation->state == AnimationEntry::END) {
         pCurrentAnimation->state = AnimationEntry::COMPLETED;
         return;

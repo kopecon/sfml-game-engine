@@ -13,7 +13,7 @@ State::~State() = default;
 State::State(StateManager *stateManager, const StateManager::States &state): pStateManager(stateManager), state(state) {}
 
 
-void State::exit(const StateManager::States &condition) {
+void State::exit() {
     std::cout << pStateManager->pPlayer->name << " Exiting State: " << typeid(*this).name() << "\n";
 }
 

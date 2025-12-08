@@ -29,7 +29,7 @@ public:
     Player *pPlayer{nullptr};
     Controls controls{};
 
-    [[nodiscard]] StateManager::States update() const;
+    void update() const;
 };
 
 #endif //BONK_GAME_INPUT_COMPONENT_HPP

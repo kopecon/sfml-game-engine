@@ -47,5 +47,5 @@ void AnimationManager::selectAnimation() const {
 
 void AnimationManager::update() const {
     selectAnimation();
-    Animations::update(pPlayer->pWorld->pGame->time.dt);
+    AnimationEngine::update(pPlayer->pWorld->pGame->time.dt);
 }

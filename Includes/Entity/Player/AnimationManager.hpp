@@ -5,12 +5,12 @@
 #ifndef BONK_GAME_ANIMATION_MANAGER_HPP
 #define BONK_GAME_ANIMATION_MANAGER_HPP
 
-#include "../Animations.hpp"
+#include "../../Game/Engines/AnimationEngine.hpp"
 
 class Player;
 
 
-class AnimationManager final : public Animations {
+class AnimationManager final : public AnimationEngine {
 public:
     AnimationManager();
 
