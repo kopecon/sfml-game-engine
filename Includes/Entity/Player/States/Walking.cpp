@@ -14,7 +14,7 @@ void Walking::enter() {
 }
 
 void Walking::act() {
-    pStateManager->pPlayer->physics.speed = pStateManager->pPlayer->physics.walkingSpeed;
+    pStateManager->pPlayer->movement.speed = pStateManager->pPlayer->movement.walkingSpeed;
     pStateManager->pPlayer->movement.walk();
 }
 

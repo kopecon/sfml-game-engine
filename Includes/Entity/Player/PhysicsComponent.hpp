@@ -2,8 +2,8 @@
 // Created by Andrew on 20/11/2025.
 //
 
-#ifndef BONK_GAME_PHYSICSCOMPONENT_HPP
-#define BONK_GAME_PHYSICSCOMPONENT_HPP
+#ifndef BONK_GAME_PHYSICS_COMPONENT_HPP
+#define BONK_GAME_PHYSICS_COMPONENT_HPP
 
 #include <SFML/Graphics.hpp>
 #include "../../../Utils/utils.hpp"
@@ -20,17 +20,7 @@ public:
     sf::Vector2f position{};
     sf::Vector2f velocity{};
     sf::Vector2f acceleration{};
-    // LIMITS
-    sf::Vector2f walkingSpeed{};
-    sf::Vector2f runningSpeed{};
-    sf::Vector2f speed{};
-    sf::Vector2f snap{0.05f, 0.05f};  // How aggressively player changes speed
 
-    void updateWalkingSpeed();
-
-    void updateRunningSpeed();
-
-    void updateSpeed();
 
     void accelerate(const sf::Vector2f &targetVelocity);
 
@@ -39,4 +29,4 @@ public:
     void update();
 };
 
-#endif //BONK_GAME_PHYSICSCOMPONENT_HPP
+#endif //BONK_GAME_PHYSICS_COMPONENT_HPP

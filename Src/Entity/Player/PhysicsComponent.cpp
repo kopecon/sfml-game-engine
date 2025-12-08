@@ -14,18 +14,6 @@ PhysicsComponent::PhysicsComponent() = default;
 PhysicsComponent::PhysicsComponent(Player &player) : pPlayer(&player) {}
 #pragma endregion
 
-void PhysicsComponent::updateWalkingSpeed() {
-    walkingSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{2.f, 2.f});
-}
-
-void PhysicsComponent::updateRunningSpeed() {
-    runningSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{4.f, 2.f*1.25f});
-}
-
-void PhysicsComponent::updateSpeed() {
-    updateWalkingSpeed();
-    updateRunningSpeed();
-}
 
 void PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
     const float &airFriction = pPlayer->pWorld->airFriction;
@@ -33,7 +21,7 @@ void PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
 
     const sf::Vector2f velDiff = targetVelocity - velocity;
     const sf::Vector2f environment{groundFriction, airFriction};
-    acceleration = hd::multiply<float>(walkingSpeed, snap, velDiff, environment);
+    acceleration = hd::multiply<float>(pPlayer->movement.speed, pPlayer->movement.snap, velDiff, environment);
 }
 
 void PhysicsComponent::printPhysics() const {
@@ -48,7 +36,7 @@ void PhysicsComponent::update() {
     // ReSharper disable once CppUseStructuredBinding
     const PhysicsEngine &engine = pPlayer->pWorld->pGame->engine;
 
-    updateSpeed();
+    pPlayer->movement.update();
 
     acceleration.y = pPlayer->pWorld->gravity;  // Apply Gravity
 

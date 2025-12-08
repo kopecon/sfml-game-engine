@@ -12,6 +12,19 @@ MovementComponent::MovementComponent() = default;
 
 MovementComponent::MovementComponent(Player &player): pPlayer(&player) {}
 
+void MovementComponent::updateWalkingSpeed() {
+    walkingSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{2.f, 2.f});
+}
+
+void MovementComponent::updateRunningSpeed() {
+    runningSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{4.f, 2.f*1.25f});
+}
+
+void MovementComponent::update() {
+    updateWalkingSpeed();
+    updateRunningSpeed();
+}
+
 void MovementComponent::turn() const {
     brake();
     if (areClose(pPlayer->physics.velocity.x, 0.f, 10.f)) {
@@ -22,12 +35,12 @@ void MovementComponent::turn() const {
 
 void MovementComponent::walkLeft() const {
     if (pPlayer->facingRight) turn();
-    else pPlayer->physics.accelerate(-pPlayer->physics.speed);
+    else pPlayer->physics.accelerate(-pPlayer->movement.speed);
 }
 
 void MovementComponent::walkRight() const {
     if (!pPlayer->facingRight) turn();
-    else pPlayer->physics.accelerate(pPlayer->physics.speed);
+    else pPlayer->physics.accelerate(pPlayer->movement.speed);
 }
 
 void MovementComponent::brake() const {
@@ -36,6 +49,6 @@ void MovementComponent::brake() const {
 
 void MovementComponent::jump() const {
     if (pPlayer->physics.position.y + pPlayer->getSize().y / 2.f >= pPlayer->pWorld->groundLevel) {
-        pPlayer->physics.velocity.y = -pPlayer->pWorld->gravity*pPlayer->physics.speed.y/2500.f;  // Magic number is tweaked experimentally
+        pPlayer->physics.velocity.y = -pPlayer->pWorld->gravity*pPlayer->movement.speed.y/2500.f;  // Magic number is tweaked experimentally
     }
 }

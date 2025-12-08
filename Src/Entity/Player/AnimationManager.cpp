@@ -16,17 +16,17 @@ void AnimationManager::selectAnimation() const {
     switch (pPlayer->stateManager.state) {
         case JUMPING : {
             pPlayer->animationManager.set(JUMPING);
-            pPlayer->animationManager.animationSet[JUMPING].fps = std::fabs(pPlayer->physics.walkingSpeed.y / pPlayer->physics.speed.y)*24.f;
+            pPlayer->animationManager.animationSet[JUMPING].fps = std::fabs(pPlayer->movement.walkingSpeed.y / pPlayer->movement.speed.y)*24.f;
             break;
         }
         case WALKING : {
             pPlayer->animationManager.set(WALKING);
-            pPlayer->animationManager.pCurrentAnimation->fps = std::fabs(pPlayer->physics.velocity.x / pPlayer->physics.walkingSpeed.x) * static_cast<float>(pPlayer->animationManager.pCurrentAnimation->framesPerRow) * 2.f;
+            pPlayer->animationManager.pCurrentAnimation->fps = std::fabs(pPlayer->physics.velocity.x / pPlayer->movement.walkingSpeed.x) * static_cast<float>(pPlayer->animationManager.pCurrentAnimation->framesPerRow) * 2.f;
             break;
         }
         case RUNNING : {
             pPlayer->animationManager.set(RUNNING);
-            pPlayer->animationManager.pCurrentAnimation->fps = std::fabs(pPlayer->physics.velocity.x / pPlayer->physics.runningSpeed.x) * static_cast<float>(pPlayer->animationManager.pCurrentAnimation->framesPerRow) * 2.f;
+            pPlayer->animationManager.pCurrentAnimation->fps = std::fabs(pPlayer->physics.velocity.x / pPlayer->movement.runningSpeed.x) * static_cast<float>(pPlayer->animationManager.pCurrentAnimation->framesPerRow) * 2.f;
             break;
         }
         case ATTACKING : {
