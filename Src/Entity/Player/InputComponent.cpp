@@ -11,14 +11,14 @@ InputComponent::InputComponent() = default;
 InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
 #pragma endregion
 
-State::States InputComponent::update() const {
+StateManager::States InputComponent::update() const {
     const bool left = sf::Keyboard::isKeyPressed(controls.left);
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
     const bool attack = sf::Keyboard::isKeyPressed(controls.attack);
 
-    using enum State::States;
+    using enum StateManager::States;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
     if (jump) return JUMPING;

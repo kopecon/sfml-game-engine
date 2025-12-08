@@ -15,7 +15,7 @@ public:
 
     void act() override;
 
-    void exit(const States &desiredState) override;;
+    void exit(const StateManager::States &desiredState) override;;
 };
 
 

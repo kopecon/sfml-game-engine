@@ -5,19 +5,33 @@
 #ifndef BONK_GAME_STATE_MANAGER_HPP
 #define BONK_GAME_STATE_MANAGER_HPP
 #include <memory>
-#include "States/State.hpp"
 
 
 class Player;
+class State;
+
 
 class StateManager {
-public:
+public:enum class States {
+    NONE = -1,
+    IDLE,
+    WINKING,
+    WALKING,
+    RUNNING,
+    CROUCHING,
+    JUMPING,
+    DISAPPEARING,
+    DYING,
+    ATTACKING,
+    BRAKING,
+    STOPPING,
+};
     StateManager();
     explicit StateManager(Player &player);
 
     Player *pPlayer{nullptr};
     std::unique_ptr<State> pState{nullptr};
-    State::States state{State::States::IDLE};
+    States state{States::IDLE};
 
     void act() const;
     void update() const;

@@ -16,11 +16,10 @@ void Walking::enter() {
 void Walking::act() {
     pStateManager->pPlayer->physics.speed = pStateManager->pPlayer->physics.walkingSpeed;
     pStateManager->pPlayer->movement.walk();
-    pStateManager->pPlayer->stateManager.state = States::WALKING;
 }
 
-void Walking::exit(const States &conditions) {
-    if (conditions == States::IDLE) {
+void Walking::exit(const StateManager::States &conditions) {
+    if (conditions == StateManager::States::IDLE) {
         State::exit(conditions);
         std::make_unique<Idle>(pStateManager)->enter();
     }

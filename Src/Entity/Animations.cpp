@@ -14,10 +14,10 @@
 
 AnimationEntry::AnimationEntry() = default;
 
-AnimationEntry::AnimationEntry(const State::States &id, const int &framesPerRow, const bool &looping):
+AnimationEntry::AnimationEntry(const StateManager::States &id, const int &framesPerRow, const bool &looping):
     id(id), framesPerRow(framesPerRow), fps(static_cast<float>(framesPerRow)), looping(looping) {}
 
-AnimationEntry::AnimationEntry(const State::States &id, const int &framesPerRow, const float &fps, const bool &looping):
+AnimationEntry::AnimationEntry(const StateManager::States &id, const int &framesPerRow, const float &fps, const bool &looping):
     id(id), framesPerRow(framesPerRow), fps(fps), looping(looping) {}
 
 bool AnimationEntry::operator!=(const AnimationEntry &other) const {
@@ -29,7 +29,7 @@ bool AnimationEntry::operator==(const AnimationEntry &other) const {
 }
 
 size_t AnimationEntry::Hash::operator()(const AnimationEntry &anim) const noexcept {
-    return std::hash<State::States>()(anim.id);
+    return std::hash<StateManager::States>()(anim.id);
 }
 
 Animations::Animations() = default;
@@ -46,7 +46,7 @@ sf::IntRect Animations::currentFrame() const {
     return {frameCoord, animationSheet.frameSize};
 }
 
-void Animations::set(const State::States &animationID) {
+void Animations::set(const StateManager::States &animationID) {
     auto *pNewAnimation = &animationSet[animationID];
     if (pCurrentAnimation == nullptr) {
         pCurrentAnimation = pNewAnimation;
@@ -70,13 +70,13 @@ void Animations::add(const AnimationEntry &animation) {
     }
 }
 
-void Animations::onEnd(const State::States &animationID, const std::function<void()> &function) {
+void Animations::onEnd(const StateManager::States &animationID, const std::function<void()> &function) {
     if (animationSet[animationID].state == AnimationEntry::END) {
         function();
     }
 }
 
-bool Animations::completed(const State::States &animationID) {
+bool Animations::completed(const StateManager::States &animationID) {
     if (animationSet[animationID].state == AnimationEntry::COMPLETED) {
         return true;
     }

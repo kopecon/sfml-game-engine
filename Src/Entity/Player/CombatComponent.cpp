@@ -6,7 +6,7 @@
 #include "../../../Includes/Entity/Player/Player.hpp"
 #include "../../../Includes/World/World.hpp"
 
-using enum State::States;
+using enum StateManager::States;
 
 CombatComponent::CombatComponent() = default;
 

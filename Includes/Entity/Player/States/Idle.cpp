@@ -9,9 +9,9 @@
 #include "../Player.hpp"
 #include "../StateManager.hpp"
 
-Idle::Idle(): State("IDLE") {}
+Idle::Idle(): State(StateManager::States::IDLE) {}
 
-Idle::Idle(StateManager *stateManager): State(stateManager, "IDLE") {}
+Idle::Idle(StateManager *stateManager): State(stateManager, StateManager::States::IDLE) {}
 
 void Idle::enter() {
     State::enter();
@@ -19,12 +19,11 @@ void Idle::enter() {
 }
 
 void Idle::act() {
-    pStateManager->state = States::IDLE;
     pStateManager->pPlayer->movement.brake();
 }
 
-void Idle::exit(const States &conditions) {
-    if (conditions == States::WALKING) {
+void Idle::exit(const StateManager::States &conditions) {
+    if (conditions == StateManager::States::WALKING) {
         State::exit(conditions);
         std::make_unique<Walking>(pStateManager)->enter();
     }

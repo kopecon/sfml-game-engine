@@ -6,7 +6,7 @@
 #include "../../../Includes/World/World.hpp"
 
 
-using enum State::States;
+using enum StateManager::States;
 
 #pragma region constructors
 Player::Player(std::string name) : Entity(std::move(name)){}

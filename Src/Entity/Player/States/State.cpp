@@ -10,16 +10,17 @@
 
 State::~State() = default;
 
-State::State(std::string name) : name(std::move(name)) {
-}
+State::State(const StateManager::States &state) : state(state) {}
 
-State::State(StateManager *stateManager, std::string name): pStateManager(stateManager), name(std::move(name)) {}
+
+State::State(StateManager *stateManager, const StateManager::States &state): pStateManager(stateManager), state(state) {}
 
 void State::enter() {
-    std::cout << pStateManager->pPlayer->name << " Entering State: " << this->name << "\n";
+    // std::cout << pStateManager->pPlayer->name << " Entering State: " << static_cast<int>(this->state) << "\n";
+    pStateManager->state = state;
 }
 
-void State::exit(const States &conditions) {
-    std::cout << pStateManager->pPlayer->name << " Exiting State: " << this->name << "\n";
+void State::exit(const StateManager::States &conditions) {
+    // std::cout << pStateManager->pPlayer->name << " Exiting State: " << static_cast<int>(this->state) << "\n";
 }
 

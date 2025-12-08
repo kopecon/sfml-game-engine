@@ -25,12 +25,12 @@ public:
     };
 #pragma region constructors
     AnimationEntry();
-    AnimationEntry(const State::States &id, const int &framesPerRow, const bool &looping=true);
+    AnimationEntry(const StateManager::States &id, const int &framesPerRow, const bool &looping=true);
 
-    AnimationEntry(const State::States &id, const int &framesPerRow, const float &fps, const bool &looping=true);
+    AnimationEntry(const StateManager::States &id, const int &framesPerRow, const float &fps, const bool &looping=true);
 
 #pragma endregion
-    State::States id{0};  // Represents row index starting from 0;
+    StateManager::States id{0};  // Represents row index starting from 0;
     sf::Vector2i frameIndex = {0, static_cast<int>(id)};
     sf::Vector2i *pIndex = &frameIndex;
     int framesPerRow{8};
@@ -58,18 +58,18 @@ public:
     AnimationSheet animationSheet{};
     AnimationEntry *pPreviousAnimation{nullptr};
     AnimationEntry *pCurrentAnimation{nullptr};
-    std::unordered_map<State::States, AnimationEntry> animationSet;
+    std::unordered_map<StateManager::States, AnimationEntry> animationSet;
     sf::Shape *target{};
 
     [[nodiscard]] sf::IntRect currentFrame() const;
 
-    void set(const State::States &animationID);
+    void set(const StateManager::States &animationID);
 
     void add(const AnimationEntry &animation);
 
-    void onEnd(const State::States &animationID, const std::function<void()> &function);
+    void onEnd(const StateManager::States &animationID, const std::function<void()> &function);
 
-    bool completed(const State::States &animationID);
+    bool completed(const StateManager::States &animationID);
 
     void update(const float &dt) const;
 };

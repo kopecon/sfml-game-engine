@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_INPUT_COMPONENT_HPP
 #define BONK_GAME_INPUT_COMPONENT_HPP
-#include "States/State.hpp"
+#include "StateManager.hpp"
 #include "SFML/Window/Keyboard.hpp"
 
 
@@ -29,7 +29,7 @@ public:
     Player *pPlayer{nullptr};
     Controls controls{};
 
-    [[nodiscard]] State::States update() const;
+    [[nodiscard]] StateManager::States update() const;
 };
 
 #endif //BONK_GAME_INPUT_COMPONENT_HPP
