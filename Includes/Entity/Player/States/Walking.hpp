@@ -4,12 +4,12 @@
 
 #ifndef BONK_GAME_WALKING_HPP
 #define BONK_GAME_WALKING_HPP
-#include "State.hpp"
+#include "../../../Game/Engines/StateMachineEngine.hpp"
 
 
-class Walking final : public State {
+class Walking final : public State<player::StateManager, player::States> {
 public:
-    explicit Walking(StateManager *stateManager);
+    explicit Walking(player::StateManager *stateManager);
 
     void act() override;
 

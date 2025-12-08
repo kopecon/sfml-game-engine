@@ -12,7 +12,7 @@ AnimationManager::AnimationManager() = default;
 AnimationManager::AnimationManager(Player &player): pPlayer(&player) {}
 
 void AnimationManager::selectAnimation() const {
-    using enum StateManager::States;
+    using enum player::States;
     switch (pPlayer->stateManager.state) {
         case JUMPING : {
             pPlayer->animationManager.set(JUMPING);

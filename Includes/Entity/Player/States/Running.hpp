@@ -4,12 +4,12 @@
 
 #ifndef BONK_GAME_RUNNING_HPP
 #define BONK_GAME_RUNNING_HPP
-#include "State.hpp"
+#include "../../../Game/Engines/StateMachineEngine.hpp"
 
 
-class Running final : public State{
+class Running final : public State<player::StateManager, player::States>{
 public:
-    explicit Running(StateManager *stateManager);
+    explicit Running(player::StateManager *stateManager);
 
     void act() override;
 

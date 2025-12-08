@@ -10,26 +10,28 @@
 #include "../../../../Includes/Entity/Player/States/Jumping.hpp"
 
 
-Running::Running(StateManager *stateManager): State(stateManager, StateManager::States::RUNNING) {
+using namespace player;
+
+Running::Running(StateManager *stateManager): State(stateManager, States::RUNNING) {
 }
 
 
 void Running::act() {
-    pStateManager->pPlayer->movement.speed = pStateManager->pPlayer->movement.runningSpeed;
-    pStateManager->pPlayer->movement.walk();
+    pManager->pPlayer->movement.speed = pManager->pPlayer->movement.runningSpeed;
+    pManager->pPlayer->movement.walk();
 }
 
 void Running::exit() {
-    if (pStateManager->targetState == StateManager::States::IDLE) {
+    if (pManager->targetState == States::IDLE) {
         enter<Idle>();
     }
-    else if (pStateManager->targetState == StateManager::States::WALKING) {
+    else if (pManager->targetState == States::WALKING) {
         enter<Walking>();
     }
-    else if (pStateManager->targetState == StateManager::States::JUMPING) {
+    else if (pManager->targetState == States::JUMPING) {
         enter<Jumping>();
     }
-    else if (pStateManager->targetState == StateManager::States::STOPPING) {
+    else if (pManager->targetState == States::STOPPING) {
         enter<Stopping>();
     }
 }

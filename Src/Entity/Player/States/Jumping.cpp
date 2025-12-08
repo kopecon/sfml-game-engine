@@ -9,26 +9,28 @@
 #include "../../../../Includes/Entity/Player/States/Running.hpp"
 
 
-Jumping::Jumping(StateManager *stateManager): State(stateManager, StateManager::States::JUMPING) {}
+using namespace player;
+
+Jumping::Jumping(StateManager *stateManager): State(stateManager, States::JUMPING) {}
 
 
 void Jumping::act() {
     if (!inAir) {
-        pStateManager->pPlayer->movement.jump();
+        pManager->pPlayer->movement.jump();
         inAir = true;
     }
 }
 
 void Jumping::exit() {
-    if (pStateManager->pPlayer->physics.velocity.y == 0 && inAir) {
+    if (pManager->pPlayer->physics.velocity.y == 0 && inAir) {
         // RESET JUMPING ANIMATION TODO:FIND CLEANER WAY
-        pStateManager->pPlayer->animationManager.animationSet[StateManager::States::JUMPING].frameIndex.x = 0;
+        pManager->pPlayer->animationManager.animationSet[States::JUMPING].frameIndex.x = 0;
         inAir = false;
-        if (pStateManager->targetState == StateManager::States::IDLE)
+        if (pManager->targetState == States::IDLE)
             enter<Idle>();
-        else if (pStateManager->targetState == StateManager::States::WALKING)
+        else if (pManager->targetState == States::WALKING)
             enter<Walking>();
-        else if (pStateManager->targetState == StateManager::States::RUNNING)
+        else if (pManager->targetState == States::RUNNING)
             enter<Running>();
     }
 }

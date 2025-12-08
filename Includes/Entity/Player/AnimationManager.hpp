@@ -10,7 +10,7 @@
 class Player;
 
 
-class AnimationManager final : public AnimationEngine {
+class AnimationManager final : public AnimationEngine<player::States> {
 public:
     AnimationManager();
 

@@ -38,7 +38,7 @@ public:
     CombatComponent combat{};
     // MANAGERS
     AnimationManager animationManager{};
-    StateManager stateManager{};
+    player::StateManager stateManager{};
     // RENDERING
     sf::RectangleShape shape{};
     // GETTERS

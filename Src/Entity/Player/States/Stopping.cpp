@@ -10,24 +10,26 @@
 #include "../../../../Includes/Entity/Player/States/Jumping.hpp"
 
 
-Stopping::Stopping(StateManager *stateManager): State(stateManager, StateManager::States::STOPPING) {}
+using namespace player;
+
+Stopping::Stopping(StateManager *stateManager): State(stateManager, States::STOPPING) {}
 
 
 void Stopping::act() {
-    pStateManager->pPlayer->movement.brake();
+    pManager->pPlayer->movement.brake();
 }
 
 void Stopping::exit() {
-    if (pStateManager->targetState  == StateManager::States::IDLE) {
+    if (pManager->targetState  == States::IDLE) {
         enter<Idle>();
     }
-    else if (pStateManager->targetState  == StateManager::States::WALKING) {
+    else if (pManager->targetState  == States::WALKING) {
         enter<Walking>();
     }
-    else if (pStateManager->targetState == StateManager::States::RUNNING) {
+    else if (pManager->targetState == States::RUNNING) {
         enter<Running>();
     }
-    else if (pStateManager->targetState  == StateManager::States::JUMPING) {
+    else if (pManager->targetState  == States::JUMPING) {
         enter<Jumping>();
     }
 }

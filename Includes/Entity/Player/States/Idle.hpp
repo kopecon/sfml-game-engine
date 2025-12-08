@@ -5,12 +5,12 @@
 #ifndef BONK_GAME_IDLE_HPP
 #define BONK_GAME_IDLE_HPP
 
-#include "State.hpp"
+#include "../../../Game/Engines/StateMachineEngine.hpp"
 
 
-class Idle final : public State {
+class Idle final : public State<player::StateManager, player::States> {
 public:
-    explicit Idle(StateManager *stateManager);
+    explicit Idle(player::StateManager *stateManager);
 
     void act() override;
 

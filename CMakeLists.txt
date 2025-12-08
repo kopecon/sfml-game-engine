@@ -68,8 +68,6 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/Entity/Player/CombatComponent.hpp
         Src/Entity/Player/States/StateManager.cpp
         Includes/Entity/Player/States/StateManager.hpp
-        Src/Entity/Player/States/State.cpp
-        Includes/Entity/Player/States/State.hpp
         Src/Entity/Player/States/Idle.cpp
         Includes/Entity/Player/States/Idle.hpp
         Src/Entity/Player/States/Walking.cpp

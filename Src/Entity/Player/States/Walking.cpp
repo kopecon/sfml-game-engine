@@ -8,24 +8,27 @@
 #include "../../../../Includes/Entity/Player/States/Jumping.hpp"
 #include "../../../../Includes/Entity/Player/States/Stopping.hpp"
 
-Walking::Walking(StateManager *stateManager): State(stateManager, StateManager::States::WALKING) {}
+using namespace player;
+
+
+Walking::Walking(StateManager *stateManager): State(stateManager, States::WALKING) {}
 
 void Walking::act() {
-    pStateManager->pPlayer->movement.speed = pStateManager->pPlayer->movement.walkingSpeed;
-    pStateManager->pPlayer->movement.walk();
+    pManager->pPlayer->movement.speed = pManager->pPlayer->movement.walkingSpeed;
+    pManager->pPlayer->movement.walk();
 }
 
 void Walking::exit() {
-    if (pStateManager->targetState  == StateManager::States::IDLE) {
+    if (pManager->targetState == States::IDLE) {
         enter<Idle>();
     }
-    else if (pStateManager->targetState  == StateManager::States::RUNNING) {
+    else if (pManager->targetState == States::RUNNING) {
         enter<Running>();
     }
-    else if (pStateManager->targetState  == StateManager::States::JUMPING) {
+    else if (pManager->targetState == States::JUMPING) {
         enter<Jumping>();
     }
-    else if (pStateManager->targetState  == StateManager::States::STOPPING) {
+    else if (pManager->targetState == States::STOPPING) {
         enter<Stopping>();
     }
 }

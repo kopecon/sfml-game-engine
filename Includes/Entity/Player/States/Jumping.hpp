@@ -4,13 +4,13 @@
 
 #ifndef BONK_GAME_JUMPING_HPP
 #define BONK_GAME_JUMPING_HPP
-#include "State.hpp"
+#include "../../../Game/Engines/StateMachineEngine.hpp"
 
 
-class Jumping final : public State {
+class Jumping final : public State<player::StateManager, player::States> {
 public:
 
-    explicit Jumping(StateManager *stateManager);
+    explicit Jumping(player::StateManager *stateManager);
 
     bool inAir{false};
 
