@@ -5,7 +5,7 @@
 #ifndef BONK_GAME_STATE_HPP
 #define BONK_GAME_STATE_HPP
 #include <string>
-#include "../StateManager.hpp"
+#include "StateManager.hpp"
 
 class Player;
 

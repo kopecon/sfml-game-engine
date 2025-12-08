@@ -6,7 +6,7 @@
 #include "Idle.hpp"
 
 #include "../Player.hpp"
-#include "../StateManager.hpp"
+#include "StateManager.hpp"
 
 void Walking::enter() {
     State::enter();

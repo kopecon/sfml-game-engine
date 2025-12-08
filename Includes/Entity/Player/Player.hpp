@@ -6,7 +6,7 @@
 #define BONK_GAME_PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
-#include "StateManager.hpp"
+#include "States/StateManager.hpp"
 #include "AnimationManager.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"

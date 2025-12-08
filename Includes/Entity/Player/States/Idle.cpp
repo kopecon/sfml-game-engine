@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "../Player.hpp"
-#include "../StateManager.hpp"
+#include "StateManager.hpp"
 
 Idle::Idle(): State(StateManager::States::IDLE) {}
 
