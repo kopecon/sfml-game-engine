@@ -2,12 +2,12 @@
 // Created by Andrew on 08/12/2025.
 //
 
-#include "../Player.hpp"
-#include "Stopping.hpp"
-#include "Idle.hpp"
-#include "Walking.hpp"
-#include "Running.hpp"
-#include "Jumping.hpp"
+#include "../../../../Includes/Entity/Player/Player.hpp"
+#include "../../../../Includes/Entity/Player/States/Stopping.hpp"
+#include "../../../../Includes/Entity/Player/States/Idle.hpp"
+#include "../../../../Includes/Entity/Player/States/Walking.hpp"
+#include "../../../../Includes/Entity/Player/States/Running.hpp"
+#include "../../../../Includes/Entity/Player/States/Jumping.hpp"
 
 
 Stopping::Stopping(StateManager *stateManager): State(stateManager, StateManager::States::STOPPING) {}

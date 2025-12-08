@@ -78,9 +78,9 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/Entity/Player/States/Jumping.hpp
         Src/Entity/Player/States/Running.cpp
         Includes/Entity/Player/States/Running.hpp
-        Includes/Entity/Player/States/Stopping.cpp
+        Src/Entity/Player/States/Stopping.cpp
         Includes/Entity/Player/States/Stopping.hpp
-        Includes/Game/Engines/StateMachineEngine.cpp
+        Src/Game/Engines/StateMachineEngine.cpp
         Includes/Game/Engines/StateMachineEngine.hpp
 )
 
