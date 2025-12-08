@@ -9,13 +9,15 @@
 
 class Jumping final : public State {
 public:
-    Jumping();
+    explicit Jumping();
 
-    explicit Jumping(Player &player);
+    explicit Jumping(StateManager *stateManager);
+
+    void enter() override;
 
     void act() override;
 
-    void exit(const StateManager::States &desiredState) override;;
+    void exit(const StateManager::States &condition) override;
 };
 
 

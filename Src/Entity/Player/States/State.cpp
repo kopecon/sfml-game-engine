@@ -16,11 +16,11 @@ State::State(const StateManager::States &state) : state(state) {}
 State::State(StateManager *stateManager, const StateManager::States &state): pStateManager(stateManager), state(state) {}
 
 void State::enter() {
-    std::cout << pStateManager->pPlayer->name << " Entering State: " << static_cast<int>(this->state) << "\n";
+    std::cout << pStateManager->pPlayer->name << " Entering State: " << typeid(*this).name() << "\n";
     pStateManager->state = state;
 }
 
 void State::exit(const StateManager::States &condition) {
-    std::cout << pStateManager->pPlayer->name << " Exiting State: " << static_cast<int>(this->state) << "\n";
+    std::cout << pStateManager->pPlayer->name << " Exiting State: " << typeid(*this).name() << "\n";
 }
 

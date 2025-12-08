@@ -70,14 +70,16 @@ add_executable("${CMAKE_PROJECT_NAME}" src/main.cpp
         Includes/Entity/Player/States/StateManager.hpp
         Src/Entity/Player/States/State.cpp
         Includes/Entity/Player/States/State.hpp
-        Includes/Entity/Player/States/Idle.cpp
+        Src/Entity/Player/States/Idle.cpp
         Includes/Entity/Player/States/Idle.hpp
-        Includes/Entity/Player/States/Walking.cpp
+        Src/Entity/Player/States/Walking.cpp
         Includes/Entity/Player/States/Walking.hpp
-        Includes/Entity/Player/States/Jumping.cpp
+        Src/Entity/Player/States/Jumping.cpp
         Includes/Entity/Player/States/Jumping.hpp
-        Includes/Entity/Player/States/Running.cpp
+        Src/Entity/Player/States/Running.cpp
         Includes/Entity/Player/States/Running.hpp
+        Includes/Entity/Player/States/Stopping.cpp
+        Includes/Entity/Player/States/Stopping.hpp
 )
 
 if (PRODUCTION_BUILD)

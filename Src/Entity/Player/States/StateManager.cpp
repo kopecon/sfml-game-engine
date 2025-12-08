@@ -14,12 +14,11 @@ StateManager::StateManager(Player &player) : pPlayer(&player), pState(std::make_
 
 void StateManager::act() const {
     if (pState != nullptr) pState->act();
-    else (std::cout << "Can't act on empty state pointer\n");
+    else std::cout << "Can't act on empty state pointer\n";
 }
 
 void StateManager::update() const {
     const States desiredState = pPlayer->input.update();
     if (pState != nullptr) pState->exit(desiredState), act();
-    else (std::cout << "Can't update empty state pointer\n");
+    else std::cout << "Can't update empty state pointer\n";
 }
-
