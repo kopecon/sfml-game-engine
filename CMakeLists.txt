@@ -88,13 +88,13 @@ if (PRODUCTION_BUILD)
 
     # remove the option to debug asserts.
     target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=1)
-    target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPLEMT_BUILD=0)
+    target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=0)
 
 else ()
     # This is useful to get an ASSETS_PATH in your IDE during development
     target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/Resources/")
     target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC PRODUCTION_BUILD=0)
-    target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPLEMT_BUILD=1)
+    target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC DEVELOPMENT_BUILD=1)
 
 endif ()
 
@@ -109,9 +109,9 @@ endif ()
 #force remove unicode
 if (WIN32)
     target_compile_options("${CMAKE_PROJECT_NAME}" PRIVATE /UUNICODE /U_UNICODE)
+    target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE SFML::Main)
 endif ()
 
 target_compile_features("${CMAKE_PROJECT_NAME}" PRIVATE cxx_std_23)
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE SFML::Graphics)
-target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE SFML::Main)
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE SFML::Audio)
