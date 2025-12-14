@@ -38,7 +38,7 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Entity/Player/PhysicsComponent.hpp
         Src/Entity/Player/InputComponent.cpp
         Includes/Entity/Player/InputComponent.hpp
-        utils/utils.cpp
+        Utils/utils.cpp
         Utils/utils.hpp
         Src/World/World.cpp
         Includes/World/World.hpp
