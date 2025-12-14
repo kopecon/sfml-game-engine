@@ -8,11 +8,11 @@
 
 using enum player::States;
 
-CombatComponent::CombatComponent() = default;
+player::CombatComponent::CombatComponent() = default;
 
-CombatComponent::CombatComponent(Player &player): pPlayer(&player) {}
+player::CombatComponent::CombatComponent(Player &player): pPlayer(&player) {}
 
-void CombatComponent::attack() const {
+void player::CombatComponent::attack() const {
     auto pPlayers = pPlayer->pWorld->findEntities<Player>();
     std::erase(pPlayers, pPlayer);
     for (Player *opponent : pPlayers) {
@@ -23,10 +23,10 @@ void CombatComponent::attack() const {
     }
 }
 
-void CombatComponent::takeDamage(const float &damage) const {
+void player::CombatComponent::takeDamage(const float &damage) const {
     pPlayer->health -= damage;
 }
 
-void CombatComponent::die() const {
+void player::CombatComponent::die() const {
     pPlayer->animationManager.onEnd(DYING, [this]{pPlayer->markedForRemoval=true;});
 }

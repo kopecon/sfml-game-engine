@@ -6,7 +6,7 @@
 #define BONK_GAME_STATE_MANAGER_HPP
 #include <memory>
 
-#include "../../../Game/Engines/StateMachineEngine.hpp"
+#include "../../Game/Engines/StateMachineEngine.hpp"
 
 
 class Player;

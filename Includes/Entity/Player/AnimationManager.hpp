@@ -9,19 +9,22 @@
 
 class Player;
 
+namespace player {
+    class AnimationManager final : public AnimationEngine<States> {
+    public:
+        AnimationManager();
 
-class AnimationManager final : public AnimationEngine<player::States> {
-public:
-    AnimationManager();
+        explicit AnimationManager(Player &player);
 
-    explicit AnimationManager(Player &player);
+        Player *pPlayer{nullptr};
 
-    Player *pPlayer{nullptr};
+        void selectAnimation() const;
 
-    void selectAnimation() const;
+        void update() const;
+    };
+}
 
-    void update() const;
-};
+
 
 
 #endif //BONK_GAME_ANIMATION_MANAGER_HPP

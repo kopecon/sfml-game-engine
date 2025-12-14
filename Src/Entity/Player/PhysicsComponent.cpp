@@ -10,12 +10,12 @@
 
 
 #pragma region constructors
-PhysicsComponent::PhysicsComponent() = default;
-PhysicsComponent::PhysicsComponent(Player &player) : pPlayer(&player) {}
+player::PhysicsComponent::PhysicsComponent() = default;
+player::PhysicsComponent::PhysicsComponent(Player &player) : pPlayer(&player) {}
 #pragma endregion
 
 
-void PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
+void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
     const float &airFriction = pPlayer->pWorld->airFriction;
     const float &groundFriction = pPlayer->pWorld->groundFriction;
 
@@ -24,12 +24,12 @@ void PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
     acceleration = hd::multiply<float>(pPlayer->movement.speed, pPlayer->movement.snap, velDiff, environment);
 }
 
-void PhysicsComponent::printPhysics() const {
+void player::PhysicsComponent::printPhysics() const {
     std::cout << "Px: " << position.x << " Vx: " << velocity.x << " Ax: " << acceleration.x << "\n";
     std::cout << "Py: " << position.y << " Vy: " << velocity.y << " Ay: " << acceleration.y << "\n";
 }
 
-void PhysicsComponent::update() {
+void player::PhysicsComponent::update() {
     const float &dt = pPlayer->pWorld->pGame->time.dt;
     const float &groundLevel = pPlayer->pWorld->groundLevel;
     const float &airFriction = pPlayer->pWorld->airFriction;

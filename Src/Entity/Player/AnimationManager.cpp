@@ -7,11 +7,11 @@
 #include "../../../Includes/World/World.hpp"
 
 
-AnimationManager::AnimationManager() = default;
+player::AnimationManager::AnimationManager() = default;
 
-AnimationManager::AnimationManager(Player &player): pPlayer(&player) {}
+player::AnimationManager::AnimationManager(Player &player): pPlayer(&player) {}
 
-void AnimationManager::selectAnimation() const {
+void player::AnimationManager::selectAnimation() const {
     using enum player::States;
     switch (pPlayer->stateManager.state) {
         case JUMPING : {
@@ -45,7 +45,7 @@ void AnimationManager::selectAnimation() const {
     }
 }
 
-void AnimationManager::update() const {
+void player::AnimationManager::update() const {
     selectAnimation();
     AnimationEngine::update(pPlayer->pWorld->pGame->time.dt);
 }

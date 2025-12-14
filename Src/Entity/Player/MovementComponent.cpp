@@ -8,24 +8,24 @@
 #include "../../../Includes/World/World.hpp"
 
 
-MovementComponent::MovementComponent() = default;
+player::MovementComponent::MovementComponent() = default;
 
-MovementComponent::MovementComponent(Player &player): pPlayer(&player) {}
+player::MovementComponent::MovementComponent(Player &player): pPlayer(&player) {}
 
-void MovementComponent::updateWalkingSpeed() {
+void player::MovementComponent::updateWalkingSpeed() {
     walkingSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{2.f, 2.f});
 }
 
-void MovementComponent::updateRunningSpeed() {
+void player::MovementComponent::updateRunningSpeed() {
     runningSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{4.f, 2.f*1.25f});
 }
 
-void MovementComponent::update() {
+void player::MovementComponent::update() {
     updateWalkingSpeed();
     updateRunningSpeed();
 }
 
-void MovementComponent::turn() const {
+void player::MovementComponent::turn() const {
     brake();
     if (areClose(pPlayer->physics.velocity.x, 0.f, 10.f)) {
         pPlayer->shape.setScale({-pPlayer->shape.getScale().x, pPlayer->shape.getScale().y});
@@ -33,21 +33,21 @@ void MovementComponent::turn() const {
     }
 }
 
-void MovementComponent::walkLeft() const {
+void player::MovementComponent::walkLeft() const {
     if (pPlayer->facingRight) turn();
     else pPlayer->physics.accelerate(-pPlayer->movement.speed);
 }
 
-void MovementComponent::walkRight() const {
+void player::MovementComponent::walkRight() const {
     if (!pPlayer->facingRight) turn();
     else pPlayer->physics.accelerate(pPlayer->movement.speed);
 }
 
-void MovementComponent::brake() const {
+void player::MovementComponent::brake() const {
     pPlayer->physics.accelerate({0.f, pPlayer->physics.velocity.y});
 }
 
-void MovementComponent::jump() const {
+void player::MovementComponent::jump() const {
     if (pPlayer->physics.position.y + pPlayer->getSize().y / 2.f >= pPlayer->pWorld->groundLevel) {
         pPlayer->physics.velocity.y = -pPlayer->pWorld->gravity*pPlayer->movement.speed.y/2500.f;  // Magic number is tweaked experimentally
     }

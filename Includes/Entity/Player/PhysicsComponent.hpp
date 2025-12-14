@@ -11,22 +11,23 @@
 
 class Player;
 
-class PhysicsComponent {
-public:
-    PhysicsComponent ();
-    explicit PhysicsComponent (Player &player);
-    Player *pPlayer{nullptr};
-    // CURRENT STATE
-    sf::Vector2f position{};
-    sf::Vector2f velocity{};
-    sf::Vector2f acceleration{};
+namespace player {
+    class PhysicsComponent {
+    public:
+        PhysicsComponent ();
+        explicit PhysicsComponent (Player &player);
+        Player *pPlayer{nullptr};
+        // CURRENT STATE
+        sf::Vector2f position{};
+        sf::Vector2f velocity{};
+        sf::Vector2f acceleration{};
 
 
-    void accelerate(const sf::Vector2f &targetVelocity);
+        void accelerate(const sf::Vector2f &targetVelocity);
 
-    void printPhysics() const;
+        void printPhysics() const;
 
-    void update();
-};
-
+        void update();
+    };
+}
 #endif //BONK_GAME_PHYSICS_COMPONENT_HPP

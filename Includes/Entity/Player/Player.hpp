@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../Entity.hpp"
-#include "States/StateManager.hpp"
+#include "StateManager.hpp"
 #include "AnimationManager.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
@@ -37,7 +37,7 @@ public:
     MovementComponent movement{};
     CombatComponent combat{};
     // MANAGERS
-    AnimationManager animationManager{};
+    player::AnimationManager animationManager{};
     player::StateManager stateManager{};
     // RENDERING
     sf::RectangleShape shape{};

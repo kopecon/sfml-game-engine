@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_INPUT_COMPONENT_HPP
 #define BONK_GAME_INPUT_COMPONENT_HPP
-#include "States/StateManager.hpp"
+#include "StateManager.hpp"
 #include "SFML/Window/Keyboard.hpp"
 
 
@@ -20,16 +20,18 @@ struct Controls {
 };
 #pragma endregion
 
-class InputComponent {
-public:
-    InputComponent();
+namespace player {
+    class InputComponent {
+    public:
+        InputComponent();
 
-    explicit InputComponent(Player &player, const Controls &controls);
+        explicit InputComponent(Player &player, const Controls &controls);
 
-    Player *pPlayer{nullptr};
-    Controls controls{};
+        Player *pPlayer{nullptr};
+        Controls controls{};
 
-    void update() const;
-};
+        void update() const;
+    };
+}
 
 #endif //BONK_GAME_INPUT_COMPONENT_HPP

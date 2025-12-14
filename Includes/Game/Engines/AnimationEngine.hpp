@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
-#include "../../Entity/Player/States/StateManager.hpp"
+#include "../../Entity/Player/StateManager.hpp"
 
 
 struct AnimationSheet {

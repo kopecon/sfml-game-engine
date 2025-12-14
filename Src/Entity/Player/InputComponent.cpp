@@ -7,11 +7,11 @@
 
 
 #pragma region constructors
-InputComponent::InputComponent() = default;
-InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
+player::InputComponent::InputComponent() = default;
+player::InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
 #pragma endregion
 
-    void InputComponent::update() const {
+    void player::InputComponent::update() const {
     const bool left = sf::Keyboard::isKeyPressed(controls.left);
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
