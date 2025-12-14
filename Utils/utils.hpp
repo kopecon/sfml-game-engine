@@ -6,6 +6,7 @@
 #define BONK_GAME_UTILS_HPP
 #include <limits>
 #include <string>
+#include <cmath>
 #include "SFML/System/Vector2.hpp"
 
 
