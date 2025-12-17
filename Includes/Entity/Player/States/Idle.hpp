@@ -12,9 +12,9 @@ class Idle final : public State<player::StateManager, player::States> {
 public:
     explicit Idle(player::StateManager *stateManager);
 
-    void act() override;
+    void update() override;
 
-    void exit() override;
+    player::States next(const std::vector<player::States> &conditions) override;
 };
 
 #endif //BONK_GAME_IDLE_HPP

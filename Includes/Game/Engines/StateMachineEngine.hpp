@@ -4,7 +4,11 @@
 
 #ifndef BONK_GAME_STATE_MACHINE_ENGINE_HPP
 #define BONK_GAME_STATE_MACHINE_ENGINE_HPP
+#include <assert.h>
+#include <iostream>
 #include <memory>
+#include <vector>
+#include <unordered_map>
 
 
 template <typename Manager, typename StateSet>
@@ -12,29 +16,23 @@ class State {
 protected:
     Manager *pManager{nullptr};
 public:
-
     virtual ~State();
-
-    State(Manager *pManager, const StateSet &state) :
+    State(Manager *pManager, const StateSet &stateID) :
     pManager(pManager),
-    state(state)
+    stateID(stateID)
     {}
 
-    StateSet state{};
+    StateSet stateID{};
+    State *pPreviousState{nullptr};
 
-    template<typename T>
-    void enter() {
-        // std::cout << pStateManager->pPlayer->name << " Entering State: " << typeid(*this).name() << "\n";
-        std::unique_ptr<T> next = std::make_unique<T>(pManager);
-        pManager->state = next->state;
-        pManager->pState = std::move(next);
-    }
+    virtual void onEnter() {}
+    virtual void onExit() {}
 
-    virtual void act() = 0;
+    virtual void update() = 0;
 
-    virtual void exit() = 0;
-
+    virtual StateSet next(const std::vector<StateSet> &conditions) = 0;
 };
+
 
 template<typename Manager, typename StateSet>
 State<Manager, StateSet>::~State() = default;
@@ -43,25 +41,48 @@ State<Manager, StateSet>::~State() = default;
 template<typename Manager, typename StateSet>
 class StateMachineEngine {
 public:
-
-    std::unique_ptr<State<Manager, StateSet>> pState{nullptr};  // This refers to the actual state
-    StateSet state{StateSet::IDLE};  // This just tags the current state so its "visible" to other modules
+    StateMachineEngine() = default;
+    State<Manager, StateSet> *pCurrentState{nullptr};
     StateSet targetState{};  // Usually triggered by the user's input
+    std::vector<StateSet> conditions{};
+    // List of available states
+    std::unordered_map<StateSet, std::unique_ptr<State<Manager, StateSet>>> states{};
+
+    template<typename T>
+    void addState(std::unique_ptr<T> state)
+    requires std::is_base_of_v<State<Manager, StateSet>, T> {
+        auto [it, inserted] = states.emplace(state->stateID, std::move(state));
+
+        if (!pCurrentState && inserted) {
+            pCurrentState = it->second.get();
+        }
+    }
 
     void act() const;
-    void update() const;
+    void transition(const StateSet &stateID) {
+        auto pNextState = states.at(stateID).get();
+        pNextState->pPreviousState = pCurrentState;
+        pCurrentState = pNextState;
+    }
+    void update();
 };
+
 
 template<typename Manager, typename StateSet>
 void StateMachineEngine<Manager, StateSet>::act() const {
-    if (pState != nullptr) pState->act();
-    // else std::cout << "Can't act on empty state pointer\n";
+    if (pCurrentState != nullptr) pCurrentState->update();
 }
 
+
 template<typename Manager, typename StateSet>
-void StateMachineEngine<Manager, StateSet>::update() const {
-    if (pState != nullptr) pState->exit(), act();
-    // else std::cout << "Can't update empty state pointer\n";
+void StateMachineEngine<Manager, StateSet>::update() {
+    assert(pCurrentState != nullptr);
+    pCurrentState->update();
+    conditions.push_back(targetState);
+    StateSet newState = pCurrentState->next(conditions);
+    if (newState != pCurrentState->stateID) {
+        transition(newState);
+    }
 }
 
 #endif //BONK_GAME_STATE_MACHINE_ENGINE_HPP

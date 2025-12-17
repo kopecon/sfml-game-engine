@@ -14,9 +14,9 @@ public:
 
     bool inAir{false};
 
-    void act() override;
+    void update() override;
 
-    void exit() override;
+    player::States next(const std::vector<player::States> &conditions) override;
 };
 
 

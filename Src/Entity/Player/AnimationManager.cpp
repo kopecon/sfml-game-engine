@@ -14,7 +14,7 @@ player::AnimationManager::AnimationManager(Player &player): pPlayer(&player) {}
 
 void player::AnimationManager::selectAnimation() const {
     using enum player::States;
-    switch (pPlayer->stateManager.state) {
+    switch (pPlayer->stateManager.pCurrentState->stateID) {
         case JUMPING : {
             pPlayer->animationManager.set(JUMPING);
             pPlayer->animationManager.animationSet[JUMPING].fps = std::fabs(pPlayer->movement.walkingSpeed.y / pPlayer->movement.speed.y)*24.f;

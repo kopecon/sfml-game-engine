@@ -11,9 +11,9 @@ class Stopping final : public State<player::StateManager, player::States> {
 public:
     explicit Stopping(player::StateManager *stateManager);
 
-    void act() override;
+    void update() override;
 
-    void exit() override;
+    player::States next(const std::vector<player::States> &conditions) override;
 };
 
 

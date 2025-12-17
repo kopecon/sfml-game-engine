@@ -4,10 +4,6 @@
 
 #include "../../../../Includes/Entity/Player/Player.hpp"
 #include "../../../../Includes/Entity/Player/States/Stopping.hpp"
-#include "../../../../Includes/Entity/Player/States/Idle.hpp"
-#include "../../../../Includes/Entity/Player/States/Walking.hpp"
-#include "../../../../Includes/Entity/Player/States/Running.hpp"
-#include "../../../../Includes/Entity/Player/States/Jumping.hpp"
 
 
 using namespace player;
@@ -15,21 +11,22 @@ using namespace player;
 Stopping::Stopping(StateManager *stateManager): State(stateManager, States::STOPPING) {}
 
 
-void Stopping::act() {
+void Stopping::update() {
     pManager->pPlayer->movement.brake();
 }
 
-void Stopping::exit() {
-    if (pManager->targetState  == States::IDLE) {
-        enter<Idle>();
+States Stopping::next(const std::vector<States> &conditions) {
+    if (conditions.back()  == States::IDLE) {
+        return States::IDLE;
     }
-    else if (pManager->targetState  == States::WALKING) {
-        enter<Walking>();
+    if (conditions.back()  == States::WALKING) {
+        return States::WALKING;
     }
-    else if (pManager->targetState == States::RUNNING) {
-        enter<Running>();
+    if (conditions.back() == States::RUNNING) {
+        return States::RUNNING;
     }
-    else if (pManager->targetState  == States::JUMPING) {
-        enter<Jumping>();
+    if (conditions.back() == States::JUMPING) {
+        return States::JUMPING;
     }
+    return stateID;
 }
