@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_STOPPING_HPP
 #define BONK_GAME_STOPPING_HPP
-#include "../../../Game/Engines/StateMachineEngine.hpp"
+#include "../../../Game/Engines/StateMachine.hpp"
 
 
 class Stopping final : public State<player::StateManager> {

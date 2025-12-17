@@ -16,7 +16,7 @@ class State {
 protected:
     Manager *pManager{nullptr};
 public:
-    virtual ~State();
+    virtual ~State() = default;
     State(Manager *pManager, const typename Manager::States &stateID) :
     pManager(pManager),
     stateID(stateID)
@@ -32,10 +32,6 @@ public:
 
     virtual typename Manager::States next(const std::vector<typename Manager::States> &conditions) = 0;
 };
-
-
-template<typename Manager>
-State<Manager>::~State() = default;
 
 
 template<typename Manager>
@@ -58,32 +54,24 @@ public:
         }
     }
 
-    void act() const;
+    void act() const {
+        if (pCurrentState != nullptr) pCurrentState->update();
+    };
     void transition(const typename Manager::States &stateID) {
         auto pNextState = states.at(stateID).get();
         pNextState->pPreviousState = pCurrentState;
         pCurrentState = pNextState;
     }
-    void update();
-};
-
-
-template<typename Manager>
-void StateMachine<Manager>::act() const {
-    if (pCurrentState != nullptr) pCurrentState->update();
-}
-
-
-template<typename Manager>
-void StateMachine<Manager>::update() {
-    assert(pCurrentState != nullptr);
-    pCurrentState->update();
-    conditions.clear();
-    conditions.push_back(targetState);
-    auto newState = pCurrentState->next(conditions);
-    if (newState != pCurrentState->stateID) {
-        transition(newState);
+    void update() {
+        assert(pCurrentState != nullptr);
+        pCurrentState->update();
+        conditions.clear();
+        conditions.push_back(targetState);
+        auto newState = pCurrentState->next(conditions);
+        if (newState != pCurrentState->stateID) {
+            transition(newState);
+        }
     }
-}
+};
 
 #endif //BONK_GAME_STATE_MACHINE_ENGINE_HPP

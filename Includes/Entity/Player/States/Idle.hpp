@@ -5,7 +5,7 @@
 #ifndef BONK_GAME_IDLE_HPP
 #define BONK_GAME_IDLE_HPP
 
-#include "../../../Game/Engines/StateMachineEngine.hpp"
+#include "../../../Game/Engines/StateMachine.hpp"
 
 
 class Idle final : public State<player::StateManager> {

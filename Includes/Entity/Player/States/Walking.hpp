@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_WALKING_HPP
 #define BONK_GAME_WALKING_HPP
-#include "../../../Game/Engines/StateMachineEngine.hpp"
+#include "../../../Game/Engines/StateMachine.hpp"
 
 
 class Walking final : public State<player::StateManager> {
