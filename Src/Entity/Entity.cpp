@@ -11,7 +11,9 @@
 #include "../../Includes/World/World.hpp"
 
 
-Entity::~Entity() = default;
+Entity::~Entity() {
+    std::cout << "Entity: " << name << " removed.\n";
+};
 
 Entity::Entity(std::string name) {
     text::up(name);

@@ -31,6 +31,7 @@ public:
     const float groundFriction = 1.f;
     float groundLevel{};
 
+    // Create Entity at [0, 0]
     template<typename T, typename ... Args>
     T* createEntity(Args&&... args) {
         auto pEntity = std::make_unique<T>(std::forward<Args>(args)...);
@@ -41,6 +42,7 @@ public:
         return getEntity<T>(entityName);
     }
 
+    // Create Entity at a defined position
     template<typename T, typename ... Args>
     T* createEntity(sf::Vector2f position, Args&&... args) {
         auto pEntity = std::make_unique<T>(std::forward<Args>(args)...);
@@ -71,7 +73,11 @@ public:
         return entitiesOfType;
     }
 
-    void remove();
+    void remove(std::string entityName) {
+        text::up(entityName);
+        const auto it = entities.find(entityName);
+        entities.erase(it);
+    }
 
     void draw() const;
 
