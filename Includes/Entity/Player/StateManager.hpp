@@ -37,7 +37,6 @@ namespace player {
 
         void update() {
             engine.update();
-
         }
     };
 }
