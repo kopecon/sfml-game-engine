@@ -20,3 +20,7 @@ player::StateManager::StateManager(Player &player) : pPlayer(&player) {
         engine.addState(std::make_unique<Stopping>(this));
         engine.addState(std::make_unique<Walking>(this));
 }
+
+void player::StateManager::update() {
+        engine.update();
+}

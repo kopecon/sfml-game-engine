@@ -6,15 +6,17 @@
 #define BONK_GAME_WALKING_HPP
 #include "../../../Game/Engines/StateMachine.hpp"
 
+namespace player {
+    class Walking final : public State<StateManager> {
+    public:
+        explicit Walking(StateManager *stateManager);
 
-class Walking final : public State<player::StateManager> {
-public:
-    explicit Walking(player::StateManager *stateManager);
+        void update() override;
 
-    void update() override;
+        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
+    };
+}
 
-    player::StateManager::States next(const std::vector<player::StateManager::States> &conditions) override;
-};
 
 
 #endif //BONK_GAME_WALKING_HPP

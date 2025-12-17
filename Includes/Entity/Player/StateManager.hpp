@@ -35,9 +35,7 @@ namespace player {
         Player *pPlayer{nullptr};
         StateMachine<StateManager> engine{};
 
-        void update() {
-            engine.update();
-        }
+        void update();
     };
 }
 

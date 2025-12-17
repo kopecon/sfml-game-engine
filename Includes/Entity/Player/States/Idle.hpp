@@ -7,15 +7,17 @@
 
 #include "../../../Game/Engines/StateMachine.hpp"
 
+namespace player {
+    class Idle final : public State<StateManager> {
+    public:
+        explicit Idle(StateManager *stateManager);
 
-class Idle final : public State<player::StateManager> {
-public:
-    explicit Idle(player::StateManager *stateManager);
+        void update() override;
 
-    void update() override;
+        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
 
-    player::StateManager::States next(const std::vector<player::StateManager::States> &conditions) override;
+    };
+}
 
-};
 
 #endif //BONK_GAME_IDLE_HPP

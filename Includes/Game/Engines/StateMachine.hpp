@@ -25,8 +25,12 @@ public:
     typename Manager::States stateID{};
     State *pPreviousState{nullptr};
 
-    virtual void onEnter() {}
-    virtual void onExit() {}
+    virtual void onEnter() {
+        // std::cout << pManager->pPlayer->name << " Entered state: " << static_cast<int>(stateID) << "\n";
+    }
+    virtual void onExit() {
+        // std::cout << pManager->pPlayer->name << " Exited state: " << static_cast<int>(stateID) << "\n";
+    }
 
     virtual void update() = 0;
 
@@ -62,6 +66,7 @@ public:
         auto pNextState = states.at(stateID).get();
         pNextState->pPreviousState = pCurrentState;
         pCurrentState = pNextState;
+        pCurrentState->onEnter();
     }
 
     void update() {
@@ -71,6 +76,7 @@ public:
         conditions.push_back(targetStateID);
         auto newState = pCurrentState->next(conditions);
         if (newState != pCurrentState->stateID) {
+            pCurrentState->onExit();
             transition(newState);
         }
     }

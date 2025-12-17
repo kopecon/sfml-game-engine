@@ -6,16 +6,18 @@
 #define BONK_GAME_STOPPING_HPP
 #include "../../../Game/Engines/StateMachine.hpp"
 
+namespace player {
+    class Stopping final : public State<StateManager> {
+    public:
+        explicit Stopping(StateManager *stateManager);
 
-class Stopping final : public State<player::StateManager> {
-public:
-    explicit Stopping(player::StateManager *stateManager);
+        void update() override;
 
-    void update() override;
+        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
 
-    player::StateManager::States next(const std::vector<player::StateManager::States> &conditions) override;
+    };
+}
 
-};
 
 
 #endif //BONK_GAME_STOPPING_HPP
