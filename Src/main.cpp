@@ -45,6 +45,8 @@ int main() {
     #pragma endregion
 
     #pragma region window loop
+    worldForest->remove("player2");
+
     while (window.isOpen()) {
         game.update();
     }
