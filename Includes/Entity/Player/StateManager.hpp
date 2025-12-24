@@ -5,7 +5,7 @@
 #ifndef BONK_GAME_STATE_MANAGER_HPP
 #define BONK_GAME_STATE_MANAGER_HPP
 
-#include "../../Game/Engines/StateMachine.hpp"
+#include "../../Game/Engines/StateMachine/StateMachine.hpp"
 
 
 class Player;

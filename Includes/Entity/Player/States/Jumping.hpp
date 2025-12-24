@@ -4,20 +4,17 @@
 
 #ifndef BONK_GAME_JUMPING_HPP
 #define BONK_GAME_JUMPING_HPP
-#include "../../../Game/Engines/StateMachine.hpp"
+#include "../../../Game/Engines/StateMachine/StateMachine.hpp"
 
 namespace player {
     class Jumping final : public StateBase<StateManager> {
     public:
 
-        explicit Jumping(StateManager *stateManager);
+        explicit Jumping(StateManager *pManager);
 
         bool inAir{false};
 
         void update() override;
-
-        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
-
     };
 }
 

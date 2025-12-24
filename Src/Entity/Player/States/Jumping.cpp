@@ -8,7 +8,9 @@
 
 using namespace player;
 
-Jumping::Jumping(StateManager *stateManager): StateBase(stateManager, StateManager::States::JUMPING) {}
+Jumping::Jumping(StateManager *pManager): StateBase(pManager, StateManager::States::JUMPING) {
+    // TODO fix: addEdge(Edge([pManager]{return pManager->engine.conditions.back() == StateManager::States::WALKING;}, StateManager::States::WALKING));
+}
 
 
 void Jumping::update() {
@@ -16,19 +18,4 @@ void Jumping::update() {
         pManager->pPlayer->movement.jump();
         inAir = true;
     }
-}
-
-StateManager::States Jumping::next(const std::vector<StateManager::States> &conditions) {
-    if (pManager->pPlayer->physics.velocity.y == 0 && inAir) {
-        // RESET JUMPING ANIMATION TODO:FIND CLEANER WAY
-        pManager->pPlayer->animationManager.engine.animationSet[StateManager::States::JUMPING].frameIndex.x = 0;
-        inAir = false;
-        if (conditions.back() == StateManager::States::IDLE)
-            return StateManager::States::IDLE;
-        if (conditions.back() == StateManager::States::WALKING)
-            return StateManager::States::WALKING;
-        if (conditions.back() == StateManager::States::RUNNING)
-            return StateManager::States::RUNNING;
-    }
-    return stateID;
 }

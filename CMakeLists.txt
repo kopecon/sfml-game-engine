@@ -81,8 +81,12 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Entity/Player/States/Running.hpp
         Src/Entity/Player/States/Stopping.cpp
         Includes/Entity/Player/States/Stopping.hpp
-        Src/Game/Engines/StateMachine.cpp
-        Includes/Game/Engines/StateMachine.hpp
+        Src/Game/Engines/StateMachine/StateMachine.cpp
+        Includes/Game/Engines/StateMachine/StateMachine.hpp
+        Src/Game/Engines/StateMachine/StateBase.cpp
+        Includes/Game/Engines/StateMachine/StateBase.hpp
+        Src/Game/Engines/StateMachine/State.cpp
+        Includes/Game/Engines/StateMachine/State.hpp
 )
 
 if (PRODUCTION_BUILD)

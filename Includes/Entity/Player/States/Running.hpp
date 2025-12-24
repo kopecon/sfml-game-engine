@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_RUNNING_HPP
 #define BONK_GAME_RUNNING_HPP
-#include "../../../Game/Engines/StateMachine.hpp"
+#include "../../../Game/Engines/StateMachine/StateMachine.hpp"
 
 namespace player {
     class Running final : public StateBase<StateManager>{
@@ -12,8 +12,6 @@ namespace player {
         explicit Running(StateManager *stateManager);
 
         void update() override;
-
-        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
     };
 }
 

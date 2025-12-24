@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_WALKING_HPP
 #define BONK_GAME_WALKING_HPP
-#include "../../../Game/Engines/StateMachine.hpp"
+#include "../../../Game/Engines/StateMachine/StateMachine.hpp"
 
 namespace player {
     class Walking final : public StateBase<StateManager> {
@@ -12,8 +12,6 @@ namespace player {
         explicit Walking(StateManager *stateManager);
 
         void update() override;
-
-        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
     };
 }
 

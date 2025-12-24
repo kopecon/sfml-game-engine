@@ -8,25 +8,14 @@
 
 using namespace player;
 
-Stopping::Stopping(StateManager *stateManager): StateBase(stateManager, StateManager::States::STOPPING) {}
+Stopping::Stopping(StateManager *stateManager): StateBase(stateManager, StateManager::States::STOPPING) {
+    addEdge(Edge(StateManager::States::WALKING));
+    addEdge(Edge(StateManager::States::JUMPING));
+    addEdge(Edge(StateManager::States::IDLE));
+    addEdge(Edge(StateManager::States::RUNNING));
+}
 
 
 void Stopping::update() {
     pManager->pPlayer->movement.brake();
-}
-
-StateManager::States Stopping::next(const std::vector<StateManager::States> &conditions) {
-    if (conditions.back()  == StateManager::States::IDLE) {
-        return StateManager::States::IDLE;
-    }
-    if (conditions.back()  == StateManager::States::WALKING) {
-        return StateManager::States::WALKING;
-    }
-    if (conditions.back() == StateManager::States::RUNNING) {
-        return StateManager::States::RUNNING;
-    }
-    if (conditions.back() == StateManager::States::JUMPING) {
-        return StateManager::States::JUMPING;
-    }
-    return stateID;
 }

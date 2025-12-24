@@ -4,7 +4,7 @@
 
 #ifndef BONK_GAME_STOPPING_HPP
 #define BONK_GAME_STOPPING_HPP
-#include "../../../Game/Engines/StateMachine.hpp"
+#include "../../../Game/Engines/StateMachine/StateMachine.hpp"
 
 namespace player {
     class Stopping final : public StateBase<StateManager> {
@@ -12,9 +12,6 @@ namespace player {
         explicit Stopping(StateManager *stateManager);
 
         void update() override;
-
-        StateManager::States next(const std::vector<StateManager::States> &conditions) override;
-
     };
 }
 
