@@ -13,6 +13,7 @@ namespace player {
         explicit Idle(StateManager *stateManager);
 
         void update() override;
+
     };
 }
 

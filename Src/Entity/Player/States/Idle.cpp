@@ -12,10 +12,10 @@ using namespace player;
 
 Idle::Idle(StateManager *stateManager) :
 StateBase(stateManager, StateManager::States::IDLE) {
-    addEdge(Edge(StateManager::States::WALKING));
-    addEdge(Edge(StateManager::States::JUMPING));
-    addEdge(Edge(StateManager::States::STOPPING));
-    addEdge(Edge(StateManager::States::RUNNING));
+    addEdge(std::make_unique<Edge>(StateManager::States::WALKING));
+    addEdge(std::make_unique<Edge>(StateManager::States::JUMPING));
+    addEdge(std::make_unique<Edge>(StateManager::States::STOPPING));
+    addEdge(std::make_unique<Edge>(StateManager::States::RUNNING));
 }
 
 void Idle::update() {

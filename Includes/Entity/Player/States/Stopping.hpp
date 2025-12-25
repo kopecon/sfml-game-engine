@@ -12,6 +12,7 @@ namespace player {
         explicit Stopping(StateManager *stateManager);
 
         void update() override;
+
     };
 }
 

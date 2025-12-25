@@ -12,6 +12,7 @@ namespace player {
         explicit Running(StateManager *stateManager);
 
         void update() override;
+
     };
 }
 

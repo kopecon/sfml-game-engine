@@ -39,10 +39,10 @@ public:
 
     typename Manager::States stateID{};  // Enum class representing possible states
     StateBase *pPreviousState{nullptr};  // Remember from which state you got here
-    std::vector<Edge> edges{};  // Connections to other states
+    std::vector<std::unique_ptr<Edge>> edges{};  // Connections to other states
 
-    void addEdge(const Edge &edge) {
-        edges.push_back(edge);
+    void addEdge(std::unique_ptr<Edge> edge) {
+        edges.push_back(std::move(edge));
     }
 
     virtual void onEnter() {
@@ -57,15 +57,22 @@ public:
         if (edges.empty()) std::cout << "State: " << static_cast<int>(stateID) << " has no edges!\n";
         // 1. Choose edge
         for (const auto &edge : this->edges) {
-            // 1.1 Edge has no specific condition -> condition is just the desired state
-            if (!edge.condition) {
-                if (pManager->engine.conditions.back() == edge.next) {
-                    return edge.next;
+            // 1.a Edge has a specific condition -> resolve defined condition first
+            if (edge->condition) {
+                if (edge->condition()) {
+                    if (pManager->targetStateID == edge->next) {
+                        return edge->next;
+                    }
+                }
+                else {
+                    return this->stateID;
                 }
             }
-            // 1.2 Edge has a specific condition -> resolve defined condition
-            else if (edge.condition()) {
-                return edge.next;
+            // 1.b Edge has no specific condition
+            else  {
+                if (pManager->targetStateID == edge->next) {
+                    return edge->next;
+                }
             }
         }
         return this->stateID;

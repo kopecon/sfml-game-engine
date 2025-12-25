@@ -33,6 +33,8 @@ namespace player {
         explicit StateManager(Player &player);
 
         Player *pPlayer{nullptr};
+        States targetStateID{};  // Usually triggered by the user's input
+        std::vector<States> conditions{};  // TODO for now the only condition inside the vector is just the desired state, in the future maybe other conditions would be added.
         StateMachine<StateManager> engine{};
 
         void update();

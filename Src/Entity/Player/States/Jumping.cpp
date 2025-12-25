@@ -9,13 +9,25 @@
 using namespace player;
 
 Jumping::Jumping(StateManager *pManager): StateBase(pManager, StateManager::States::JUMPING) {
-    // TODO fix: addEdge(Edge([pManager]{return pManager->engine.conditions.back() == StateManager::States::WALKING;}, StateManager::States::WALKING));
+    addEdge(std::make_unique<Edge>([&](){return !inAir;}, StateManager::States::IDLE));
+    addEdge(std::make_unique<Edge>([&](){return !inAir;}, StateManager::States::WALKING));
+    addEdge(std::make_unique<Edge>([&](){return !inAir;}, StateManager::States::RUNNING));
+    addEdge(std::make_unique<Edge>([&](){return !inAir;}, StateManager::States::STOPPING));
+    addEdge(std::make_unique<Edge>([&](){return !inAir;}, StateManager::States::JUMPING));
 }
 
+void Jumping::onEnter() {
+    StateBase::onEnter();
+}
 
 void Jumping::update() {
     if (!inAir) {
         pManager->pPlayer->movement.jump();
         inAir = true;
+    }
+    else {
+        if (pManager->pPlayer->physics.velocity.y == 0) {
+            inAir = false;
+        }
     }
 }

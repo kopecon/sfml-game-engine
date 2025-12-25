@@ -9,10 +9,10 @@
 using namespace player;
 
 Stopping::Stopping(StateManager *stateManager): StateBase(stateManager, StateManager::States::STOPPING) {
-    addEdge(Edge(StateManager::States::WALKING));
-    addEdge(Edge(StateManager::States::JUMPING));
-    addEdge(Edge(StateManager::States::IDLE));
-    addEdge(Edge(StateManager::States::RUNNING));
+    addEdge(std::make_unique<Edge>(StateManager::States::WALKING));
+    addEdge(std::make_unique<Edge>(StateManager::States::JUMPING));
+    addEdge(std::make_unique<Edge>(StateManager::States::IDLE));
+    addEdge(std::make_unique<Edge>(StateManager::States::RUNNING));
 }
 
 

@@ -14,7 +14,10 @@ namespace player {
 
         bool inAir{false};
 
+        void onEnter() override;
+
         void update() override;
+
     };
 }
 

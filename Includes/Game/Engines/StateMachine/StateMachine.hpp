@@ -7,7 +7,6 @@
 #include <cassert>
 #include <iostream>
 #include <memory>
-#include <vector>
 #include <unordered_map>
 
 #include "StateBase.hpp"
@@ -21,25 +20,19 @@ public:
     explicit StateMachine(Manager *pManager) : pManager(pManager) {}
 
     StateBase<Manager> *pCurrentState{nullptr};
-    typename Manager::States targetStateID{};  // Usually triggered by the user's input
-    std::vector<typename Manager::States> conditions{};  // TODO for now the only condition inside the vector is just the desired state, in the future maybe other conditions would be added.
+
     // List of available states
     std::unordered_map<typename Manager::States, std::unique_ptr<StateBase<Manager>>> states{};
 
-
     template<typename T>
-    void addState(T state)
+    void addState(std::unique_ptr<T> pState)
     requires std::is_base_of_v<StateBase<Manager>, T> {
-        auto pState = std::make_unique<T>(state);
+
         auto [it, inserted] = states.emplace(pState->stateID, std::move(pState));
 
         if (!pCurrentState && inserted) {
             pCurrentState = it->second.get();
         }
-    }
-
-    void act() const {
-        if (pCurrentState != nullptr) pCurrentState->update();
     }
 
     void transition(const typename Manager::States &stateID) {
@@ -58,10 +51,7 @@ public:
         assert(pCurrentState != nullptr);
         // 2. Do state action
         pCurrentState->update();
-        // 3. Update machine conditions
-        conditions.clear();
-        conditions.push_back(targetStateID);
-        // 4. Transition to the new state
+        // 3. Transition to the new state
         auto newState = pCurrentState->next();
         if (newState != pCurrentState->stateID) {
             pCurrentState->onExit();

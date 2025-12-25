@@ -12,6 +12,7 @@ namespace player {
         explicit Walking(StateManager *stateManager);
 
         void update() override;
+
     };
 }
 

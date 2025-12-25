@@ -20,19 +20,19 @@ player::InputComponent::InputComponent(Player &player, const Controls &controls)
     using enum StateManager::States;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
-    if (jump) pPlayer->stateManager.engine.targetStateID = JUMPING;
-    else if (attack) pPlayer->stateManager.engine.targetStateID = ATTACKING;
-    else if (left && right) pPlayer->stateManager.engine.targetStateID = STOPPING;
+    if (jump) pPlayer->stateManager.targetStateID = JUMPING;
+    else if (attack) pPlayer->stateManager.targetStateID = ATTACKING;
+    else if (left && right) pPlayer->stateManager.targetStateID = STOPPING;
     else if (left) {
         pPlayer->movement.walk = [&]{pPlayer->movement.walkLeft();};
-        if (run) pPlayer->stateManager.engine.targetStateID = RUNNING;
-        else pPlayer->stateManager.engine.targetStateID = WALKING;
+        if (run) pPlayer->stateManager.targetStateID = RUNNING;
+        else pPlayer->stateManager.targetStateID = WALKING;
         }
     else if (right) {
         pPlayer->movement.walk = [&]{pPlayer->movement.walkRight();};
-        if (run) pPlayer->stateManager.engine.targetStateID = RUNNING;
-        else pPlayer->stateManager.engine.targetStateID = WALKING;
+        if (run) pPlayer->stateManager.targetStateID = RUNNING;
+        else pPlayer->stateManager.targetStateID = WALKING;
         }
     else
-    pPlayer->stateManager.engine.targetStateID = IDLE;
+    pPlayer->stateManager.targetStateID = IDLE;
 }
