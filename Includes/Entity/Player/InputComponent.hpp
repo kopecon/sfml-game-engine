@@ -4,7 +4,6 @@
 
 #ifndef BONK_GAME_INPUT_COMPONENT_HPP
 #define BONK_GAME_INPUT_COMPONENT_HPP
-#include "StateManager.hpp"
 #include "SFML/Window/Keyboard.hpp"
 
 

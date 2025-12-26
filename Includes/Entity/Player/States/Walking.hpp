@@ -4,12 +4,14 @@
 
 #ifndef BONK_GAME_WALKING_HPP
 #define BONK_GAME_WALKING_HPP
-#include "../../../Game/Engines/StateMachine/StateMachine.hpp"
+
+#include "../../../Game/Engines/StateMachine/StateBase_new.hpp"
+#include "States.hpp"
 
 namespace player {
-    class Walking final : public StateBase<StateManager> {
+    class Walking final : public StateBase_new<States> {
     public:
-        explicit Walking(StateManager *stateManager);
+        explicit Walking();
 
         void update() override;
 

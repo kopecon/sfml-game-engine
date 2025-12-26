@@ -7,6 +7,7 @@
 #include "../../../Utils/utils.hpp"
 #include "../../../Includes/World/World.hpp"
 
+using enum player::States;
 
 player::MovementComponent::MovementComponent() = default;
 
@@ -23,7 +24,7 @@ void player::MovementComponent::updateRunningSpeed() {
 void player::MovementComponent::update() {
     updateWalkingSpeed();
     updateRunningSpeed();
-    if (pPlayer->getStateID() == StateManager::States::RUNNING) {
+    if (pPlayer->getStateID() == RUNNING) {
         speed = runningSpeed;
     }
     else {

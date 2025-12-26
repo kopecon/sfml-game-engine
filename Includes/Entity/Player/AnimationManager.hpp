@@ -6,6 +6,7 @@
 #define BONK_GAME_ANIMATION_MANAGER_HPP
 
 #include "../../Game/Engines/AnimationEngine.hpp"
+#include "States/States.hpp"
 
 class Player;
 
@@ -17,7 +18,7 @@ namespace player {
         explicit AnimationManager(Player &player);
 
         Player *pPlayer{nullptr};
-        AnimationEngine<StateManager::States> engine{};
+        AnimationEngine<States> engine{};
 
         void selectAnimation() const;
 

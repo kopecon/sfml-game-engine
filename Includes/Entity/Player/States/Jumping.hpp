@@ -4,13 +4,15 @@
 
 #ifndef BONK_GAME_JUMPING_HPP
 #define BONK_GAME_JUMPING_HPP
-#include "../../../Game/Engines/StateMachine/StateMachine.hpp"
+
+#include "../../../Game/Engines/StateMachine/StateBase_new.hpp"
+#include "States.hpp"
 
 namespace player {
-    class Jumping final : public StateBase<StateManager> {
+    class Jumping final : public StateBase_new<States> {
     public:
 
-        explicit Jumping(StateManager *pManager);
+        explicit Jumping();
 
         void onEnter() override;
 

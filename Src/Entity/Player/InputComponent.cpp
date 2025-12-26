@@ -4,6 +4,7 @@
 
 #include "../../../Includes/Entity/Player/InputComponent.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/Entity/Player/States/States.hpp"
 
 
 #pragma region constructors
@@ -17,22 +18,23 @@ player::InputComponent::InputComponent(Player &player, const Controls &controls)
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
     const bool attack = sf::Keyboard::isKeyPressed(controls.attack);
-    using enum StateManager::States;
+
+    using enum States;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
-    if (jump) pPlayer->stateManager.targetStateID = JUMPING;
-    else if (attack) pPlayer->stateManager.targetStateID = ATTACKING;
-    else if (left && right) pPlayer->stateManager.targetStateID = STOPPING;
+    if (jump) pPlayer->stateMachine.desiredStateID = JUMPING;
+    else if (attack) pPlayer->stateMachine.desiredStateID = ATTACKING;
+    else if (left && right) pPlayer->stateMachine.desiredStateID = STOPPING;
     else if (left) {
         pPlayer->movement.walk = [&]{pPlayer->movement.walkLeft();};
-        if (run) pPlayer->stateManager.targetStateID = RUNNING;
-        else pPlayer->stateManager.targetStateID = WALKING;
+        if (run) pPlayer->stateMachine.desiredStateID = RUNNING;
+        else pPlayer->stateMachine.desiredStateID = WALKING;
         }
     else if (right) {
         pPlayer->movement.walk = [&]{pPlayer->movement.walkRight();};
-        if (run) pPlayer->stateManager.targetStateID = RUNNING;
-        else pPlayer->stateManager.targetStateID = WALKING;
+        if (run) pPlayer->stateMachine.desiredStateID = RUNNING;
+        else pPlayer->stateMachine.desiredStateID = WALKING;
         }
     else
-    pPlayer->stateManager.targetStateID = IDLE;
+    pPlayer->stateMachine.desiredStateID = IDLE;
 }

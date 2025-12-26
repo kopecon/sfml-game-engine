@@ -3,17 +3,22 @@
 //
 
 #include "../../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/Entity/Player/States/Idle.hpp"
+#include "../../../Includes/Entity/Player/States/States.hpp"
+#include "../../../Includes/Game/Engines/StateMachine/State_new.hpp"
 #include "../../../Includes/World/World.hpp"
 
 
-using enum player::StateManager::States;
+using enum player::States;
 
 #pragma region constructors
 Player::Player(std::string name) : Entity(std::move(name)){}
 Player::Player(std::string name, const Controls &controls) :
-Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this), combat(*this), animationManager(*this), stateManager(*this) {
+Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this), combat(*this), animationManager(*this) {
     this->animationManager.engine.animationSheet = {pTexture, {32, 32}};
     this->animationManager.engine.target = &shape;
+    stateMachine.addState(std::make_unique<State_new<player::States>>(NONE));
+    // stateMachine.addState(std::make_unique<player::Idle>());
     animationManager.engine.add(AnimationEntry(IDLE,         2, true));
     animationManager.engine.add(AnimationEntry(WINKING,      2, true));
     animationManager.engine.add(AnimationEntry(WALKING,      4, true));
@@ -55,10 +60,12 @@ void Player::init() {
 void Player::update() {
     input.update();
     physics.update();
-    stateManager.update();
+    stateMachine.update();
     animationManager.update();
 }
 
-player::StateManager::States Player::getStateID() const {
-    return stateManager.engine.pCurrentState->stateID;
+player::States Player::getStateID() const {
+    if (stateMachine.pCurrentState)
+        return stateMachine.pCurrentState->stateID;
+    return NONE;
 }

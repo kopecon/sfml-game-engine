@@ -4,9 +4,10 @@
 
 #include "../../../Includes/Entity/Player/CombatComponent.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/Entity/Player/States/States.hpp"
 #include "../../../Includes/World/World.hpp"
 
-using enum player::StateManager::States;
+using enum player::States;
 
 player::CombatComponent::CombatComponent() = default;
 

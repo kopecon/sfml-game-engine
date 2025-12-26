@@ -9,8 +9,6 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
-#include "../../Entity/Player/StateManager.hpp"
-
 
 struct AnimationSheet {
     sf::Texture *pTexture{};
@@ -18,7 +16,7 @@ struct AnimationSheet {
     [[nodiscard]] sf::Vector2i getFrameSize(const int &framesPerRow, const int &framesPerColumn) const;
 };
 
-template<typename StateSet>
+template<typename States>
 class AnimationEntry {
 public:
     enum AnimationState {
@@ -27,14 +25,14 @@ public:
 #pragma region constructors
     AnimationEntry() = default;
 
-    AnimationEntry(const StateSet &id, const int &framesPerRow, const bool &looping=true) :
+    AnimationEntry(const States &id, const int &framesPerRow, const bool &looping=true) :
     id(id), framesPerRow(framesPerRow), fps(static_cast<float>(framesPerRow)), looping(looping) {}
 
-    AnimationEntry(const StateSet &id, const int &framesPerRow, const float &fps, const bool &looping=true) :
+    AnimationEntry(const States &id, const int &framesPerRow, const float &fps, const bool &looping=true) :
     id(id), framesPerRow(framesPerRow), fps(fps), looping(looping) {}
 
 #pragma endregion
-    StateSet id{0};  // Represents row index starting from 0;
+    States id{0};  // Represents row index starting from 0;
     sf::Vector2i frameIndex = {0, static_cast<int>(id)};
     sf::Vector2i *pIndex = &frameIndex;
     int framesPerRow{8};
@@ -55,13 +53,13 @@ public:
 
     struct Hash {
         size_t operator()(const AnimationEntry& anim) const noexcept {
-            return std::hash<player::StateManager::States>()(anim.id);
+            return std::hash<States>()(anim.id);
         }
     };
 };
 
 
-template<typename StateSet>
+template<typename States>
 class AnimationEngine {
 public:
 #pragma region constructors
@@ -73,9 +71,9 @@ public:
 #pragma endregion
 
     AnimationSheet animationSheet{};
-    AnimationEntry<StateSet> *pPreviousAnimation{nullptr};
-    AnimationEntry<StateSet> *pCurrentAnimation{nullptr};
-    std::unordered_map<StateSet, AnimationEntry<StateSet>> animationSet;
+    AnimationEntry<States> *pPreviousAnimation{nullptr};
+    AnimationEntry<States> *pCurrentAnimation{nullptr};
+    std::unordered_map<States, AnimationEntry<States>> animationSet;
     sf::Shape *target{};
 
     [[nodiscard]] sf::IntRect currentFrame() const {
@@ -85,7 +83,7 @@ public:
         );
         return {frameCoord, animationSheet.frameSize};
     }
-    void set(const StateSet &animationID) {
+    void set(const States &animationID) {
         auto *pNewAnimation = &animationSet[animationID];
         if (pCurrentAnimation == nullptr) {
             pCurrentAnimation = pNewAnimation;
@@ -97,11 +95,11 @@ public:
             pCurrentAnimation = pNewAnimation;
             // Reset the animation
             pCurrentAnimation->frameIndex.x = 0;
-            pCurrentAnimation->state = AnimationEntry<StateSet>::READY;
+            pCurrentAnimation->state = AnimationEntry<States>::READY;
         };
     };
 
-    void add(const AnimationEntry<StateSet> &animation) {
+    void add(const AnimationEntry<States> &animation) {
         animationSet.emplace(animation.id, animation);
 
         if (pCurrentAnimation == nullptr) {
@@ -109,26 +107,26 @@ public:
         }
     }
 
-    void onEnd(const StateSet &animationID, const std::function<void()> &function) {
-        if (animationSet[animationID].state == AnimationEntry<StateSet>::END) {
+    void onEnd(const States &animationID, const std::function<void()> &function) {
+        if (animationSet[animationID].state == AnimationEntry<States>::END) {
             function();
         }
     }
 
-    bool completed(const StateSet &animationID) {
-        if (animationSet[animationID].state == AnimationEntry<StateSet>::COMPLETED) {
+    bool completed(const States &animationID) {
+        if (animationSet[animationID].state == AnimationEntry<States>::COMPLETED) {
             return true;
         }
         return false;
     }
 
     virtual void update(const float &dt) const {
-        if (pCurrentAnimation->state == AnimationEntry<StateSet>::END) {
-            pCurrentAnimation->state = AnimationEntry<StateSet>::COMPLETED;
+        if (pCurrentAnimation->state == AnimationEntry<States>::END) {
+            pCurrentAnimation->state = AnimationEntry<States>::COMPLETED;
             return;
         }
         target->setTextureRect(currentFrame());
-        pCurrentAnimation->state = AnimationEntry<StateSet>::PLAYING;
+        pCurrentAnimation->state = AnimationEntry<States>::PLAYING;
         pCurrentAnimation->timer += dt;
         // When it is the time to move to the next frame
         if (pCurrentAnimation->timer >= 1/pCurrentAnimation->fps) {
@@ -141,7 +139,7 @@ public:
             if (pCurrentAnimation->looping) pCurrentAnimation->frameIndex.x = 0;
             // DONT LOOP
             else {
-                pCurrentAnimation->state = AnimationEntry<StateSet>::END;
+                pCurrentAnimation->state = AnimationEntry<States>::END;
                 pCurrentAnimation->frameIndex.x = pCurrentAnimation->framesPerRow-1;
             }
         }
