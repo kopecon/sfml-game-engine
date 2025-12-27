@@ -13,13 +13,25 @@ namespace player {
     class Jumping final : public State<StateSet> {
     public:
         explicit Jumping(Player *pPlayer) : State(StateSet::ID::JUMPING), pPlayer(pPlayer) {
-            auto grounded = [this] {
-                return this->pPlayer->physics.isGrounded();
+            // Helpers
+            // ReSharper disable once CppDFAUnreachableFunctionCall
+            auto grounded = [this] {return this->pPlayer->physics.isGrounded();};
+            // ReSharper disable once CppDFAUnreachableFunctionCall
+            auto previous = [this] {
+                const auto* prev = this->pPlayer->stateMachine.pPreviousState;
+                return prev ? prev->stateID : StateSet::ID::NONE;
             };
-            addEdge(std::make_unique<Edge>(grounded, StateSet::ID::IDLE));
-            addEdge(std::make_unique<Edge>(grounded, StateSet::ID::WALKING));
-            addEdge(std::make_unique<Edge>(grounded, StateSet::ID::STOPPING));
-            addEdge(std::make_unique<Edge>(grounded, StateSet::ID::RUNNING));
+
+            // Conditions
+            using enum StateSet::ID;
+            auto idle    = [grounded, previous] {return grounded() && previous() == IDLE;};
+            auto walking = [grounded, previous] {return grounded() && previous() == WALKING;};
+            auto running = [grounded, previous] {return grounded() && previous() == RUNNING;};
+
+            addEdge(std::make_unique<Edge>(idle   , IDLE   ));
+            addEdge(std::make_unique<Edge>(walking, WALKING));
+            addEdge(std::make_unique<Edge>(running, RUNNING));
+
             addEnterAction([pPlayer]{pPlayer->movement.jump();});
         }
         // HOST

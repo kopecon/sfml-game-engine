@@ -67,7 +67,7 @@ public:
         for (const auto &edge : this->edges) {
             // 1.a Edge has a specific condition -> resolve defined condition first
             if (edge->condition) {
-                if (edge->condition() && nextStateID == edge->next) {
+                if (edge->condition()) {
                     return edge->next;
                 }
             }
