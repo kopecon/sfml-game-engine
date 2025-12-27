@@ -27,6 +27,9 @@ Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this)
     stateMachine.addState(std::make_unique<Walking>(this));
     stateMachine.addState(std::make_unique<Stopping>(this));
     stateMachine.addState(std::make_unique<State<StateSet>>(ATTACKING));
+    stateMachine.setVerbose();
+    stateMachine.getState(IDLE)->addEdge(std::make_unique<State<StateSet>::Edge>(ATTACKING));
+    stateMachine.getState(RUNNING)->addEdge(std::make_unique<State<StateSet>::Edge>(ATTACKING));
     animationManager.engine.add(AnimationEntry(IDLE,         2, true));
     animationManager.engine.add(AnimationEntry(WINKING,      2, true));
     animationManager.engine.add(AnimationEntry(WALKING,      4, true));

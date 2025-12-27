@@ -43,6 +43,11 @@ public:
     // DEBUG SETTINGS
     bool verbose{false};
 
+    bool hasEdges() {
+        if (edges.empty()) return false;
+        return true;
+    }
+
     void addEdge(std::unique_ptr<Edge> edge) {
         edges.push_back(std::move(edge));
     }
@@ -62,7 +67,9 @@ public:
 
     typename StateSet::ID next(const typename StateSet::ID &nextStateID) {
         // 0. Warn that state has no edges
-        if (verbose && edges.empty()) std::cout << "State: " << name << " has no edges!\n";
+        if (edges.empty()) {
+            if (verbose) std::cout << "State: " << name << " has no edges!\n";
+        }
         // 1. Choose edge
         for (const auto &edge : this->edges) {
             // 1.a Edge has a specific condition -> resolve defined condition first

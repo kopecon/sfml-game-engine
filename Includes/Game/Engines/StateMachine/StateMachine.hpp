@@ -14,6 +14,7 @@
 
 template<StateSetConcept StateSet>
 class StateMachine {
+    bool verbose{false};
     void _enter(State<StateSet> *pState) {
         pCurrentState = pState;
         pCurrentState->onEnter();
@@ -21,6 +22,16 @@ class StateMachine {
     void _exit(State<StateSet> *pState) {
         pCurrentState->onExit();
         pPreviousState = pState;
+    }
+    void _generateFallBackEdge(State<StateSet> *pState) {
+        pState->addEdge(std::make_unique<typename State<StateSet>::Edge>(pCurrentState->stateID));
+#ifndef NDEBUG
+        std::cerr << "\nWarning: State "
+                  << StateSet::name(pState->stateID)
+                  << " has no edges. Auto-generated fallback to "
+                  << StateSet::name(pCurrentState->stateID)
+                  << '\n';
+#endif
     }
 public:
     #pragma region constructors
@@ -40,20 +51,22 @@ public:
     // DEBUG SETTINGS
 
     void setVerbose() {
+        verbose = true;
         for (const auto &it : states) {
             it.second.get()->verbose = true;
         }
     }
     void resetVerbose() {
+        verbose = false;
         for (const auto &it : states) {
             it.second.get()->verbose = false;
         }
     }
 
-    State<StateSet>* getState(typename StateSet::ID &stateID) {
+    State<StateSet>* getState(typename StateSet::ID stateID) {
         auto it = states.find(stateID);
         if (it == states.end()) {
-            std::cout << "Desired state " << static_cast<int>(stateID) << " not implemented!\n";
+            if (verbose) std::cout << "Desired state " << StateSet::name(stateID) << " is not implemented!\n";
             return nullptr;
         }
         return it->second.get();
@@ -74,6 +87,7 @@ public:
         auto newStateID = pCurrentState->next(desiredStateID);
         if (newStateID != pCurrentState->stateID) {
             if (const auto newState = getState(newStateID)) {
+                if (!newState->hasEdges()) _generateFallBackEdge(newState);
                 _exit(pCurrentState);
                 _enter(newState);
             }
