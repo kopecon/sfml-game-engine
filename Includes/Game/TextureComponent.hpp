@@ -2,8 +2,8 @@
 // Created by Andrew on 03/12/2025.
 //
 
-#ifndef BONK_GAME_TEXTURECOMPONENT_HPP
-#define BONK_GAME_TEXTURECOMPONENT_HPP
+#ifndef BONK_GAME_TEXTURE_COMPONENT_HPP
+#define BONK_GAME_TEXTURE_COMPONENT_HPP
 #include "SFML/Graphics/Texture.hpp"
 
 
@@ -16,4 +16,4 @@ public:
 };
 
 
-#endif //BONK_GAME_TEXTURECOMPONENT_HPP
+#endif //BONK_GAME_TEXTURE_COMPONENT_HPP

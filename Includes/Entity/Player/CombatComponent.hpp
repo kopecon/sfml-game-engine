@@ -6,20 +6,23 @@
 #define BONK_GAME_COMBAT_COMPONENT_HPP
 
 
-class Player;
 
-class CombatComponent {
-public:
-    CombatComponent();
-    explicit CombatComponent(Player &player);;
 
-    Player *pPlayer{nullptr};
+namespace player {
+    class Player;
 
-    float attackRange{};
-    void attack() const;
-    void takeDamage(const float &damage) const;
-    void die() const;
-};
+    class CombatComponent {
+    public:
+        CombatComponent();
+        explicit CombatComponent(Player &player);;
 
+        Player *pPlayer{nullptr};
+
+        float attackRange{};
+        void attack() const;
+        void takeDamage(const float &damage) const;
+        void die() const;
+    };
+}
 
 #endif //BONK_GAME_COMBAT_COMPONENT_HPP

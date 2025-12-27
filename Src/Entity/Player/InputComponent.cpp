@@ -2,40 +2,39 @@
 // Created by Andrew on 20/11/2025.
 //
 
-
-#include <iostream>
 #include "../../../Includes/Entity/Player/InputComponent.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/Entity/Player/States/StateSet.hpp"
+
 
 #pragma region constructors
-
-InputComponent::InputComponent() = default;
-InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
-
+player::InputComponent::InputComponent() = default;
+player::InputComponent::InputComponent(Player &player, const Controls &controls) : pPlayer(&player), controls(controls) {}
 #pragma endregion
 
-ActionsComponent::States InputComponent::update() const {
+    void player::InputComponent::update() const {
     const bool left = sf::Keyboard::isKeyPressed(controls.left);
     const bool right = sf::Keyboard::isKeyPressed(controls.right);
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
     const bool attack = sf::Keyboard::isKeyPressed(controls.attack);
 
-    using enum ActionsComponent::States;
+    using enum StateSet::ID;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
-    if (jump) return JUMPING;
-    if (attack) return ATTACKING;
-    if (left && right) return STOPPING;
-    if (left) {
-        pPlayer->actions.movement.walk = [&]{pPlayer->actions.movement.walkLeft();};
-        if (run) return RUNNING;
-        return WALKING;
+    if (jump) pPlayer->stateMachine.desiredStateID = JUMPING;
+    else if (attack) pPlayer->stateMachine.desiredStateID = ATTACKING;
+    else if (left && right) pPlayer->stateMachine.desiredStateID = STOPPING;
+    else if (left) {
+        pPlayer->movement.walk = [&]{pPlayer->movement.walkLeft();};
+        if (run) pPlayer->stateMachine.desiredStateID = RUNNING;
+        else pPlayer->stateMachine.desiredStateID = WALKING;
         }
-    if (right) {
-        pPlayer->actions.movement.walk = [&]{pPlayer->actions.movement.walkRight();};
-        if (run) return RUNNING;
-        return WALKING;
+    else if (right) {
+        pPlayer->movement.walk = [&]{pPlayer->movement.walkRight();};
+        if (run) pPlayer->stateMachine.desiredStateID = RUNNING;
+        else pPlayer->stateMachine.desiredStateID = WALKING;
         }
-    return IDLE;
+    else
+    pPlayer->stateMachine.desiredStateID = IDLE;
 }

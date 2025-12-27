@@ -3,158 +3,82 @@
 //
 
 #include "../../../Includes/Entity/Player/Player.hpp"
-#include "../../../Utils/utils.hpp"
-#include <iostream>
 
+#include "../../../Includes/Entity/Player/States/Attacking.hpp"
+#include "../../../Includes/Entity/Player/States/Idle.hpp"
+#include "../../../Includes/Entity/Player/States/Jumping.hpp"
+#include "../../../Includes/Entity/Player/States/Running.hpp"
+#include "../../../Includes/Entity/Player/States/StateSet.hpp"
+#include "../../../Includes/Entity/Player/States/Stopping.hpp"
+#include "../../../Includes/Entity/Player/States/Walking.hpp"
+#include "../../../Includes/Entity/Player/States/Winking.hpp"
+#include "../../../Includes/Game/Engines/StateMachine/State.hpp"
 #include "../../../Includes/World/World.hpp"
 
-using enum ActionsComponent::States;
+
+using enum player::StateSet::ID;
 
 #pragma region constructors
-Player::Player(std::string name) : Entity(std::move(name)){}
-
-Player::Player(std::string name, const Controls &controls) :
-Entity(std::move(name)), input(*this, controls), physics(*this), animation(*this), actions(*this) {
-    this->animation.animationSheet = {pTexture, {32, 32}};
-    this->animation.target = &shape;
-    animation.add(AnimationEntry(IDLE,         2, true));
-    animation.add(AnimationEntry(WINKING,      2, true));
-    animation.add(AnimationEntry(WALKING,      4, true));
-    animation.add(AnimationEntry(RUNNING,      8, true));
-    animation.add(AnimationEntry(CROUCHING,    6, true));
-    animation.add(AnimationEntry(JUMPING,      8, false));
-    animation.add(AnimationEntry(DYING,        8, false));
-    animation.add(AnimationEntry(DISAPPEARING, 4, false));
-    animation.add(AnimationEntry(ATTACKING,    8, false));
+player::Player::Player(std::string name) : Entity(std::move(name)){}
+player::Player::Player(std::string name, const Controls &controls) :
+Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this), combat(*this), animationManager(*this), stateMachine(this) {
+    this->animationManager.engine.animationSheet = {pTexture, {32, 32}};
+    this->animationManager.engine.target = &shape;
+    stateMachine.addState(std::make_unique<Idle     >(this));
+    stateMachine.addState(std::make_unique<Jumping  >(this));
+    stateMachine.addState(std::make_unique<Running  >(this));
+    stateMachine.addState(std::make_unique<Walking  >(this));
+    stateMachine.addState(std::make_unique<Stopping >(this));
+    stateMachine.addState(std::make_unique<Attacking>(this));
+    stateMachine.addState(std::make_unique<Winking  >(this));
+    stateMachine.setVerbose();
+    animationManager.engine.add(AnimationEntry(IDLE,         2, true));
+    animationManager.engine.add(AnimationEntry(WINKING,      2, true));
+    animationManager.engine.add(AnimationEntry(WALKING,      4, true));
+    animationManager.engine.add(AnimationEntry(RUNNING,      8, true));
+    animationManager.engine.add(AnimationEntry(CROUCHING,    6, true));
+    animationManager.engine.add(AnimationEntry(JUMPING,      8, false));
+    animationManager.engine.add(AnimationEntry(DYING,        8, false));
+    animationManager.engine.add(AnimationEntry(DISAPPEARING, 4, false));
+    animationManager.engine.add(AnimationEntry(ATTACKING,    8, false));
 }
 #pragma endregion
 
-sf::Vector2f Player::getSize() const {
+sf::Vector2f player::Player::getSize() const {
     return shape.getGlobalBounds().size;
 }
 
-sf::Vector2f Player::getPosition() const {
+sf::Vector2f player::Player::getPosition() const {
     return shape.getPosition();
 }
 
-void Player::setPosition(const sf::Vector2f &position) {
-    shape.setPosition(position);
-    physics.position = getPosition();
-}
-
-void Player::declareState() {
-    const ActionsComponent::States desiredState = input.update();
-    if (health <= 0) {
-        actions.state = DYING;
-        return;
-    }
-    if (actions.state == JUMPING) {
-        if (physics.position.y  + getSize().y / 2.f >= pWorld->groundLevel) {
-            actions.state = IDLE;
-        }
-    }
-    else if (actions.state == ATTACKING) {
-        if (animation.completed(ATTACKING)) {
-            this->actions.state=IDLE;
-        }
-    }
-    else {  // ACTIONS NEED TO BE SORTED BY PRIORITY
-        if (desiredState == JUMPING) {
-            actions.state = JUMPING;
-        }
-        else if (desiredState == ATTACKING) {
-            actions.state = ATTACKING;
-        }
-        else if (desiredState == WALKING) {
-            actions.state = WALKING;
-        }
-        else if (desiredState == RUNNING) {
-            actions.state = RUNNING;
-        }
-        else if (desiredState == STOPPING) {
-            actions.state = STOPPING;
-        }
-        else if (desiredState == IDLE) {
-            if (std::fabs(physics.velocity.x) > 0) {
-                actions.state = BRAKING;
-            }
-            else actions.state = IDLE;
-        }
-    }
-}
-
-void Player::takeAction() {
-    switch (actions.state) {
-        case IDLE: {
-            break;
-        }
-        case WINKING: {
-            break;
-        }
-        case WALKING: {
-            physics.speed = physics.walkingSpeed;
-            actions.movement.walk();
-            break;
-        }
-        case RUNNING: {
-            physics.speed = physics.runningSpeed;
-            actions.movement.walk();
-            break;
-        }
-        case CROUCHING: {
-            break;
-        }
-        case JUMPING: {
-            actions.movement.jump();
-            break;
-        }
-        case DISAPPEARING: {
-            break;
-        }
-        case DYING: {
-            actions.combat.die();
-            break;
-        }
-        case ATTACKING: {
-            actions.combat.attack();
-            break;
-        }
-        case BRAKING: {
-            actions.movement.brake();
-            break;
-        }
-        case STOPPING: {
-            actions.movement.brake();
-            break;
-        }
-        default: {
-        }
-    }
-}
-
-void Player::initShapeSize() {
+void player::Player::initShapeSize() {
     shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
 }
 
-sf::Shape *Player::getShape() {
+sf::Shape *player::Player::getShape() {
     return &shape;
 }
 
-sf::Texture *Player::getTexture() {
+sf::Texture *player::Player::getTexture() {
     return &pWorld->pGame->textures.player;
 }
 
-void Player::init() {
+void player::Player::init() {
     Entity::init();
     const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio() * height;
     pShape->setScale(sizeRatio);
 }
 
-void Player::update() {
-    physics.acceleration = {0.f, pWorld->gravity};  // Reset acceleration
-    declareState();
-    animation.selectAnimation();
-    takeAction();
+void player::Player::update() {
+    input.update();
     physics.update();
-    animation.update(pWorld->pGame->time.dt);
+    stateMachine.update();
+    animationManager.update();
+}
+
+player::StateSet::ID player::Player::getStateID() const {
+    if (stateMachine.pCurrentState)
+        return stateMachine.pCurrentState->stateID;
+    return NONE;
 }

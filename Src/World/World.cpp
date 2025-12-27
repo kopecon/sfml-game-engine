@@ -21,7 +21,7 @@ void World::draw() const {
 }
 
 void World::update() {
-    for (auto &entity : entities | std::views::values) {
+    for (const auto &entity : entities | std::views::values) {
         entity->update();
         // Clear removed entities
         if (entity->markedForRemoval) {

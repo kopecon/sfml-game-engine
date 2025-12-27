@@ -2,41 +2,41 @@
 // Created by Andrew on 20/11/2025.
 //
 
-#ifndef BONK_GAME_PHYSICSCOMPONENT_HPP
-#define BONK_GAME_PHYSICSCOMPONENT_HPP
+#ifndef BONK_GAME_PHYSICS_COMPONENT_HPP
+#define BONK_GAME_PHYSICS_COMPONENT_HPP
 
 #include <SFML/Graphics.hpp>
 #include "../../../Utils/utils.hpp"
 
 
-class Player;
 
-class PhysicsComponent {
-public:
-    PhysicsComponent ();
-    explicit PhysicsComponent (Player &player);
-    Player *pPlayer{nullptr};
-    // CURRENT STATE
-    sf::Vector2f position{};
-    sf::Vector2f velocity{};
-    sf::Vector2f acceleration{};
-    // LIMITS
-    sf::Vector2f walkingSpeed{};
-    sf::Vector2f runningSpeed{};
-    sf::Vector2f speed{};
-    sf::Vector2f snap{0.05f, 0.05f};  // How aggressively player changes speed
 
-    void updateWalkingSpeed();
+namespace player {
+    class Player;
 
-    void updateRunningSpeed();
+    class PhysicsComponent {
+    public:
+        PhysicsComponent ();
+        explicit PhysicsComponent (Player &player);
+        Player *pPlayer{nullptr};
+        // CURRENT STATE
+        sf::Vector2f position{};
+        sf::Vector2f velocity{};
+        sf::Vector2f acceleration{};
+        // COMPONENT CONTROLS
+        bool verbose{false};
 
-    void updateSpeed();
+        [[nodiscard]] bool isGrounded() const;
 
-    void accelerate(const sf::Vector2f &targetVelocity);
+        void ground();
 
-    void printPhysics() const;
+        void accelerate(const sf::Vector2f &targetVelocity);
 
-    void update();
-};
+        void syncRender() const;
 
-#endif //BONK_GAME_PHYSICSCOMPONENT_HPP
+        void printPhysics() const;
+
+        void update();
+    };
+}
+#endif //BONK_GAME_PHYSICS_COMPONENT_HPP

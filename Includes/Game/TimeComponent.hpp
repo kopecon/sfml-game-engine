@@ -13,9 +13,7 @@ public:
     sf::Clock clock{};
     float dt{};
 
-    void update() {
-        dt = clock.restart().asSeconds(); // seconds since last frame
-    }
+    void update();
 };
 
 
