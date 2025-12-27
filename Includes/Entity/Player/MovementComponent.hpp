@@ -25,7 +25,7 @@ namespace player {
         sf::Vector2f snap{0.05f, 0.05f};  // How aggressively player changes speed
 
         void turn() const;
-        std::function<void()> walk;
+        std::function<void()> walk{[this](){brake();}};  // If walk direction not decided, break.
         void walkLeft() const;
         void walkRight() const;
         void brake() const;
