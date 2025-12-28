@@ -3,16 +3,17 @@
 //
 
 #include "../../../Includes/Entity/Scenery/Ground.hpp"
+#include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
 
-Ground::Ground(std::string name) : Scenery(std::move(name)) {
+Ground::Ground(World &world, std::string name) : Scenery(world, std::move(name)) {
     shape.setFillColor(color);
 }
 
 
-sf::Texture * Ground::getTexture() {
-    return &pWorld->pGame->textures.topGround;
+const sf::Texture * Ground::getTexture() {
+    return &game.textures.topGround;
 }
 
 void Ground::init() {

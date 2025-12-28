@@ -10,26 +10,28 @@
 Game::Game() = default;
 
 Game::Game(const std::string &title):
-    title(title),
-    video(title) {}
+title(title),
+video(title)
+{}
 
-World* Game::createWorld(const std::string &name) {
-    auto pWorld = std::make_unique<World>(name);
-    pWorld->pGame = this;
-    worlds.emplace(pWorld->name, std::move(pWorld));
-    return getWorld(name);
+World* Game::createWorld(std::string name) {
+    auto pWorld = std::make_unique<World>(*this, std::move(name));
+    auto [it, inserted] = worlds.emplace(pWorld->name, std::move(pWorld));
+    pCurrentWorld = it->second.get();
+    return it->second.get();
 }
 
 World* Game::getWorld(std::string name) {
-    text::up(name);
-    const auto it = worlds.find(name);
-    if (it != worlds.end())
-        return it->second.get();
-    return nullptr;
+    const auto NAME = text::up(std::move(name));
+    const auto it = worlds.find(NAME);
+    if (it == worlds.end())
+        return nullptr;
+    return it->second.get();
 }
-
 
 void Game::update() {
     time.update();
-    video.update(worlds.begin()->second.get());
+    // Update entities in the world
+    pCurrentWorld->update();
+    video.update(pCurrentWorld);
 }

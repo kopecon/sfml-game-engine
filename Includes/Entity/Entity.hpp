@@ -10,19 +10,25 @@
 
 
 class World;
+class Game;
+
 
 class Entity {
 public:
     virtual ~Entity();
 
-    explicit Entity(std::string name);
-
-    std::string name{};
+    explicit Entity(World &world, std::string name);
+    // REFERENCES
+    const World &world;
+    const Game  &game;
+    // CHARACTERISTICS
+    const std::string name{};
     sf::Vector2f *pSize{nullptr};
+    // RENDER
     sf::Shape *pShape{nullptr};
-    sf::Texture *pTexture{nullptr};
-    World *pWorld{nullptr};
-    bool markedForRemoval = false;
+    const sf::Texture *pTexture{nullptr};
+    // FLAGS
+    bool removalFlag = false;
 
     virtual void initShapeSize() = 0;
 
@@ -30,7 +36,7 @@ public:
 
     [[nodiscard]] virtual sf::Vector2f getWindowToShapeSizeRatio() const;
 
-    virtual sf::Texture* getTexture() {return pTexture;}
+    virtual const sf::Texture* getTexture() {return pTexture;}
 
     virtual void init();
 

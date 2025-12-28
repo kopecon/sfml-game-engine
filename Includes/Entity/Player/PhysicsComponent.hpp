@@ -16,14 +16,17 @@ namespace player {
 
     class PhysicsComponent {
     public:
-        PhysicsComponent ();
+        #pragma region constructors
         explicit PhysicsComponent (Player &player);
-        Player *pPlayer{nullptr};
-        // CURRENT STATE
+        #pragma endregion
+
+        // REFERENCES
+        Player &player;
+        // CHARACTERISTICS
         sf::Vector2f position{};
         sf::Vector2f velocity{};
         sf::Vector2f acceleration{};
-        // COMPONENT CONTROLS
+        // DEBUG SETTINGS
         bool verbose{false};
 
         [[nodiscard]] bool isGrounded() const;

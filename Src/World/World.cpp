@@ -4,28 +4,24 @@
 
 #include <utility>
 #include "../../Includes/World/World.hpp"
+#include "../../Includes/Game/Game.hpp"
 #include "../../Utils/utils.hpp"
 
+#pragma region constructors
+World::World(Game &game, std::string name):
+game(game),
+name(text::up(std::move(name))),
+groundLevel(static_cast<float>(game.video.window.getSize().y)*0.9f/2.f)
+{}
+#pragma endregion
 
-World::World() = default;
-
-World::World(std::string name) {
-    text::up(name);
-    this->name = std::move(name);
-}
-
-void World::draw() const {
-    for (auto &entity: entities | std::views::values) {
-        pGame->video.window.draw(*entity->pShape);
-    }
-}
 
 void World::update() {
     for (const auto &entity : entities | std::views::values) {
         entity->update();
-        // Clear removed entities
-        if (entity->markedForRemoval) {
-            // remove(entity);
+        // Remove flagged entities
+        if (entity->removalFlag) {
+            remove(entity->name);
         }
     }
 }

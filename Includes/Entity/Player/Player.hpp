@@ -22,8 +22,8 @@ namespace player {
     class Player final : public Entity {
     public:
 #pragma region constructors
-        explicit Player(std::string name);
-        explicit Player(std::string name, const Controls &controls);
+        explicit Player(World &world, std::string name);
+        explicit Player(World &world, std::string name, const Controls &controls);
 #pragma endregion
         // CHARACTERISTICS
         float health {100.f};
@@ -34,8 +34,8 @@ namespace player {
         float eyeDryness{};
         // COMPONENTS
         InputComponent input{};
-        PhysicsComponent physics{};
-        MovementComponent movement{};
+        PhysicsComponent physics;
+        MovementComponent movement;
         CombatComponent combat{};
         // MANAGERS
         AnimationManager animationManager{};
@@ -49,7 +49,7 @@ namespace player {
         // OVERRIDES
         void initShapeSize() override;
         sf::Shape* getShape() override;
-        sf::Texture* getTexture() override;
+        const sf::Texture* getTexture() override;
         void init() override;
         // UPDATE
         void update() override;

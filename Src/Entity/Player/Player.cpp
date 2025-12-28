@@ -13,15 +13,27 @@
 #include "../../../Includes/Entity/Player/States/Walking.hpp"
 #include "../../../Includes/Entity/Player/States/Winking.hpp"
 #include "../../../Includes/Game/Engines/StateMachine/State.hpp"
+#include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
 
 using enum player::StateSet::ID;
 
 #pragma region constructors
-player::Player::Player(std::string name) : Entity(std::move(name)){}
-player::Player::Player(std::string name, const Controls &controls) :
-Entity(std::move(name)), input(*this, controls), physics(*this), movement(*this), combat(*this), animationManager(*this), stateMachine(this) {
+player::Player::Player(World &world, std::string name):
+Entity(world, std::move(name)),
+physics(*this),
+movement(*this)
+{}
+player::Player::Player(World &world, std::string name, const Controls &controls):
+Entity(world, std::move(name)),
+input(*this, controls),
+physics(*this),
+movement(*this),
+combat(*this),
+animationManager(*this),
+stateMachine(this)
+{
     this->animationManager.engine.animationSheet = {pTexture, {32, 32}};
     this->animationManager.engine.target = &shape;
     stateMachine.addState(std::make_unique<Idle     >(this));
@@ -60,8 +72,8 @@ sf::Shape *player::Player::getShape() {
     return &shape;
 }
 
-sf::Texture *player::Player::getTexture() {
-    return &pWorld->pGame->textures.player;
+const sf::Texture *player::Player::getTexture() {
+    return &game.textures.player;
 }
 
 void player::Player::init() {

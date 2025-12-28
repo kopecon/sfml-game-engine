@@ -11,10 +11,10 @@
 
 class Scenery : public Entity {
 public:
-    explicit Scenery(std::string name);
+    explicit Scenery(World &world, std::string name);
     sf::RectangleShape shape{};
     float stretchFactor = 3.f;
-    Camera *pCamera{};
+    const Camera *pCamera{};
 
     void setCamera();
 

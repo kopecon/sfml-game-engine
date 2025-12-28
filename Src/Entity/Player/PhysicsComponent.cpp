@@ -6,41 +6,41 @@
 #include "../../../Includes/Entity/Player/PhysicsComponent.hpp"
 #include "../../../Includes/Game/Engines/PhysicsEngine.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
+#include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
 
 #pragma region constructors
-player::PhysicsComponent::PhysicsComponent() = default;
-player::PhysicsComponent::PhysicsComponent(Player &player) : pPlayer(&player) {}
+player::PhysicsComponent::PhysicsComponent(Player &player) : player(player) {}
 #pragma endregion
 
 
 bool player::PhysicsComponent::isGrounded() const {
-    const float groundLevel = pPlayer->pWorld->groundLevel;
-    const float halfHeight = pPlayer->getSize().y * 0.5f;
+    const float groundLevel = player.world.groundLevel;
+    const float halfHeight = player.getSize().y * 0.5f;
 
     return (position.y + halfHeight >= groundLevel)
         && (velocity.y >= 0.f);
 }
 
 void player::PhysicsComponent::ground() {
-    const float &groundLevel = pPlayer->pWorld->groundLevel;
-    position = {position.x, groundLevel - pPlayer->getSize().y / 2.f};
+    const float &groundLevel = player.world.groundLevel;
+    position = {position.x, groundLevel - player.getSize().y / 2.f};
     acceleration.y = 0;
     velocity.y = 0;
 }
 
 void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
-    const float &airFriction = pPlayer->pWorld->airFriction;
-    const float &groundFriction = pPlayer->pWorld->groundFriction;
+    const float &airFriction = player.world.airFriction;
+    const float &groundFriction = player.world.groundFriction;
 
     const sf::Vector2f velDiff = targetVelocity - velocity;
     const sf::Vector2f environment{groundFriction, airFriction};
-    acceleration = hd::multiply<float>(pPlayer->movement.getSpeed(), pPlayer->movement.snap, velDiff, environment);
+    acceleration = hd::multiply<float>(player.movement.getSpeed(), player.movement.snap, velDiff, environment);
 }
 
 void player::PhysicsComponent::syncRender() const {
-    pPlayer->shape.setPosition(position);
+    player.shape.setPosition(position);
 }
 
 void player::PhysicsComponent::printPhysics() const {
@@ -49,12 +49,12 @@ void player::PhysicsComponent::printPhysics() const {
 }
 
 void player::PhysicsComponent::update() {
-    const float &dt = pPlayer->pWorld->pGame->time.dt;
-    const float &airFriction = pPlayer->pWorld->airFriction;
+    const float &dt = player.game.time.dt;
+    const float &airFriction = player.world.airFriction;
     // ReSharper disable once CppUseStructuredBinding
-    const PhysicsEngine &engine = pPlayer->pWorld->pGame->engine;
+    const PhysicsEngine &engine = player.game.engine;
 
-    acceleration.y = pPlayer->pWorld->gravity;  // Apply Gravity
+    acceleration.y = player.world.gravity;  // Apply Gravity
 
     engine.motionEquation(dt, acceleration, velocity, position, airFriction);
 

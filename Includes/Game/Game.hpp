@@ -15,8 +15,10 @@
 class World;
 
 class Game {
+protected:
     // WORLDS
     std::unordered_map<std::string, std::unique_ptr<World>> worlds{};
+    World *pCurrentWorld{nullptr};
 public:
 #pragma region constructors
     Game();
@@ -32,7 +34,7 @@ public:
     PhysicsEngine engine{};
 
 
-    World* createWorld(const std::string &name);
+    World* createWorld(std::string name);
 
     World* getWorld(std::string name);
 

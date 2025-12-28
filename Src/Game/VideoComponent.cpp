@@ -17,7 +17,7 @@ VideoComponent::VideoComponent(const std::string &title)
     window.setFramerateLimit(fps);
 }
 
-void VideoComponent::recreate() {
+void VideoComponent::recreateWindow() {
     window.create(sf::VideoMode(windowSize), title, sf::Style::Default, windowState, settings);
 }
 
@@ -44,29 +44,30 @@ void VideoComponent::onKeyPressed(const sf::Event::KeyPressed &keyPressed) {
                 windowState = sf::State::Windowed;
             }
             // Recreate the window
-            recreate();
+            recreateWindow();
         }
         default: {
         }
     }
 }
 
-void VideoComponent::update(World *world) {
+void VideoComponent::update(World *pWorld) {
     window.handleEvents(
         [&](const sf::Event::Closed &event){onClose(event);},
         [&](const sf::Event::KeyPressed &keyPressed){onKeyPressed(keyPressed);}
     );
 
-
-    // Update entities in the world
-    world->update();
-
     // Update the view to follow the target
     if (camera.pTarget != nullptr) camera.followTarget();
     window.setView(camera.view);
 
-    // Draw on screen
+    // --- Draw on screen ---
     window.clear();
-    world->draw();
+
+    for (auto const &entity : *pWorld->getEntities() | std::views::values) {
+        window.draw(*entity->pShape);
+    }
+
     window.display();
+    // --- Draw on screen ---
 }

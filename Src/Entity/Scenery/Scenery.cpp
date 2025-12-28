@@ -3,13 +3,14 @@
 //
 
 #include "../../../Includes/Entity/Scenery/Scenery.hpp"
+#include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
 
-Scenery::Scenery(std::string name): Entity(std::move(name)) {}
+Scenery::Scenery(World &world, std::string name): Entity(world, std::move(name)) {}
 
 void Scenery::setCamera() {
-    pCamera = &pWorld->pGame->video.camera;
+    pCamera = &game.video.camera;
 }
 
 sf::Shape * Scenery::getShape() {
@@ -43,7 +44,7 @@ void Scenery::initShapeSize() {
 
 void Scenery::init() {
     Entity::init();
-    pTexture->setRepeated(true);
+    // pTexture->setRepeated(true); //FIXME
     pShape->setTextureRect(sf::IntRect({0,0}, {static_cast<sf::Vector2i>(shape.getGlobalBounds().size)}));
 }
 

@@ -14,7 +14,7 @@ player::CombatComponent::CombatComponent() = default;
 player::CombatComponent::CombatComponent(Player &player): pPlayer(&player) {}
 
 void player::CombatComponent::attack() const {
-    auto pPlayers = pPlayer->pWorld->findEntities<Player>();
+    auto pPlayers = pPlayer->world.findEntities<Player>();
     std::erase(pPlayers, pPlayer);
     for (Player *opponent : pPlayers) {
         if (hd::abs(opponent->physics.position - pPlayer->physics.position).x <= attackRange &&
@@ -29,5 +29,5 @@ void player::CombatComponent::takeDamage(const float &damage) const {
 }
 
 void player::CombatComponent::die() const {
-    pPlayer->animationManager.engine.onEnd(DYING, [this]{pPlayer->markedForRemoval=true;});
+    pPlayer->animationManager.engine.onEnd(DYING, [this]{pPlayer->removalFlag=true;});
 }

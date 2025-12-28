@@ -5,6 +5,7 @@
 #include "../../../Includes/Entity/Player/AnimationManager.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
 #include "../../../Includes/Entity/Player/States/StateSet.hpp"
+#include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 #include <cmath>
 
@@ -125,5 +126,5 @@ void player::AnimationManager::updateFPS() const {
 void player::AnimationManager::update() {
     selectAnimation();
     updateFPS();
-    engine.update(pPlayer->pWorld->pGame->time.dt);
+    engine.update(pPlayer->game.time.dt);
 }

@@ -9,37 +9,35 @@
 
 using enum player::StateSet::ID;
 
-player::MovementComponent::MovementComponent() = default;
-
-player::MovementComponent::MovementComponent(Player &player): pPlayer(&player) {}
+player::MovementComponent::MovementComponent(Player &player): player(player) {}
 
 void player::MovementComponent::turn() const {
     brake();
-    if (areClose(pPlayer->physics.velocity.x, 0.f, 10.f)) {
-        pPlayer->shape.setScale({-pPlayer->shape.getScale().x, pPlayer->shape.getScale().y});
-        pPlayer->facingRight = !pPlayer->facingRight;
+    if (areClose(player.physics.velocity.x, 0.f, 10.f)) {
+        player.shape.setScale({-player.shape.getScale().x, player.shape.getScale().y});
+        player.facingRight = !player.facingRight;
     }
 }
 
 void player::MovementComponent::walkLeft() const {
-    if (pPlayer->facingRight) turn();
-    else pPlayer->physics.accelerate(-pPlayer->movement._speed);
+    if (player.facingRight) turn();
+    else player.physics.accelerate(-player.movement._speed);
 }
 
 void player::MovementComponent::walkRight() const {
-    if (!pPlayer->facingRight) turn();
-    else pPlayer->physics.accelerate(pPlayer->movement._speed);
+    if (!player.facingRight) turn();
+    else player.physics.accelerate(player.movement._speed);
 }
 
 void player::MovementComponent::brake() const {
-    if (pPlayer->physics.isGrounded())
-        pPlayer->physics.accelerate({0.f, pPlayer->physics.velocity.y});
+    if (player.physics.isGrounded())
+        player.physics.accelerate({0.f, player.physics.velocity.y});
 }
 
 void player::MovementComponent::jump() const {
 
-    if (pPlayer->physics.isGrounded()) {
-        pPlayer->physics.velocity.y = -pPlayer->pWorld->gravity*pPlayer->movement._speed.y/2500.f;  // Magic number is tweaked experimentally
+    if (player.physics.isGrounded()) {
+        player.physics.velocity.y = player.world.gravity*player.movement._speed.y/2500.f;  // Magic number is tweaked experimentally
     }
 }
 
@@ -49,11 +47,11 @@ sf::Vector2f player::MovementComponent::getSpeed() {
 }
 
 void player::MovementComponent::updateSpeed() {
-    if (pPlayer->getStateID() == RUNNING
-        || pPlayer->getStateID() == JUMPING
-        && pPlayer->stateMachine.pPreviousState->stateID == RUNNING)
-        _speed = hd::multiply<float>(pPlayer->getSize(), runningSpeed);
+    if (player.getStateID() == RUNNING
+        || player.getStateID() == JUMPING
+        && player.stateMachine.pPreviousState->stateID == RUNNING)
+        _speed = hd::multiply<float>(player.getSize(), runningSpeed);
     else {
-        _speed = hd::multiply<float>(pPlayer->getSize(), walkingSpeed);;
+        _speed = hd::multiply<float>(player.getSize(), walkingSpeed);;
     }
 }

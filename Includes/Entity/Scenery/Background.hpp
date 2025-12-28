@@ -10,9 +10,9 @@
 
 class Background final : public Scenery {
 public:
-    explicit Background(std::string name);
+    explicit Background(World &world, std::string name);
 
-    sf::Texture* getTexture() override;
+    const sf::Texture* getTexture() override;
 
     void init() override;
 };

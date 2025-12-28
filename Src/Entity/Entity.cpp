@@ -9,19 +9,21 @@
 
 #include "../../Utils/utils.hpp"
 #include "../../Includes/World/World.hpp"
+#include "../../Includes/Game/Game.hpp"
 
 
 Entity::~Entity() {
     std::cout << "Entity: " << name << " removed.\n";
-};
-
-Entity::Entity(std::string name) {
-    text::up(name);
-    this->name = std::move(name);
 }
 
+Entity::Entity(World &world, std::string name):
+    world(world),
+    game(world.game),
+    name(text::up(std::move(name)))
+    {}
+
 sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
-        const sf::Vector2f windowSize = static_cast<sf::Vector2f>(pWorld->pGame->video.windowSize);
+        const sf::Vector2f windowSize = static_cast<sf::Vector2f>(world.game.video.windowSize);
         const sf::Vector2f shapeSize = pShape->getGlobalBounds().size;
         const sf::Vector2f sizeRatio = {
             windowSize.x / shapeSize.x,

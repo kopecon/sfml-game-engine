@@ -10,10 +10,10 @@
 
 class Ground final : public Scenery {
 public:
-    explicit Ground(std::string name);
+    explicit Ground(World &world, std::string name);
 
     sf::Color color = sf::Color({40,30,100});
-    sf::Texture* getTexture() override;
+    const sf::Texture* getTexture() override;
 
     void init() override;
 };

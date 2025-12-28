@@ -2,8 +2,8 @@
 // Created by Andrew on 29/11/2025.
 //
 
-#ifndef BONK_GAME_VIDEOCOMPONENT_HPP
-#define BONK_GAME_VIDEOCOMPONENT_HPP
+#ifndef BONK_GAME_VIDEO_COMPONENT_HPP
+#define BONK_GAME_VIDEO_COMPONENT_HPP
 #include <SFML/Graphics.hpp>
 #include "Camera.hpp"
 
@@ -31,14 +31,14 @@ public:
     // COMPONENTS
     Camera camera{};
 
-    void recreate();
+    void recreateWindow();
 
     void onClose(const sf::Event::Closed&);
 
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
 
-    void update(World *world);
+    void update(World *pWorld);
 };
 
 
-#endif //BONK_GAME_VIDEOCOMPONENT_HPP
+#endif //BONK_GAME_VIDEO_COMPONENT_HPP

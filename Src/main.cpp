@@ -15,7 +15,6 @@ int main() {
 
     #pragma region world
     const auto worldForest = game.createWorld("Forest");
-    worldForest->groundLevel = static_cast<float>(window.getSize().y)*0.9f/2.f;
     #pragma endregion
 
     #pragma region background

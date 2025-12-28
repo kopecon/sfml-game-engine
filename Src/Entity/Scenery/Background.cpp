@@ -3,15 +3,16 @@
 //
 
 #include "../../../Includes/Entity/Scenery/Background.hpp"
+#include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
 #include <iostream>
 
 
-Background::Background(std::string name) : Scenery(std::move(name)){}
+Background::Background(World &world, std::string name) : Scenery(world, std::move(name)){}
 
-sf::Texture * Background::getTexture() {
-    return &pWorld->pGame->textures.background;
+const sf::Texture * Background::getTexture() {
+    return &game.textures.background;
 }
 
 void Background::init() {

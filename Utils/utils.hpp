@@ -23,11 +23,12 @@ inline bool areClose(const sf::Vector2f &num1, const sf::Vector2f &num2, const f
 }
 
 namespace text {
-    inline void up(std::string &string) {
+    inline std::string up(std::string string) {
         // INPLACE UPPERCASE
         for (char &c : string) {
             c = static_cast<char>(toupper(c));
         }
+        return string;
     }
 }
 

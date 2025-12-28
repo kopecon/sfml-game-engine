@@ -11,7 +11,7 @@
 
 
 struct AnimationSheet {
-    sf::Texture *pTexture{};
+    const sf::Texture *pTexture{};
     sf::Vector2i frameSize{};
     [[nodiscard]] sf::Vector2i getFrameSize(const int &framesPerRow, const int &framesPerColumn) const;
 };
