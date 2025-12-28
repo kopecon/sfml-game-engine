@@ -13,14 +13,13 @@ player::Jumping::Jumping(Player *pPlayer): PlayerState(pPlayer, StateSet::ID::JU
         return prev ? prev->stateID : NONE;
     };
     // Conditions
-    auto idle    = [grounded, previous] {return grounded() && previous() == IDLE;};
-    auto walking = [grounded, previous] {return grounded() && previous() == WALKING;};
-    auto running = [grounded, previous] {return grounded() && previous() == RUNNING;};
-
-    addEdge(std::make_unique<Edge>(idle   , IDLE   ));
-    addEdge(std::make_unique<Edge>(walking, WALKING));
-    addEdge(std::make_unique<Edge>(running, RUNNING));
+    auto walking  = [grounded, previous] {return grounded() && previous() == WALKING;};
+    auto running  = [grounded, previous] {return grounded() && previous() == RUNNING;};
+    // Edges
+    addEdge(std::make_unique<Edge>(running,  RUNNING));
+    addEdge(std::make_unique<Edge>(walking,  WALKING));
+    addEdge(std::make_unique<Edge>(grounded, IDLE));
     addEdge(std::make_unique<Edge>(ATTACKING));
-
+    // Actions
     addEnterAction([pPlayer]{pPlayer->movement.jump();});
 }
