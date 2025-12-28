@@ -18,15 +18,15 @@ public:
     virtual ~Entity();
 
     explicit Entity(World &world, std::string name);
-    // REFERENCES
-    const World &world;
-    const Game  &game;
+    // REFERENCES  //TODO: Should references be const? Currently player can modify world or game
+    World &world;
+    Game  &game;
     // CHARACTERISTICS
     const std::string name{};
     sf::Vector2f *pSize{nullptr};
     // RENDER
     sf::Shape *pShape{nullptr};
-    const sf::Texture *pTexture{nullptr};
+    sf::Texture *pTexture{nullptr};
     // FLAGS
     bool removalFlag = false;
 
@@ -36,7 +36,7 @@ public:
 
     [[nodiscard]] virtual sf::Vector2f getWindowToShapeSizeRatio() const;
 
-    virtual const sf::Texture* getTexture() {return pTexture;}
+    virtual sf::Texture* getTexture() {return pTexture;}
 
     virtual void init();
 

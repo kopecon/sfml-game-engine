@@ -11,7 +11,7 @@
 
 Background::Background(World &world, std::string name) : Scenery(world, std::move(name)){}
 
-const sf::Texture * Background::getTexture() {
+sf::Texture * Background::getTexture() {
     return &game.textures.background;
 }
 

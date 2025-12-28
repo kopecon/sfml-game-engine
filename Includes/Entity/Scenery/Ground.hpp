@@ -13,7 +13,7 @@ public:
     explicit Ground(World &world, std::string name);
 
     sf::Color color = sf::Color({40,30,100});
-    const sf::Texture* getTexture() override;
+    sf::Texture* getTexture() override;
 
     void init() override;
 };

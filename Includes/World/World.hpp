@@ -21,8 +21,8 @@ public:
     #pragma region constructors
     explicit World(Game &game, std::string name);
     #pragma endregion constructors
-    // REFERENCES
-    const Game &game;
+    // REFERENCES  //TODO: Should reference be const?
+    Game &game;
     // METADATA
     const std::string name{};
     // ENVIRONMENT CHARACTERISTIC

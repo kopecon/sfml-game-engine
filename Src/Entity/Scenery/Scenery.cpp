@@ -44,7 +44,7 @@ void Scenery::initShapeSize() {
 
 void Scenery::init() {
     Entity::init();
-    // pTexture->setRepeated(true); //FIXME
+    pTexture->setRepeated(true);
     pShape->setTextureRect(sf::IntRect({0,0}, {static_cast<sf::Vector2i>(shape.getGlobalBounds().size)}));
 }
 

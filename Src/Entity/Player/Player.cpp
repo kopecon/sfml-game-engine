@@ -72,7 +72,7 @@ sf::Shape *player::Player::getShape() {
     return &shape;
 }
 
-const sf::Texture *player::Player::getTexture() {
+sf::Texture *player::Player::getTexture() {
     return &game.textures.player;
 }
 

@@ -12,7 +12,7 @@ Ground::Ground(World &world, std::string name) : Scenery(world, std::move(name))
 }
 
 
-const sf::Texture * Ground::getTexture() {
+sf::Texture * Ground::getTexture() {
     return &game.textures.topGround;
 }
 

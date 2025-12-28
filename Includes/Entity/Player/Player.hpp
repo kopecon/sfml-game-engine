@@ -49,7 +49,7 @@ namespace player {
         // OVERRIDES
         void initShapeSize() override;
         sf::Shape* getShape() override;
-        const sf::Texture* getTexture() override;
+        sf::Texture* getTexture() override;
         void init() override;
         // UPDATE
         void update() override;
