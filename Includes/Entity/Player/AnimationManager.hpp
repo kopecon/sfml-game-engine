@@ -23,6 +23,8 @@ namespace player {
 
         void selectAnimation();
 
+        void updateFPS() const;
+
         void update();
     };
 }

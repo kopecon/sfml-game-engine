@@ -13,15 +13,16 @@ namespace player {
     class Player;
 
     class MovementComponent {
+    protected:
+        sf::Vector2f _speed{};
     public:
         MovementComponent();
         explicit MovementComponent(Player &player);
 
         Player *pPlayer{nullptr};
 
-        sf::Vector2f walkingSpeed{};
-        sf::Vector2f runningSpeed{};
-        sf::Vector2f speed{};
+        sf::Vector2f walkingSpeed{2.f, 2.f};
+        sf::Vector2f runningSpeed{4.f, 2.f*1.25f};
         sf::Vector2f snap{0.05f, 0.05f};  // How aggressively player changes speed
 
         void turn() const;
@@ -30,11 +31,9 @@ namespace player {
         void walkRight() const;
         void brake() const;
         void jump() const;
-
+        sf::Vector2f getSpeed();
         // UPDATE
-        void updateWalkingSpeed();
-        void updateRunningSpeed();
-        void update();
+        void updateSpeed();
     };
 }
 

@@ -26,18 +26,21 @@ public:
     AnimationEntry() = default;
 
     AnimationEntry(const States &id, const int &framesPerRow, const bool &looping=true) :
-    id(id), framesPerRow(framesPerRow), fps(static_cast<float>(framesPerRow)), looping(looping) {}
-
-    AnimationEntry(const States &id, const int &framesPerRow, const float &fps, const bool &looping=true) :
-    id(id), framesPerRow(framesPerRow), fps(fps), looping(looping) {}
+    id(id),
+    framesPerRow(framesPerRow),
+    fps(static_cast<float>(framesPerRow)),
+    spf(1.f/fps),
+    looping(looping)
+    {}
 
 #pragma endregion
     States id{0};  // Represents row index starting from 0;
     sf::Vector2i frameIndex = {0, static_cast<int>(id)};
     sf::Vector2i *pIndex = &frameIndex;
-    int framesPerRow{8};
+    int framesPerRow{};
     float timer{0.0f};  // tracks elapsed time
-    float fps{static_cast<float>(framesPerRow)};  // frames per second
+    float fps{};  // frames per second
+    float spf{};  // seconds per frame
     bool started{false};
     bool finished{false};
     bool looping{true};
@@ -96,8 +99,8 @@ public:
             // Reset the animation
             pCurrentAnimation->frameIndex.x = 0;
             pCurrentAnimation->state = AnimationEntry<States>::READY;
-        };
-    };
+        }
+    }
 
     void add(const AnimationEntry<States> &animation) {
         animationSet.emplace(animation.id, animation);
@@ -129,7 +132,7 @@ public:
         pCurrentAnimation->state = AnimationEntry<States>::PLAYING;
         pCurrentAnimation->timer += dt;
         // When it is the time to move to the next frame
-        if (pCurrentAnimation->timer >= 1/pCurrentAnimation->fps) {
+        if (pCurrentAnimation->timer >= pCurrentAnimation->spf) {
             pCurrentAnimation->frameIndex.x += 1;
             pCurrentAnimation->timer = 0.f;  // Reset timer
         }

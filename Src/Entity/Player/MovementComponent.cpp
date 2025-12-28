@@ -13,30 +13,6 @@ player::MovementComponent::MovementComponent() = default;
 
 player::MovementComponent::MovementComponent(Player &player): pPlayer(&player) {}
 
-void player::MovementComponent::updateWalkingSpeed() {
-    walkingSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{2.f, 2.f});
-}
-
-void player::MovementComponent::updateRunningSpeed() {
-    runningSpeed = hd::multiply<float>(pPlayer->getSize(), sf::Vector2f{4.f, 2.f*1.25f});
-}
-
-void player::MovementComponent::update() {
-    updateWalkingSpeed();
-    updateRunningSpeed();
-    if (pPlayer->getStateID() == RUNNING) {
-        speed = runningSpeed;
-    }
-    // In case sprinting increases jump height we should include this. Else remove this.
-    else if (pPlayer->getStateID() == JUMPING
-        && pPlayer->stateMachine.pPreviousState->stateID == RUNNING) {
-        speed = runningSpeed;
-    }
-    else {
-        speed = walkingSpeed;
-    }
-}
-
 void player::MovementComponent::turn() const {
     brake();
     if (areClose(pPlayer->physics.velocity.x, 0.f, 10.f)) {
@@ -47,21 +23,37 @@ void player::MovementComponent::turn() const {
 
 void player::MovementComponent::walkLeft() const {
     if (pPlayer->facingRight) turn();
-    else pPlayer->physics.accelerate(-pPlayer->movement.speed);
+    else pPlayer->physics.accelerate(-pPlayer->movement._speed);
 }
 
 void player::MovementComponent::walkRight() const {
     if (!pPlayer->facingRight) turn();
-    else pPlayer->physics.accelerate(pPlayer->movement.speed);
+    else pPlayer->physics.accelerate(pPlayer->movement._speed);
 }
 
 void player::MovementComponent::brake() const {
-    pPlayer->physics.accelerate({0.f, pPlayer->physics.velocity.y});
+    if (pPlayer->physics.isGrounded())
+        pPlayer->physics.accelerate({0.f, pPlayer->physics.velocity.y});
 }
 
 void player::MovementComponent::jump() const {
 
     if (pPlayer->physics.isGrounded()) {
-        pPlayer->physics.velocity.y = -pPlayer->pWorld->gravity*pPlayer->movement.speed.y/2500.f;  // Magic number is tweaked experimentally
+        pPlayer->physics.velocity.y = -pPlayer->pWorld->gravity*pPlayer->movement._speed.y/2500.f;  // Magic number is tweaked experimentally
+    }
+}
+
+sf::Vector2f player::MovementComponent::getSpeed() {
+    updateSpeed();
+    return _speed;
+}
+
+void player::MovementComponent::updateSpeed() {
+    if (pPlayer->getStateID() == RUNNING
+        || pPlayer->getStateID() == JUMPING
+        && pPlayer->stateMachine.pPreviousState->stateID == RUNNING)
+        _speed = hd::multiply<float>(pPlayer->getSize(), runningSpeed);
+    else {
+        _speed = hd::multiply<float>(pPlayer->getSize(), walkingSpeed);;
     }
 }

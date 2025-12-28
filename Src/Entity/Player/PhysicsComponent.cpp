@@ -36,7 +36,7 @@ void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
 
     const sf::Vector2f velDiff = targetVelocity - velocity;
     const sf::Vector2f environment{groundFriction, airFriction};
-    acceleration = hd::multiply<float>(pPlayer->movement.speed, pPlayer->movement.snap, velDiff, environment);
+    acceleration = hd::multiply<float>(pPlayer->movement.getSpeed(), pPlayer->movement.snap, velDiff, environment);
 }
 
 void player::PhysicsComponent::syncRender() const {
@@ -53,8 +53,6 @@ void player::PhysicsComponent::update() {
     const float &airFriction = pPlayer->pWorld->airFriction;
     // ReSharper disable once CppUseStructuredBinding
     const PhysicsEngine &engine = pPlayer->pWorld->pGame->engine;
-
-    pPlayer->movement.update();
 
     acceleration.y = pPlayer->pWorld->gravity;  // Apply Gravity
 
