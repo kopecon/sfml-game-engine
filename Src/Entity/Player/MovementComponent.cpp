@@ -35,9 +35,8 @@ void player::MovementComponent::brake() const {
 }
 
 void player::MovementComponent::jump() const {
-
     if (player.physics.isGrounded()) {
-        player.physics.velocity.y = player.world.gravity*player.movement._speed.y/2500.f;  // Magic number is tweaked experimentally
+        player.physics.velocity.y = -player.world.gravity*player.movement._speed.y/2500.f;  // Magic number is tweaked experimentally
     }
 }
 
