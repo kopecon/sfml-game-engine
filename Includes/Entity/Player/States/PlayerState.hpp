@@ -12,9 +12,11 @@ namespace player {
 
     class PlayerState : public State<StateSet> {
     public:
-        explicit PlayerState(Player *pPlayer, const StateSetBase<StateSet>::ID &stateID)
-            : State(stateID),  pPlayer(pPlayer) {}
-        Player *pPlayer{nullptr};
+        PlayerState(Player &player, const StateSetBase<StateSet>::ID &stateID) :
+            State(stateID),
+            player(player)
+            {}
+        Player &player;
     };
 }
 
