@@ -40,7 +40,7 @@ void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
 }
 
 void player::PhysicsComponent::syncRender() const {
-    player.shape.setPosition(position);
+    player.render.shape.setPosition(position);
 }
 
 void player::PhysicsComponent::printPhysics() const {
