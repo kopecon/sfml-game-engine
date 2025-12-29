@@ -11,7 +11,7 @@
 namespace player {
     class Idle final : public PlayerState {
     public:
-        explicit Idle(Player *pPlayer);
+        explicit Idle(Player &player);
     };
 }
 

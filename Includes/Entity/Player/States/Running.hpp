@@ -11,7 +11,7 @@
 namespace player {
     class Running final : public PlayerState {
     public:
-        explicit Running(Player *pPlayer);
+        explicit Running(Player &player);
     };
 }
 

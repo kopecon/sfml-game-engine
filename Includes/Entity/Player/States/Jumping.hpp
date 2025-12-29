@@ -10,7 +10,7 @@
 namespace player {
     class Jumping final : public PlayerState {
     public:
-        explicit Jumping(Player *pPlayer);
+        explicit Jumping(Player &player);
     };
 }
 

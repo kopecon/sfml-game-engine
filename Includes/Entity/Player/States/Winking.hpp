@@ -10,7 +10,7 @@
 namespace player {
     class Winking final : public PlayerState {
     public:
-        explicit Winking(Player *pPlayer);
+        explicit Winking(Player &player);
     };
 }
 

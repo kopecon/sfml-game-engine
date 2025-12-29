@@ -11,7 +11,7 @@
 namespace player {
     class Stopping final : public PlayerState {
     public:
-        explicit Stopping(Player *pPlayer);
+        explicit Stopping(Player &player);
     };
 }
 

@@ -11,7 +11,7 @@
 namespace player {
     class Walking final : public PlayerState {
     public:
-        explicit Walking(Player *pPlayer);
+        explicit Walking(Player &player);
     };
 }
 

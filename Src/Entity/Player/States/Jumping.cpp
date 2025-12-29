@@ -2,14 +2,14 @@
 #include "../../../../Includes/Entity/Player/Player.hpp"
 
 
-player::Jumping::Jumping(Player *pPlayer): PlayerState(pPlayer, StateSet::ID::JUMPING) {
+player::Jumping::Jumping(Player &player): PlayerState(player, StateSet::ID::JUMPING) {
     using enum StateSet::ID;
     // Helpers
     // ReSharper disable once CppDFAUnreachableFunctionCall
-    auto grounded = [this] {return this->pPlayer->physics.isGrounded();};
+    auto grounded = [this] {return this->player.physics.isGrounded();};
     // ReSharper disable once CppDFAUnreachableFunctionCall
     auto previous = [this] {
-        const auto* prev = this->pPlayer->stateMachine.pPreviousState;
+        const auto* prev = this->player.stateManager.stateMachine.pPreviousState;
         return prev ? prev->stateID : NONE;
     };
     // Conditions
@@ -21,5 +21,5 @@ player::Jumping::Jumping(Player *pPlayer): PlayerState(pPlayer, StateSet::ID::JU
     addEdge(std::make_unique<Edge>(grounded, IDLE));
     addEdge(std::make_unique<Edge>(ATTACKING));
     // Actions
-    addEnterAction([pPlayer]{pPlayer->movement.jump();});
+    addEnterAction([&player]{player.movement.jump();});
 }

@@ -3,16 +3,16 @@
 #include "../../../../Includes/Entity/Player/Player.hpp"
 
 
-player::Idle::Idle(Player *pPlayer): PlayerState(pPlayer, StateSet::ID::IDLE) {
+player::Idle::Idle(Player &player): PlayerState(player, StateSet::ID::IDLE) {
     addEdge(std::make_unique<Edge>(StateSet::ID::WALKING));
     addEdge(std::make_unique<Edge>(StateSet::ID::RUNNING));
     addEdge(std::make_unique<Edge>(StateSet::ID::STOPPING));
     addEdge(std::make_unique<Edge>(StateSet::ID::JUMPING));
     addEdge(std::make_unique<Edge>(StateSet::ID::ATTACKING));
-    auto dryEyes = [pPlayer] {return pPlayer->eyeDryness >= 100;};
+    auto dryEyes = [&player] {return player.eyeDryness >= 100;};
     addEdge(std::make_unique<Edge>(dryEyes, StateSet::ID::WINKING));
-    addAction([pPlayer] {
-        pPlayer->eyeDryness += 0.1;
-        pPlayer->movement.brake();
+    addAction([&player] {
+    player.eyeDryness += 0.1;
+    player.movement.brake();
     });
 }

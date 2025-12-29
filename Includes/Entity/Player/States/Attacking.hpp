@@ -9,7 +9,7 @@
 namespace player {
     class Attacking final : public PlayerState {
     public:
-        explicit Attacking(Player *pPlayer);
+        explicit Attacking(Player &player);
     };
 }
 
