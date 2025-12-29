@@ -13,14 +13,13 @@
 #include "InputComponent.hpp"
 #include "MovementComponent.hpp"
 #include "CombatComponent.hpp"
-#include "RenderComponent.hpp"
 #include "StateManager.hpp"
 
 
 class World;
 
 namespace player {
-    class Player final : public Entity {
+    class Player final : public entity::Entity {
     public:
 #pragma region constructors
         explicit Player(World &world, entityID ID);
@@ -41,7 +40,6 @@ namespace player {
         PhysicsComponent physics;
         MovementComponent movement;
         CombatComponent combat;
-        RenderComponent render;
         // MANAGERS
         AnimationManager animationManager;
         StateManager stateManager;

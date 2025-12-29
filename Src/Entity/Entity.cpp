@@ -11,30 +11,33 @@
 #include "../../Includes/World/World.hpp"
 #include "../../Includes/Game/Game.hpp"
 
+
+namespace entity {
+
 #pragma region constructors
-Entity::~Entity() {
-    std::cout << "Entity: " << name << " removed.\n";
-}
+    Entity::~Entity() {
+        std::cout << "Entity: " << name << " removed.\n";
+    }
 
-Entity::Entity(World &world, const entityID ID) :
-    ID(ID),
-    world(world),
-    game(world.game)
+    Entity::Entity(World &world, const entityID ID) :
+        ID(ID),
+        world(world),
+        game(world.game)
     {}
 
-Entity::Entity(World &world, const entityID ID, std::string name):
-    ID(ID),
-    name(std::move(name)),
-    world(world),
-    game(world.game)
+    Entity::Entity(World &world, const entityID ID, std::string name):
+        ID(ID),
+        name(std::move(name)),
+        world(world),
+        game(world.game)
     {}
 
-std::string Entity::className() const {
-    return "Entity";
-}
+    std::string Entity::className() const {
+        return "Entity";
+    }
 #pragma endregion
 
-sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
+    sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
         const sf::Vector2f windowSize = static_cast<sf::Vector2f>(world.game.video.windowSize);
         const sf::Vector2f shapeSize = pShape->getGlobalBounds().size;
         const sf::Vector2f sizeRatio = {
@@ -44,26 +47,28 @@ sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
         return sizeRatio;
     }
 
-void Entity::init() {
-    setName(generateName());
-    std::cout << "Base Init: " << name << " Started..." << "\n";
-    pShape = getShape();
-    pTexture = getTexture();
-    initShapeSize();
-    pShape->setOrigin(pShape->getGeometricCenter());
-    pShape->setTexture(pTexture);
-    std::cout << "Base Init: " << name << " Finished." << "\n\n";
+    void Entity::init() {
+        setName(generateName());
+        std::cout << "Base Init: " << name << " Started..." << "\n";
+        pShape = getShape();
+        pTexture = getTexture();
+        initShapeSize();
+        pShape->setOrigin(pShape->getGeometricCenter());
+        pShape->setTexture(pTexture);
+        std::cout << "Base Init: " << name << " Finished." << "\n\n";
+    }
+
+    bool Entity::operator==(const Entity &other) const {
+        return this == &other;
+    }
+
+    bool Entity::operator!=(const Entity &other) const {
+        return this != &other;
+    }
+
+    std::string Entity::generateName() const {
+        auto result = className() + std::to_string(world.getEntityCount(*this) + 1);
+        return result;
+    }
 }
 
-bool Entity::operator==(const Entity &other) const {
-    return this == &other;
-}
-
-bool Entity::operator!=(const Entity &other) const {
-    return this != &other;
-}
-
-std::string Entity::generateName() const {
-    auto result = className() + std::to_string(world.getEntityCount(*this) + 1);
-    return result;
-}

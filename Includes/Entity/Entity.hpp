@@ -8,7 +8,6 @@
 #include <string>
 #include <SFML/Graphics/Shape.hpp>
 
-#include "../../Utils/utils.hpp"
 
 using entityID = std::uint64_t;
 
@@ -16,59 +15,61 @@ class World;
 class Game;
 
 
-class Entity {
-    const entityID ID;
-    std::string name{};
-public:
-    #pragma region constructors
-    virtual ~Entity();
-    Entity(World &world, entityID ID);
+namespace entity {
 
-    Entity(World &world, entityID ID, std::string name);
+    class Entity {
+        const entityID ID;
+        std::string name{};
+    public:
+        #pragma region constructors
+        virtual ~Entity();
+        Entity(World &world, entityID ID);
 
-    [[nodiscard]] virtual std::string className() const;
-    #pragma endregion
+        Entity(World &world, entityID ID, std::string name);
 
-    // REFERENCES
-    World &world;
-    Game  &game;
-    // CHARACTERISTICS
-    sf::Vector2f *pSize{nullptr};
-    // RENDER
-    sf::Shape *pShape{nullptr};
-    sf::Texture *pTexture{nullptr};
-    // FLAGS
-    bool removalFlag = false;
+        [[nodiscard]] virtual std::string className() const;
+        #pragma endregion
 
-    void setName(std::string entityName) {
-        name = std::move(entityName);
-    }
+        // REFERENCES
+        World &world;
+        Game  &game;
+        // CHARACTERISTICS
+        sf::Vector2f *pSize{nullptr};
+        // RENDER
+        sf::Shape *pShape{nullptr};
+        sf::Texture *pTexture{nullptr};
+        // FLAGS
+        bool removalFlag = false;
 
-    std::string_view getName() {
-        return name;
-    }
+        void setName(std::string entityName) {
+            name = std::move(entityName);
+        }
 
-    virtual void initShapeSize() = 0;
+        std::string_view getName() {
+            return name;
+        }
 
-    [[nodiscard]] entityID getID() const {return ID;}
+        virtual void initShapeSize() = 0;
 
-    [[nodiscard]] virtual sf::Shape* getShape() = 0;
+        [[nodiscard]] entityID getID() const {return ID;}
 
-    [[nodiscard]] virtual sf::Vector2f getWindowToShapeSizeRatio() const;
+        [[nodiscard]] virtual sf::Shape* getShape() = 0;
 
-    virtual sf::Texture* getTexture() {return pTexture;}
+        [[nodiscard]] virtual sf::Vector2f getWindowToShapeSizeRatio() const;
 
-    virtual void init();
+        virtual sf::Texture* getTexture() {return pTexture;}
 
-    virtual void update() = 0;
+        virtual void init();
 
-    bool operator==(const Entity &other) const;
+        virtual void update() = 0;
 
-    bool operator!=(const Entity &other) const;
+        bool operator==(const Entity &other) const;
 
-protected:
-    [[nodiscard]] std::string generateName() const;
-};
+        bool operator!=(const Entity &other) const;
 
+    protected:
+        [[nodiscard]] std::string generateName() const;
+    };
+}
 
 #endif //BONK_GAME_ENTITY_HPP

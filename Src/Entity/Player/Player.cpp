@@ -53,11 +53,11 @@ namespace player {
     #pragma endregion
 
     sf::Vector2f Player::getSize() const {
-        return render.shape.getGlobalBounds().size;
+        return pShape->getGlobalBounds().size;
     }
 
     sf::Shape *Player::getShape() {
-        return &render.shape;
+        return pShape;
     }
 
     sf::Texture *Player::getTexture() {
@@ -65,15 +65,11 @@ namespace player {
     }
 
     sf::Vector2f Player::getPosition() const {
-        return render.shape.getPosition();
+        return pShape->getPosition();
     }
 
     const State<StateSet>* Player::getState() const {
         return stateManager.stateMachine.pCurrentState;
-    }
-
-    void Player::initShapeSize() {
-        render.initShapeSize();
     }
 
     void Player::init() {

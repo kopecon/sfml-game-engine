@@ -7,33 +7,36 @@
 #include "../../../Includes/World/World.hpp"
 
 
+namespace scenery {
+
 #pragma region constructors
-Ground::Ground(World &world, const entityID ID) :
-    Scenery(world, ID)
-{
-    shape.setFillColor(color);
-}
+    Ground::Ground(World &world, const entityID ID) :
+        Scenery(world, ID)
+    {
+        shape.setFillColor(color);
+    }
 
-Ground::Ground(World &world, const entityID ID, std::string name) :
-    Scenery(world, ID, std::move(name))
-{
-    shape.setFillColor(color);
-}
+    Ground::Ground(World &world, const entityID ID, std::string name) :
+        Scenery(world, ID, std::move(name))
+    {
+        shape.setFillColor(color);
+    }
 
-std::string Ground::className() const {
-    return "Ground";
-}
+    std::string Ground::className() const {
+        return "Ground";
+    }
 #pragma endregion
 
-sf::Texture * Ground::getTexture() {
-    return &game.textures.topGround;
-}
+    sf::Texture * Ground::getTexture() {
+        return &game.textures.topGround;
+    }
 
-void Ground::init() {
-    Scenery::init();
-    const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio();
-    shape.setScale({sizeRatio.x * stretchFactor, 1});
-    shape.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(shape.getGlobalBounds().size)));
-    const sf::Vector2f offset = shape.getGeometricCenter() - sf::Vector2f({0.f, shape.getGlobalBounds().size.y/2.f});
-    shape.setOrigin(offset);
+    void Ground::init() {
+        Scenery::init();
+        const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio();
+        shape.setScale({sizeRatio.x * stretchFactor, 1});
+        shape.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(shape.getGlobalBounds().size)));
+        const sf::Vector2f offset = shape.getGeometricCenter() - sf::Vector2f({0.f, shape.getGlobalBounds().size.y/2.f});
+        shape.setOrigin(offset);
+    }
 }

@@ -13,6 +13,7 @@ player::StateManager::StateManager(Player &player) {
     stateMachine.createState<Walking>(player);
     stateMachine.createState<Stopping>(player);
     stateMachine.createState<Winking>(player);
+    stateMachine.createState<Attacking>(player);
     stateMachine.setVerbose();
 }
 

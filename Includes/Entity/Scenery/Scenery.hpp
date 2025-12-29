@@ -9,30 +9,33 @@
 #include "../../Entity/Entity.hpp"
 
 
-class Scenery : public Entity {
-public:
+namespace scenery {
+    class Scenery : public entity::Entity {
+    public:
 
-    #pragma region constructors
-    explicit Scenery(World &world, entityID ID);
-    explicit Scenery(World &world, entityID ID, std::string name);
-    #pragma endregion
+#pragma region constructors
+        explicit Scenery(World &world, entityID ID);
+        explicit Scenery(World &world, entityID ID, std::string name);
+#pragma endregion
 
-    sf::RectangleShape shape{};
-    float stretchFactor = 3.f;
-    const Camera *pCamera{};
+        sf::RectangleShape shape{};
+        float stretchFactor = 3.f;
+        const Camera *pCamera{};
 
-    void setCamera();
+        void setCamera();
 
-    sf::Shape *getShape() override;
+        sf::Shape *getShape() override;
 
-    void loop();
+        void loop();
 
-    void initShapeSize() override;
+        void initShapeSize() override;
 
-    void init() override;
+        void init() override;
 
-    void update() override;
-};
+        void update() override;
+    };
+}
+
 
 
 #endif //BONK_GAME_SCENERY_HPP

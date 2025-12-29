@@ -8,20 +8,22 @@
 #include "Scenery.hpp"
 
 
-class Ground final : public Scenery {
-public:
+namespace scenery {
+    class Ground final : public Scenery {
+    public:
 
-    #pragma region constructors
-    explicit Ground(World &world, entityID ID);
-    explicit Ground(World &world, entityID ID, std::string name);
-    [[nodiscard]] std::string className() const override;
-    #pragma endregion
+#pragma region constructors
+        explicit Ground(World &world, entityID ID);
+        explicit Ground(World &world, entityID ID, std::string name);
+        [[nodiscard]] std::string className() const override;
+#pragma endregion
 
-    sf::Color color = sf::Color({40,30,100});
-    sf::Texture* getTexture() override;
+        sf::Color color = sf::Color({40,30,100});
+        sf::Texture* getTexture() override;
 
-    void init() override;
-};
+        void init() override;
+    };
+}
 
 
 #endif //BONK_GAME_GROUND_HPP

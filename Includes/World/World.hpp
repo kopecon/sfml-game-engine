@@ -20,7 +20,7 @@ class World {
     entityID newEntityID{0};
 protected:
     // ENTITIES
-    std::unordered_map<entityID, std::unique_ptr<Entity>> entities{};
+    std::unordered_map<entityID, std::unique_ptr<entity::Entity>> entities{};
     // COUNTER
     std::unordered_map<std::type_index, std::size_t> entityCounter{};
 public:
@@ -41,7 +41,7 @@ public:
     // Create Entity at [0, 0]
     template<typename T, typename ... Args>
     T* createEntity(Args&&... args)
-    requires (std::is_base_of_v<Entity, T>) {
+    requires (std::is_base_of_v<entity::Entity, T>) {
         // Create entity
         auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
         // Init entity
@@ -56,7 +56,7 @@ public:
     // Create Entity at a defined position
     template<typename T, typename ... Args>
     T* createEntity(sf::Vector2f position, Args&&... args)
-    requires (std::is_base_of_v<Entity, T>) {
+    requires (std::is_base_of_v<entity::Entity, T>) {
         // Create the entity
         auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
         // Init the entity
@@ -71,7 +71,7 @@ public:
 
     template<typename T>
     std::vector<T *> findEntities() const
-    requires (std::is_base_of_v<Entity, T>) {
+    requires (std::is_base_of_v<entity::Entity, T>) {
         std::vector<T*> entitiesOfType{};
         for (auto &entity: entities | std::views::values) {
             if (auto it = dynamic_cast<T*>(entity.get())) {
@@ -81,7 +81,7 @@ public:
         return entitiesOfType;
     }
 
-    void remove(const Entity &entity) {
+    void remove(const entity::Entity &entity) {
         const auto it = entities.find(entity.getID());
         entities.erase(it);
     }
@@ -94,18 +94,18 @@ public:
     }
 
     template<typename T>
-    T* getEntity(const Entity &entity)
-    requires (std::is_base_of_v<Entity, T>) {
+    T* getEntity(const entity::Entity &entity)
+    requires (std::is_base_of_v<entity::Entity, T>) {
         const auto it = entities.find(entity.getID());
         if (it == entities.end()) return nullptr;
         return dynamic_cast<T*>(it->second.get());
     }
 
-    std::unordered_map<entityID, std::unique_ptr<Entity>>* getEntities() {
+    std::unordered_map<entityID, std::unique_ptr<entity::Entity>>* getEntities() {
         return &entities;
     }
 
-    std::size_t getEntityCount(const Entity &entity) {
+    std::size_t getEntityCount(const entity::Entity &entity) {
         return entityCounter[typeid(entity)];
     }
 
