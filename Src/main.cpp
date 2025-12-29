@@ -14,12 +14,12 @@ int main() {
     #pragma endregion
 
     #pragma region world
-    const auto worldForest = game.createWorld("Forest");
+    auto &worldForest = *game.createWorld("Forest");
     #pragma endregion
 
     #pragma region background
-    (void) worldForest->createEntity<Background>();
-    (void) worldForest->createEntity<Ground>({0.f, worldForest->groundLevel});
+    (void) worldForest.createEntity<Background>();
+    (void) worldForest.createEntity<Ground>({0.f, worldForest.groundLevel});
     #pragma endregion
 
     #pragma region player
@@ -37,11 +37,11 @@ int main() {
     p2controls.run    = sf::Keyboard::Scancode::RShift;
     p2controls.attack = sf::Keyboard::Scancode::Numpad0;
 
-    auto &player1 = *worldForest->createEntity<player::Player>({-100.f, 10.f}, p1controls);
-    auto &player2 = *worldForest->createEntity<player::Player>({ 100.f, 10.f}, p2controls);
+    auto &player1 = *worldForest.createEntity<player::Player>({-100.f, 10.f}, p1controls);
+    auto &player2 = *worldForest.createEntity<player::Player>({ 100.f, 10.f}, p2controls);
     game.video.camera.pTarget = &player1;
     player2.shape.setFillColor(sf::Color({40,30,100}));
-    worldForest->remove(player2);
+    worldForest.remove(player2);
     #pragma endregion
 
     #pragma region window loop
