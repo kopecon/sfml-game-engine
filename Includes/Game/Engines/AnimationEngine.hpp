@@ -63,14 +63,14 @@ public:
 
 
 template<typename States>
-class AnimationEngine {
+class AnimationEngine final {
 public:
 #pragma region constructors
     virtual ~AnimationEngine() = default;
-    AnimationEngine() = default;
-    explicit AnimationEngine(const AnimationSheet &animationSheet, sf::Shape &target) :
-    animationSheet(animationSheet),
-    target(&target) {}
+    AnimationEngine(const AnimationSheet &animationSheet, sf::Shape &target) :
+        animationSheet(animationSheet),
+        target(&target)
+        {}
 #pragma endregion
 
     AnimationSheet animationSheet{};

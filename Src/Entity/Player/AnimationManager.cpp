@@ -10,7 +10,20 @@
 #include <cmath>
 
 
-player::AnimationManager::AnimationManager(Player &player): player(player) {}
+player::AnimationManager::AnimationManager(Player &player) :
+    player(player),
+    engine({player.pTexture, {32, 32}}, player.shape) {
+    using enum StateSet::ID;
+    engine.add(AnimationEntry(IDLE,         2, true));
+    engine.add(AnimationEntry(WINKING,      2, true));
+    engine.add(AnimationEntry(WALKING,      4, true));
+    engine.add(AnimationEntry(RUNNING,      8, true));
+    engine.add(AnimationEntry(CROUCHING,    6, true));
+    engine.add(AnimationEntry(JUMPING,      8, false));
+    engine.add(AnimationEntry(DYING,        8, false));
+    engine.add(AnimationEntry(DISAPPEARING, 4, false));
+    engine.add(AnimationEntry(ATTACKING,    8, false));
+}
 
 void player::AnimationManager::selectAnimation() {
     using enum StateSet::ID;
