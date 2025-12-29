@@ -8,17 +8,21 @@
 #include <string>
 #include <SFML/Graphics/Shape.hpp>
 
+using entityID = std::uint64_t;
 
 class World;
 class Game;
 
 
 class Entity {
+    const entityID ID;
 public:
     virtual ~Entity();
 
-    explicit Entity(World &world, std::string name);
-    // REFERENCES  //TODO: Should references be const? Currently player can modify world or game
+    Entity(World &world, entityID ID);
+
+    Entity(World &world, entityID ID, std::string name);
+    // REFERENCES
     World &world;
     Game  &game;
     // CHARACTERISTICS
@@ -31,6 +35,8 @@ public:
     bool removalFlag = false;
 
     virtual void initShapeSize() = 0;
+
+    [[nodiscard]] entityID getID() const {return ID;}
 
     virtual sf::Shape* getShape() = 0;
 

@@ -7,10 +7,17 @@
 #include "../../../Includes/World/World.hpp"
 
 
-Ground::Ground(World &world, std::string name) : Scenery(world, std::move(name)) {
-    shape.setFillColor(color);
-}
+Ground::Ground(World &world, const entityID ID) :
+    Scenery(world, ID)
+    {
+        shape.setFillColor(color);
+    }
 
+Ground::Ground(World &world, const entityID ID, std::string name) :
+    Scenery(world, ID, std::move(name))
+    {
+        shape.setFillColor(color);
+    }
 
 sf::Texture * Ground::getTexture() {
     return &game.textures.topGround;

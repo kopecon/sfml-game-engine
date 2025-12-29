@@ -3,16 +3,6 @@
 //
 
 #include "../../../Includes/Entity/Player/Player.hpp"
-
-#include "../../../Includes/Entity/Player/States/Attacking.hpp"
-#include "../../../Includes/Entity/Player/States/Idle.hpp"
-#include "../../../Includes/Entity/Player/States/Jumping.hpp"
-#include "../../../Includes/Entity/Player/States/Running.hpp"
-#include "../../../Includes/Entity/Player/States/StateSet.hpp"
-#include "../../../Includes/Entity/Player/States/Stopping.hpp"
-#include "../../../Includes/Entity/Player/States/Walking.hpp"
-#include "../../../Includes/Entity/Player/States/Winking.hpp"
-#include "../../../Includes/Game/Engines/StateMachine/State.hpp"
 #include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
@@ -20,44 +10,45 @@
 using enum player::StateSet::ID;
 
 #pragma region constructors
-player::Player::Player(World &world, std::string name) :
-Entity(world, std::move(name)),
-input(*this),
-physics(*this),
-movement(*this),
-combat(*this),
-animationManager(*this)
-{}
+player::Player::Player(World &world, const entityID ID) :
+    Entity(world, ID),
+    input(*this),
+    physics(*this),
+    movement(*this),
+    combat(*this),
+    animationManager(*this),
+    stateManager(*this)
+    {}
 
-player::Player::Player(World &world, std::string name, const Controls &controls):
-Entity(world, std::move(name)),
-input(*this, controls),
-physics(*this),
-movement(*this),
-combat(*this),
-animationManager(*this),
-stateMachine(this)
-{
-    this->animationManager.engine.animationSheet = {pTexture, {32, 32}};
-    this->animationManager.engine.target = &shape;
-    stateMachine.addState(std::make_unique<Idle     >(this));
-    stateMachine.addState(std::make_unique<Jumping  >(this));
-    stateMachine.addState(std::make_unique<Running  >(this));
-    stateMachine.addState(std::make_unique<Walking  >(this));
-    stateMachine.addState(std::make_unique<Stopping >(this));
-    stateMachine.addState(std::make_unique<Attacking>(this));
-    stateMachine.addState(std::make_unique<Winking  >(this));
-    stateMachine.setVerbose();
-    animationManager.engine.add(AnimationEntry(IDLE,         2, true));
-    animationManager.engine.add(AnimationEntry(WINKING,      2, true));
-    animationManager.engine.add(AnimationEntry(WALKING,      4, true));
-    animationManager.engine.add(AnimationEntry(RUNNING,      8, true));
-    animationManager.engine.add(AnimationEntry(CROUCHING,    6, true));
-    animationManager.engine.add(AnimationEntry(JUMPING,      8, false));
-    animationManager.engine.add(AnimationEntry(DYING,        8, false));
-    animationManager.engine.add(AnimationEntry(DISAPPEARING, 4, false));
-    animationManager.engine.add(AnimationEntry(ATTACKING,    8, false));
-}
+player::Player::Player(World &world, const entityID ID, const Controls &controls) :
+    Entity(world, ID),
+    input(*this, controls),
+    physics(*this),
+    movement(*this),
+    combat(*this),
+    animationManager(*this),
+    stateManager(*this)
+    {}
+
+player::Player::Player(World &world, const entityID ID, std::string name) :
+Entity(world, ID, std::move(name)),
+    input(*this),
+    physics(*this),
+    movement(*this),
+    combat(*this),
+    animationManager(*this),
+    stateManager(*this)
+    {}
+
+player::Player::Player(World &world, const entityID ID, std::string name, const Controls &controls):
+Entity(world, ID, std::move(name)),
+    input(*this, controls),
+    physics(*this),
+    movement(*this),
+    combat(*this),
+    animationManager(*this),
+    stateManager(*this)
+    {}
 #pragma endregion
 
 sf::Vector2f player::Player::getSize() const {
@@ -90,12 +81,12 @@ void player::Player::init() {
 void player::Player::update() {
     input.update();
     physics.update();
-    stateMachine.update();
+    stateManager.update();
     animationManager.update();
 }
 
 player::StateSet::ID player::Player::getStateID() const {
-    if (stateMachine.pCurrentState)
-        return stateMachine.pCurrentState->stateID;
+    if (stateManager.stateMachine.pCurrentState)
+        return stateManager.stateMachine.pCurrentState->stateID;
     return NONE;
 }

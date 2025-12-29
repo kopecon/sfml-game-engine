@@ -4,6 +4,7 @@
 
 #ifndef BONK_GAME_WORLD_HPP
 #define BONK_GAME_WORLD_HPP
+#include <iostream>
 #include <ranges>
 #include <unordered_map>
 #include <memory>
@@ -14,9 +15,10 @@
 class Game;
 
 class World {
+    entityID newEntityID{0};
 protected:
     // ENTITIES
-    std::unordered_map<std::string, std::unique_ptr<Entity>> entities{};
+    std::unordered_map<entityID, std::unique_ptr<Entity>> entities{};
 public:
     #pragma region constructors
     explicit World(Game &game, std::string name);
@@ -33,47 +35,47 @@ public:
 
     // Create Entity at [0, 0]
     template<typename T, typename ... Args>
-    T* createEntity(Args&&... args) {
+    T* createEntity(Args&&... args)
+    requires (std::is_base_of_v<Entity, T>) {
         // Create entity
-        auto pEntity = std::make_unique<T>(*this, std::forward<Args>(args)...);
+        auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
         // Init entity
         pEntity->init();
-        // Get its name
-        const std::string entityName = pEntity->name;
         // Store in the list of entities
-        entities.emplace(entityName, std::move(pEntity));
-        return getEntity<T>(entityName);
+        auto [it, inserted] = entities.emplace(pEntity->getID(), std::move(pEntity));
+        return getEntity<T>(*it->second.get());
     }
 
     // Create Entity at a defined position
     template<typename T, typename ... Args>
-    T* createEntity(sf::Vector2f position, Args&&... args) {
+    T* createEntity(sf::Vector2f position, Args&&... args)
+    requires (std::is_base_of_v<Entity, T>) {
         // Create the entity
-        auto pEntity = std::make_unique<T>(*this, std::forward<Args>(args)...);
+        auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
         // Init the entity
         pEntity->init();
         pEntity->shape.setPosition(position);
         // Get its name
-        const std::string entityName = pEntity->name;
-        // Store it in the list of entities
-        entities.emplace(entityName, std::move(pEntity));
-        return getEntity<T>(entityName);
+        // Store in the list of entities
+        auto [it, inserted] = entities.emplace(pEntity->getID(), std::move(pEntity));
+        return getEntity<T>(*it->second.get());
     }
 
     template<typename T>
-    T* getEntity(std::string entityName) {
-        const auto NAME = text::up(std::move(entityName));
-        const auto it = entities.find(NAME);
+    T* getEntity(const Entity &entity)
+    requires (std::is_base_of_v<Entity, T>) {
+        const auto it = entities.find(entity.getID());
         if (it == entities.end()) return nullptr;
         return dynamic_cast<T*>(it->second.get());
     }
 
-    std::unordered_map<std::string, std::unique_ptr<Entity>>* getEntities() {
+    std::unordered_map<entityID, std::unique_ptr<Entity>>* getEntities() {
         return &entities;
     }
 
     template<typename T>
-    std::vector<T *> findEntities() const {
+    std::vector<T *> findEntities() const
+    requires (std::is_base_of_v<Entity, T>) {
         std::vector<T*> entitiesOfType{};
         for (auto &entity: entities | std::views::values) {
             if (auto it = dynamic_cast<T*>(entity.get())) {
@@ -83,10 +85,16 @@ public:
         return entitiesOfType;
     }
 
-    void remove(std::string entityName) {
-        const auto NAME = text::up(std::move(entityName));
-        const auto it = entities.find(NAME);
+    void remove(const Entity &entity) {
+        const auto it = entities.find(entity.getID());
         entities.erase(it);
+    }
+
+    void printEntities() {
+        for (auto const &entity : entities | std::views::values) {
+            std::cout << entity->getID() << " ";
+        }
+        std::cout << "\n";
     }
 
     void update();

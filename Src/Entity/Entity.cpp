@@ -16,7 +16,14 @@ Entity::~Entity() {
     std::cout << "Entity: " << name << " removed.\n";
 }
 
-Entity::Entity(World &world, std::string name):
+Entity::Entity(World &world, const entityID ID) :
+    ID(ID),
+    world(world),
+    game(world.game)
+    {}
+
+Entity::Entity(World &world, const entityID ID, std::string name):
+    ID(ID),
     world(world),
     game(world.game),
     name(text::up(std::move(name)))
@@ -41,8 +48,6 @@ void Entity::init() {
     pShape->setTexture(pTexture);
     std::cout << "Base Init: " << name << " ...Finish" << "\n\n";
 }
-
-void Entity::update() {}
 
 bool Entity::operator==(const Entity &other) const {
     return this == &other;

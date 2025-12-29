@@ -13,6 +13,7 @@
 #include "InputComponent.hpp"
 #include "MovementComponent.hpp"
 #include "CombatComponent.hpp"
+#include "StateManager.hpp"
 #include "../../Game/Engines/StateMachine/StateMachine.hpp"
 
 
@@ -22,9 +23,12 @@ namespace player {
     class Player final : public Entity {
     public:
 #pragma region constructors
-        explicit Player(World &world, std::string name);
-        explicit Player(World &world, std::string name, const Controls &controls);
+        explicit Player(World &world, entityID ID);
+        explicit Player(World &world, entityID ID, const Controls &controls);
+        explicit Player(World &world, entityID ID, std::string name);
+        explicit Player(World &world, entityID ID, std::string name, const Controls &controls);
 #pragma endregion
+
         // CHARACTERISTICS
         float health {100.f};
         float attackDamage{20.f};
@@ -39,7 +43,7 @@ namespace player {
         CombatComponent combat;
         // MANAGERS
         AnimationManager animationManager;
-        StateMachine<StateSet> stateMachine{};
+        StateManager stateManager;
         // RENDERING
         sf::RectangleShape shape{};
         // GETTERS

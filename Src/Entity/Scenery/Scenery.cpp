@@ -7,7 +7,13 @@
 #include "../../../Includes/World/World.hpp"
 
 
-Scenery::Scenery(World &world, std::string name): Entity(world, std::move(name)) {}
+Scenery::Scenery(World &world, const entityID ID) :
+    Entity(world, ID)
+    {}
+
+Scenery::Scenery(World &world, const entityID ID, std::string name) :
+    Entity(world, ID, std::move(name))
+    {}
 
 void Scenery::setCamera() {
     pCamera = &game.video.camera;

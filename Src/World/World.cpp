@@ -21,7 +21,7 @@ void World::update() {
         entity->update();
         // Remove flagged entities
         if (entity->removalFlag) {
-            remove(entity->name);
+            remove(*entity);
         }
     }
 }

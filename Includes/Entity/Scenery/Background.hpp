@@ -10,7 +10,8 @@
 
 class Background final : public Scenery {
 public:
-    explicit Background(World &world, std::string name);
+    explicit Background(World &world, entityID ID);
+    explicit Background(World &world, entityID ID, std::string name);
 
     sf::Texture* getTexture() override;
 

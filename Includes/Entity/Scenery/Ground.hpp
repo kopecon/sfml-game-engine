@@ -10,7 +10,8 @@
 
 class Ground final : public Scenery {
 public:
-    explicit Ground(World &world, std::string name);
+    explicit Ground(World &world, entityID ID);
+    explicit Ground(World &world, entityID ID, std::string name);
 
     sf::Color color = sf::Color({40,30,100});
     sf::Texture* getTexture() override;
