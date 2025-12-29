@@ -14,7 +14,7 @@ player::MovementComponent::MovementComponent(Player &player): player(player) {}
 void player::MovementComponent::turn() const {
     brake();
     if (areClose(player.physics.velocity.x, 0.f, 10.f)) {
-        player.render.shape.setScale({-player.render.shape.getScale().x, player.render.shape.getScale().y});
+        player.shape.setScale({-player.shape.getScale().x, player.shape.getScale().y});
         player.facingRight = !player.facingRight;
     }
 }

@@ -43,6 +43,8 @@ namespace player {
         // MANAGERS
         AnimationManager animationManager;
         StateManager stateManager;
+        // RENDERING
+        sf::RectangleShape shape{};
         // GETTERS
         sf::Vector2f getSize() const;
         sf::Shape *getShape() override;

@@ -13,7 +13,6 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
-        render(*this),
         animationManager(*this),
         stateManager(*this)
         {}
@@ -24,7 +23,6 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
-        render(*this),
         animationManager(*this),
         stateManager(*this)
         {}
@@ -35,7 +33,6 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
-        render(*this),
         animationManager(*this),
         stateManager(*this)
         {}
@@ -46,18 +43,17 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
-        render(*this),
         animationManager(*this),
         stateManager(*this)
         {}
     #pragma endregion
 
     sf::Vector2f Player::getSize() const {
-        return pShape->getGlobalBounds().size;
+        return shape.getGlobalBounds().size;
     }
 
     sf::Shape *Player::getShape() {
-        return pShape;
+        return &shape;
     }
 
     sf::Texture *Player::getTexture() {
@@ -65,11 +61,15 @@ namespace player {
     }
 
     sf::Vector2f Player::getPosition() const {
-        return pShape->getPosition();
+        return shape.getPosition();
     }
 
     const State<StateSet>* Player::getState() const {
         return stateManager.stateMachine.pCurrentState;
+    }
+
+    void Player::initShapeSize() {
+        shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
     }
 
     void Player::init() {
