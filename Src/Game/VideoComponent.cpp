@@ -58,14 +58,19 @@ void VideoComponent::update(World *pWorld) {
     );
 
     // Update the view to follow the target
-    if (camera.pTarget != nullptr) camera.followTarget();
+    camera.followTarget();
     window.setView(camera.view);
 
     // --- Draw on screen ---
     window.clear();
 
-    for (auto const &entity : *pWorld->getEntities() | std::views::values) {
-        window.draw(*entity->pShape);
+    if (pWorld) {
+        for (auto const &entity : *pWorld->getEntities() | std::views::values) {
+            window.draw(*entity->pShape); // TODO: DEPRECATED
+            for (auto const &drawable : entity->render.drawables) {
+                window.draw(*drawable);
+            }
+        }
     }
 
     window.display();

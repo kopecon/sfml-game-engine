@@ -14,5 +14,7 @@ Camera::Camera(sf::Window &window): pWindow(&window) {
 }
 
 void Camera::followTarget() {
-    view.setCenter({pTarget->pShape->getPosition().x, pTarget->pShape->getPosition().y-pTarget->pShape->getGlobalBounds().size.y-50.f});
+    if (pTarget) {
+        view.setCenter({pTarget->pShape->getPosition().x, pTarget->pShape->getPosition().y-pTarget->pShape->getGlobalBounds().size.y-50.f});
+    }
 }

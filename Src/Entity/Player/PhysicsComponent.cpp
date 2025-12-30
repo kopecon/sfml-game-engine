@@ -19,44 +19,44 @@ bool player::PhysicsComponent::isGrounded() const {
     const float groundLevel = player.world.groundLevel;
     const float halfHeight = player.getSize().y * 0.5f;
 
-    return (position.y + halfHeight >= groundLevel)
-        && (velocity.y >= 0.f);
+    return (player.position.y + halfHeight >= groundLevel)
+        && (player.velocity.y >= 0.f);
 }
 
-void player::PhysicsComponent::ground() {
+void player::PhysicsComponent::ground() const {
     const float &groundLevel = player.world.groundLevel;
-    position = {position.x, groundLevel - player.getSize().y / 2.f};
-    acceleration.y = 0;
-    velocity.y = 0;
+    player.position = {player.position.x, groundLevel - player.getSize().y / 2.f};
+    player.acceleration.y = 0;
+    player.velocity.y = 0;
 }
 
-void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) {
+void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) const {
     const float &airFriction = player.world.airFriction;
     const float &groundFriction = player.world.groundFriction;
 
-    const sf::Vector2f velDiff = targetVelocity - velocity;
+    const sf::Vector2f velDiff = targetVelocity - player.velocity;
     const sf::Vector2f environment{groundFriction, airFriction};
-    acceleration = hd::multiply<float>(player.movement.getSpeed(), player.movement.snap, velDiff, environment);
+    player.acceleration = hd::multiply<float>(player.movement.getSpeed(), player.movement.snap, velDiff, environment);
 }
 
 void player::PhysicsComponent::syncRender() const {
-    player.shape.setPosition(position);
+    player.shape.setPosition(player.position);
 }
 
 void player::PhysicsComponent::printPhysics() const {
-    std::cout << "Px: " << position.x << " Vx: " << velocity.x << " Ax: " << acceleration.x << "\n";
-    std::cout << "Py: " << position.y << " Vy: " << velocity.y << " Ay: " << acceleration.y << "\n";
+    std::cout << "Px: " << player.position.x << " Vx: " << player.velocity.x << " Ax: " << player.acceleration.x << "\n";
+    std::cout << "Py: " << player.position.y << " Vy: " << player.velocity.y << " Ay: " << player.acceleration.y << "\n";
 }
 
-void player::PhysicsComponent::update() {
+void player::PhysicsComponent::update() const {
     const float &dt = player.game.time.dt;
     const float &airFriction = player.world.airFriction;
     // ReSharper disable once CppUseStructuredBinding
     const PhysicsEngine &engine = player.game.engine;
 
-    acceleration.y = player.world.gravity;  // Apply Gravity
+    player.acceleration.y = player.world.gravity;  // Apply Gravity
 
-    engine.motionEquation(dt, acceleration, velocity, position, airFriction);
+    engine.motionEquation(dt, player.acceleration, player.velocity, player.position, airFriction);
 
     if (isGrounded()) {
         ground();
@@ -64,6 +64,6 @@ void player::PhysicsComponent::update() {
 
     syncRender();  // Update player position
 
-    acceleration = {0.f, 0.f};  // Reset acceleration
+    player.acceleration = {0.f, 0.f};  // Reset acceleration
     if (verbose) printPhysics();
 }

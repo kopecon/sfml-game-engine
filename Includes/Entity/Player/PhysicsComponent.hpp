@@ -22,24 +22,21 @@ namespace player {
 
         // REFERENCES
         Player &player;
-        // CHARACTERISTICS
-        sf::Vector2f position{};
-        sf::Vector2f velocity{};
-        sf::Vector2f acceleration{};
+
         // DEBUG SETTINGS
         bool verbose{false};
 
         [[nodiscard]] bool isGrounded() const;
 
-        void ground();
+        void ground() const;
 
-        void accelerate(const sf::Vector2f &targetVelocity);
+        void accelerate(const sf::Vector2f &targetVelocity) const;
 
         void syncRender() const;
 
         void printPhysics() const;
 
-        void update();
+        void update() const;
     };
 }
 #endif //BONK_GAME_PHYSICS_COMPONENT_HPP

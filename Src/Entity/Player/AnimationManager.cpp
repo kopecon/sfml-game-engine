@@ -77,14 +77,14 @@ void player::AnimationManager::updateFPS() const {
 
         case WALKING:{
             const float seedFactor = std::fabs(
-            player.movement.getSpeed().x / player.physics.velocity.x
+            player.movement.getSpeed().x / player.velocity.x
             );
             currentAnim->spf = 1.f/currentAnim->fps * seedFactor;
             break;
         }
         case RUNNING:{
             const float seedFactor = std::fabs(
-            player.movement.getSpeed().x / player.physics.velocity.x
+            player.movement.getSpeed().x / player.velocity.x
             );
             currentAnim->spf = 1.f/currentAnim->fps * seedFactor * 0.7f;
             break;
@@ -94,7 +94,7 @@ void player::AnimationManager::updateFPS() const {
         }
         case JUMPING:{
             const float seedFactor = std::fabs(
-            player.movement.getSpeed().y / player.physics.velocity.y
+            player.movement.getSpeed().y / player.velocity.y
             );
             currentAnim->spf = 1.f/currentAnim->fps * seedFactor * 0.5f;
             break;

@@ -13,7 +13,7 @@ player::MovementComponent::MovementComponent(Player &player): player(player) {}
 
 void player::MovementComponent::turn() const {
     brake();
-    if (areClose(player.physics.velocity.x, 0.f, 10.f)) {
+    if (areClose(player.velocity.x, 0.f, 10.f)) {
         player.shape.setScale({-player.shape.getScale().x, player.shape.getScale().y});
         player.facingRight = !player.facingRight;
     }
@@ -31,12 +31,12 @@ void player::MovementComponent::walkRight() const {
 
 void player::MovementComponent::brake() const {
     if (player.physics.isGrounded())
-        player.physics.accelerate({0.f, player.physics.velocity.y});
+        player.physics.accelerate({0.f, player.velocity.y});
 }
 
 void player::MovementComponent::jump() const {
     if (player.physics.isGrounded()) {
-        player.physics.velocity.y = -player.world.gravity*player.movement._speed.y/2500.f;  // Magic number is tweaked experimentally
+        player.velocity.y = -player.world.gravity*player.movement._speed.y/2500.f;  // Magic number is tweaked experimentally
     }
 }
 

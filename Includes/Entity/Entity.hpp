@@ -8,6 +8,8 @@
 #include <string>
 #include <SFML/Graphics/Shape.hpp>
 
+#include "RenderComponent.hpp"
+
 
 using entityID = std::uint64_t;
 
@@ -34,8 +36,12 @@ namespace entity {
         World &world;
         Game  &game;
         // CHARACTERISTICS
+        sf::Vector2f position{};
+        sf::Vector2f velocity{};
+        sf::Vector2f acceleration{};
         sf::Vector2f *pSize{nullptr};
         // RENDER
+        RenderComponent render{};
         sf::Shape *pShape{nullptr};
         sf::Texture *pTexture{nullptr};
         // FLAGS
