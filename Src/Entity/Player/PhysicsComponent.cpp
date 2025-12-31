@@ -49,7 +49,7 @@ void player::PhysicsComponent::printPhysics() const {
 }
 
 void player::PhysicsComponent::update() const {
-    const float &dt = player.game.time.dt;
+    const float &dt = player.game.time.get();
     const float &airFriction = player.world.airFriction;
     // ReSharper disable once CppUseStructuredBinding
     const PhysicsEngine &engine = player.game.engine;

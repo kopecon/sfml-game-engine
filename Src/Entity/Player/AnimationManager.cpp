@@ -121,5 +121,5 @@ void player::AnimationManager::updateFPS() const {
 void player::AnimationManager::update() {
     selectAnimation();
     updateFPS();
-    engine.update(player.game.time.dt);
+    engine.update(player.game.time.get());
 }
