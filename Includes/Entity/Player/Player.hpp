@@ -52,6 +52,7 @@ namespace player {
         sf::Vector2f getPosition() const;
         const State<StateSet>* getState() const;
         // INIT
+        void buildRender() override;
         void initShapeSize() override;
         void init() override;
         // UPDATE

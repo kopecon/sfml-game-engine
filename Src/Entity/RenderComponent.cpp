@@ -31,7 +31,7 @@ namespace entity {
 
     void RenderComponent::stretchToWidth(sf::RectangleShape *pShape) const {
         pShape->setSize({
-            static_cast<float>(entity.game.video.window.getSize().x),
+            3*static_cast<float>(entity.game.video.window.getSize().x),
             pShape->getSize().y
             }
         );
@@ -39,9 +39,11 @@ namespace entity {
 
     void RenderComponent::repeatToWidth(sf::RectangleShape *pShape) const {
         stretchToWidth(pShape);
+        const int texWidth = static_cast<int>(pShape->getTexture()->getSize().x);
+        const int texHeight = static_cast<int>(pShape->getTexture()->getSize().y);
+        const int shapeWidth = static_cast<int>(pShape->getGlobalBounds().size.x);
         pShape->setTextureRect(
-        sf::IntRect({0, 0}, static_cast<sf::Vector2i>(pShape->getGlobalBounds().size))
-        );
+            sf::IntRect({0, 0}, {std::max(3*texWidth, shapeWidth), texHeight}));
     }
 
     void RenderComponent::move(const sf::Vector2f &offset) const {

@@ -24,8 +24,9 @@ namespace player {
         movement(*this),
         combat(*this),
         animationManager(*this),
-        stateManager(*this)
-        {}
+        stateManager(*this) {
+        buildRender();
+    }
 
     Player::Player(World &world, const entityID ID, std::string name) :
         Entity(world, ID, std::move(name)),
@@ -34,8 +35,9 @@ namespace player {
         movement(*this),
         combat(*this),
         animationManager(*this),
-        stateManager(*this)
-        {}
+        stateManager(*this) {
+        buildRender();
+    }
 
     Player::Player(World &world, const entityID ID, std::string name, const Controls &controls):
         Entity(world, ID, std::move(name)),
@@ -44,8 +46,9 @@ namespace player {
         movement(*this),
         combat(*this),
         animationManager(*this),
-        stateManager(*this)
-        {}
+        stateManager(*this) {
+        buildRender();
+    }
     #pragma endregion
 
     sf::Vector2f Player::getSize() const {
@@ -68,6 +71,19 @@ namespace player {
         return stateManager.stateMachine.pCurrentState;
     }
 
+    void Player::buildRender() {
+        const auto &texture = game.textures.player;
+
+        auto playerShape = std::make_unique<sf::RectangleShape>(sf::Vector2f(texture.getSize()));
+
+        playerShape->setTexture(&texture);
+        playerShape->setTextureRect(sf::IntRect({0, 0}, {32, 32}));
+        playerShape->setOrigin(playerShape->getGeometricCenter());
+
+        render.addShape(std::move(playerShape));
+
+    }
+
     void Player::initShapeSize() {
         shape.setSize(static_cast<sf::Vector2f>(pTexture->getSize()));
     }
@@ -82,6 +98,7 @@ namespace player {
         input.update();
         physics.update();
         stateManager.update();
+        render.update();
         animationManager.update();
     }
 

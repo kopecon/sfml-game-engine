@@ -28,22 +28,28 @@ namespace scenery {
     }
 
     void Scenery::loop() {
+        // FIXME: There is sometimes space between border and ground edge when looping.
         if (pCamera == nullptr) setCamera();
         else {
             const auto cameraCenter = pCamera->view.getCenter();
-            const auto cameraRBorder = cameraCenter.x + pCamera->view.getSize().x / 2.f;
-            const auto cameraLBorder = cameraCenter.x - pCamera->view.getSize().x / 2.f;
+            const auto cameraWidth = pCamera->view.getSize().x;
 
-            // If camera is viewing outside of background
-            if (cameraRBorder >= pShape->getPosition().x + pShape->getGlobalBounds().size.x/2.f) {
-                pShape->setPosition({
-                    cameraRBorder-pCamera->view.getSize().x/2.f+pShape->getGlobalBounds().size.x/stretchFactor,
-                    pShape->getPosition().y});
-            }
-            else if (cameraLBorder <= pShape->getPosition().x - pShape->getGlobalBounds().size.x/2.f) {
-                pShape->setPosition({
-                    cameraLBorder+pCamera->view.getSize().x/2.f-pShape->getGlobalBounds().size.x/stretchFactor,
-                    pShape->getPosition().y});
+            const auto cameraRBorder = cameraCenter.x + cameraWidth / 2.f;
+            const auto cameraLBorder = cameraCenter.x - cameraWidth / 2.f;
+
+            for (const auto &pShape : render.getShapes()) {
+                const float shapeWidth = pShape->getLocalBounds().size.x;
+                // If camera is viewing outside of background
+                if (cameraRBorder > position.x + shapeWidth/2.f) {
+                    position = {
+                        cameraRBorder-cameraWidth/2.f,
+                        position.y};
+                }
+                else if (cameraLBorder < position.x - shapeWidth/2.f) {
+                    position = {
+                        cameraLBorder+cameraWidth/2.f,
+                        position.y};
+                }
             }
         }
     }
@@ -54,8 +60,6 @@ namespace scenery {
 
     void Scenery::init() {
         Entity::init();
-        pTexture->setRepeated(true);
-        pShape->setTextureRect(sf::IntRect({0,0}, {static_cast<sf::Vector2i>(shape.getGlobalBounds().size)}));
     }
 
     void Scenery::update() {

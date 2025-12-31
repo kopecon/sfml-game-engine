@@ -14,11 +14,15 @@ namespace scenery {
 #pragma region constructors
     Background::Background(World &world, const entityID ID) :
         Scenery(world, ID)
-    {}
+        {
+            buildRender();
+        }
 
     Background::Background(World &world, const entityID ID, std::string name) :
         Scenery(world, ID, std::move(name))
-    {}
+        {
+            buildRender();
+        }
 
     std::string Background::className() const {
         return "Background";
@@ -27,6 +31,22 @@ namespace scenery {
 
     sf::Texture * Background::getTexture() {
         return &game.textures.background;
+    }
+
+    void Background::buildRender() {
+        auto &texture = game.textures.background;
+
+        texture.setRepeated(true);
+
+        auto shape = std::make_unique<sf::RectangleShape>(sf::Vector2f(texture.getSize()));
+
+        shape->setTexture(&texture);
+
+        render.repeatToWidth(shape.get());
+
+        shape->setOrigin(shape->getGeometricCenter());
+
+        render.addShape(std::move(shape));
     }
 
     void Background::init() {
