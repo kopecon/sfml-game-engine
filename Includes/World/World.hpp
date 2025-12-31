@@ -40,7 +40,7 @@ public:
 
     // Create Entity at [0, 0]
     template<typename T, typename ... Args>
-    T* createEntity(Args&&... args)
+    T& createEntity(Args&&... args)
     requires (std::is_base_of_v<entity::Entity, T>) {
         // Create entity
         auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
@@ -55,7 +55,7 @@ public:
 
     // Create Entity at a defined position
     template<typename T, typename ... Args>
-    T* createEntity(sf::Vector2f position, Args&&... args)
+    T& createEntity(sf::Vector2f position, Args&&... args)
     requires (std::is_base_of_v<entity::Entity, T>) {
         // Create the entity
         auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
@@ -70,11 +70,11 @@ public:
     }
 
     template<typename T>
-    std::vector<T *> findEntities() const
+    std::vector<T&> findEntities() const
     requires (std::is_base_of_v<entity::Entity, T>) {
-        std::vector<T*> entitiesOfType{};
+        std::vector<T&> entitiesOfType{};
         for (auto &entity: entities | std::views::values) {
-            if (auto it = dynamic_cast<T*>(entity.get())) {
+            if (auto it = dynamic_cast<T&>(entity.get())) {
                 entitiesOfType.emplace(entitiesOfType.end(), it);
             }
         }
@@ -94,11 +94,10 @@ public:
     }
 
     template<typename T>
-    T* getEntity(const entity::Entity &entity)
+    T& getEntity(const entity::Entity &entity)
     requires (std::is_base_of_v<entity::Entity, T>) {
         const auto it = entities.find(entity.getID());
-        if (it == entities.end()) return nullptr;
-        return dynamic_cast<T*>(it->second.get());
+        return dynamic_cast<T&>(*it->second);
     }
 
     std::unordered_map<entityID, std::unique_ptr<entity::Entity>>* getEntities() {
