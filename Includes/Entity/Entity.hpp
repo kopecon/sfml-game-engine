@@ -41,7 +41,7 @@ namespace entity {
         sf::Vector2f acceleration{};
         sf::Vector2f *pSize{nullptr};
         // RENDER
-        RenderComponent render{};
+        RenderComponent render;
         sf::Shape *pShape{nullptr};
         sf::Texture *pTexture{nullptr};
         // FLAGS
@@ -51,12 +51,12 @@ namespace entity {
             name = std::move(entityName);
         }
 
+        virtual void buildRender() {};
+
+
         std::string_view getName() {
             return name;
         }
-
-        virtual void initShapeSize() = 0;
-
         [[nodiscard]] entityID getID() const {return ID;}
 
         [[nodiscard]] virtual sf::Shape* getShape() = 0;
@@ -64,6 +64,8 @@ namespace entity {
         [[nodiscard]] virtual sf::Vector2f getWindowToShapeSizeRatio() const;
 
         virtual sf::Texture* getTexture() {return pTexture;}
+
+        virtual void initShapeSize() = 0;
 
         virtual void init();
 
@@ -74,7 +76,7 @@ namespace entity {
         bool operator!=(const Entity &other) const;
 
     protected:
-        [[nodiscard]] std::string generateName() const;
+        [[nodiscard]] std::string _generateName() const;
     };
 }
 

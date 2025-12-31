@@ -22,15 +22,17 @@ namespace entity {
     Entity::Entity(World &world, const entityID ID) :
         ID(ID),
         world(world),
-        game(world.game)
-    {}
+        game(world.game),
+        render(*this)
+        {}
 
     Entity::Entity(World &world, const entityID ID, std::string name):
         ID(ID),
         name(std::move(name)),
         world(world),
-        game(world.game)
-    {}
+        game(world.game),
+        render(*this)
+        {}
 
     std::string Entity::className() const {
         return "Entity";
@@ -48,7 +50,7 @@ namespace entity {
     }
 
     void Entity::init() {
-        setName(generateName());
+        setName(_generateName());
         std::cout << "Base Init: " << name << " Started..." << "\n";
         pShape = getShape();
         pTexture = getTexture();
@@ -66,7 +68,7 @@ namespace entity {
         return this != &other;
     }
 
-    std::string Entity::generateName() const {
+    std::string Entity::_generateName() const {
         auto result = className() + std::to_string(world.getEntityCount(*this) + 1);
         return result;
     }

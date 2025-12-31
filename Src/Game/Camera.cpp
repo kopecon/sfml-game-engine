@@ -3,6 +3,7 @@
 //
 
 #include "../../Includes/Game/Camera.hpp"
+#include "../../Includes/Entity/Entity.hpp"
 
 
 Camera::Camera() = default;
@@ -14,7 +15,7 @@ Camera::Camera(sf::Window &window): pWindow(&window) {
 }
 
 void Camera::followTarget() {
-    if (pTarget) {
+    if (pTarget) { //TODO: MANAGE DELETION OF TARGET
         view.setCenter({pTarget->pShape->getPosition().x, pTarget->pShape->getPosition().y-pTarget->pShape->getGlobalBounds().size.y-50.f});
     }
 }

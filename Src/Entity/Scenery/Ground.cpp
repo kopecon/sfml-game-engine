@@ -12,15 +12,15 @@ namespace scenery {
 #pragma region constructors
     Ground::Ground(World &world, const entityID ID) :
         Scenery(world, ID)
-    {
-        shape.setFillColor(color);
-    }
+        {
+            buildRender();
+        }
 
     Ground::Ground(World &world, const entityID ID, std::string name) :
         Scenery(world, ID, std::move(name))
-    {
-        shape.setFillColor(color);
-    }
+        {
+            buildRender();
+        }
 
     std::string Ground::className() const {
         return "Ground";
@@ -31,12 +31,29 @@ namespace scenery {
         return &game.textures.topGround;
     }
 
-    void Ground::init() {
-        Scenery::init();
-        const sf::Vector2f sizeRatio = getWindowToShapeSizeRatio();
-        shape.setScale({sizeRatio.x * stretchFactor, 1});
-        shape.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(shape.getGlobalBounds().size)));
-        const sf::Vector2f offset = shape.getGeometricCenter() - sf::Vector2f({0.f, shape.getGlobalBounds().size.y/2.f});
-        shape.setOrigin(offset);
+    void Ground::buildRender() {
+        auto &topTex = game.textures.topGround;
+        auto &bottomTex = game.textures.bottomGround;
+
+        topTex.setRepeated(true);
+        bottomTex.setRepeated(true);
+
+        auto top = std::make_unique<sf::RectangleShape>(sf::Vector2f(topTex.getSize()));
+        auto bottom = std::make_unique<sf::RectangleShape>(sf::Vector2f(bottomTex.getSize()));
+
+        top->setTexture(&topTex);
+        bottom->setTexture(&bottomTex);
+
+        render.repeatToWidth(top.get());
+        render.repeatToWidth(bottom.get());
+
+        top->setOrigin(top->getGeometricCenter());
+        bottom->setOrigin(bottom->getGeometricCenter());
+
+        bottom->move({top->getPosition().x, top->getPosition().y + top->getSize().y});
+
+        render.addShape(std::move(top));
+        render.addShape(std::move(bottom));
+        render.setFillColor(color);
     }
 }

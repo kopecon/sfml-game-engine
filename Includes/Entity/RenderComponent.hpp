@@ -7,19 +7,39 @@
 #include <memory>
 #include <vector>
 
-#include "SFML/Graphics/Drawable.hpp"
+#include "../Game/Game.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/Shape.hpp"
+#include "SFML/System/Vector2.hpp"
 
 
 namespace entity {
+    class Entity;
+
     class RenderComponent {
+    protected:
+        std::vector<std::unique_ptr<sf::Shape>> shapes{};
+        Entity &entity;
     public:
-        explicit RenderComponent() = default;
+        explicit RenderComponent(Entity &entity);;
 
-        std::vector<std::unique_ptr<sf::Drawable>> drawables{};
+        void addShape(std::unique_ptr<sf::Shape> shape);
 
-        void addDrawable(std::unique_ptr<sf::Drawable> drawable) {
-            drawables.push_back(std::move(drawable));
-        }
+        sf::Shape& getShape(const sf::Shape &shape);
+
+        [[nodiscard]] const std::vector<std::unique_ptr<sf::Shape>>& getShapes() const;
+
+        void stretchToWidth(sf::RectangleShape *pShape) const;
+
+        void repeatToWidth(sf::RectangleShape *pShape) const;
+
+        void move(const sf::Vector2f &offset) const;
+
+        void setFillColor(const sf::Color &color) const;
+
+        void setPosition(const sf::Vector2f &position) const;
+
+        void update() const;
     };
 } // entity
 

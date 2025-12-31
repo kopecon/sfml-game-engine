@@ -61,7 +61,7 @@ public:
         auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
         // Init the entity
         pEntity->init();
-        pEntity->getShape()->setPosition(position);
+        pEntity->position = position;
         // Count entity
         entityCounter[typeid(*pEntity)] += 1;
         // Store in the list of entities
@@ -70,11 +70,12 @@ public:
     }
 
     template<typename T>
-    std::vector<T&> findEntities() const
-    requires (std::is_base_of_v<entity::Entity, T>) {
-        std::vector<T&> entitiesOfType{};
-        for (auto &entity: entities | std::views::values) {
-            if (auto it = dynamic_cast<T&>(entity.get())) {
+    std::vector<T*> getEntities() const
+    requires (std::is_base_of_v<entity::Entity, T>)
+    {
+        std::vector<T*> entitiesOfType{};
+        for (auto &pEntity: entities | std::views::values) {
+            if (auto it = dynamic_cast<T*>(pEntity.get())) {
                 entitiesOfType.emplace(entitiesOfType.end(), it);
             }
         }

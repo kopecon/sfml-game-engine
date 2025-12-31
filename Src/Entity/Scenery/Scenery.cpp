@@ -60,5 +60,6 @@ namespace scenery {
 
     void Scenery::update() {
         loop();
+        render.update();
     }
 }

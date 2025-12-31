@@ -13,7 +13,7 @@ using enum player::StateSet::ID;
 player::CombatComponent::CombatComponent(Player &player): player(player) {}
 
 void player::CombatComponent::attack() const {
-    auto pPlayers = player.world.findEntities<Player>();
+    auto pPlayers = player.world.getEntities<Player>();
     std::erase(pPlayers, &player);
     for (Player *opponent : pPlayers) {
         if (hd::abs(opponent->position - player.position).x <= attackRange &&
