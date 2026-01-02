@@ -13,6 +13,7 @@
 #include "InputComponent.hpp"
 #include "MovementComponent.hpp"
 #include "CombatComponent.hpp"
+#include "RenderManager.hpp"
 #include "StateManager.hpp"
 
 
@@ -41,6 +42,7 @@ namespace player {
         MovementComponent movement;
         CombatComponent combat;
         // MANAGERS
+        RenderManager renderManager;
         AnimationManager animationManager;
         StateManager stateManager;
         // RENDERING
@@ -52,7 +54,6 @@ namespace player {
         sf::Vector2f getPosition() const;
         const State<StateSet>* getState() const;
         // INIT
-        void buildRender() override;
         void initShapeSize() override;
         void init() override;
         // UPDATE

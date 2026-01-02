@@ -63,6 +63,8 @@ namespace entity {
 
         void setFillColor(const sf::Color &color) const;
 
+        [[nodiscard]] sf::Shape& getShape() const;
+
         ShapeComposite& getShapeComposite(const ShapeComposite &composite);
 
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override {

@@ -13,9 +13,10 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
+        renderManager(*this),
         animationManager(*this),
-        stateManager(*this)
-        {}
+        stateManager(*this) {
+    }
 
     Player::Player(World &world, const entityID ID, const Controls &controls) :
         Entity(world, ID),
@@ -23,9 +24,9 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
+        renderManager(*this),
         animationManager(*this),
         stateManager(*this) {
-        buildRender();
     }
 
     Player::Player(World &world, const entityID ID, std::string name) :
@@ -34,20 +35,20 @@ namespace player {
         physics(*this),
         movement(*this),
         combat(*this),
+        renderManager(*this),
         animationManager(*this),
         stateManager(*this) {
-        buildRender();
     }
 
-    Player::Player(World &world, const entityID ID, std::string name, const Controls &controls):
-        Entity(world, ID, std::move(name)),
+    Player::Player(World &world, const entityID ID, std::string name, const Controls &controls) : Entity(world, ID,
+            std::move(name)),
         input(*this, controls),
         physics(*this),
         movement(*this),
         combat(*this),
+        renderManager(*this),
         animationManager(*this),
         stateManager(*this) {
-        buildRender();
     }
     #pragma endregion
 
@@ -69,21 +70,6 @@ namespace player {
 
     const State<StateSet>* Player::getState() const {
         return stateManager.stateMachine.pCurrentState;
-    }
-
-    void Player::buildRender() {
-        const auto &texture = game.textures.player;
-
-        auto playerShape = std::make_unique<sf::RectangleShape>(sf::Vector2f(texture.getSize()));
-
-        playerShape->setTexture(&texture);
-        playerShape->setTextureRect(sf::IntRect({0, 0}, {32, 32}));
-        playerShape->setOrigin(playerShape->getGeometricCenter());
-
-        auto composite = std::make_unique<entity::ShapeComposite>();
-        composite->addShape(std::move(playerShape));
-
-        render.addComposite(std::move(composite));
     }
 
     void Player::initShapeSize() {

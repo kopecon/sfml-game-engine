@@ -32,6 +32,12 @@ namespace entity {
         [[nodiscard]] virtual std::string className() const;
         #pragma endregion
 
+        #pragma region operators
+        bool operator==(const Entity &other) const;
+
+        bool operator!=(const Entity &other) const;
+        #pragma endregion
+
         // REFERENCES
         World &world;
         Game  &game;
@@ -47,16 +53,10 @@ namespace entity {
         // FLAGS
         bool removalFlag = false;
 
-        void setName(std::string entityName) {
-            name = std::move(entityName);
-        }
+        void setName(std::string entityName);
 
-        virtual void buildRender() {};
+        std::string_view getName();
 
-
-        std::string_view getName() {
-            return name;
-        }
         [[nodiscard]] entityID getID() const {return ID;}
 
         [[nodiscard]] virtual sf::Shape* getShape() = 0;
@@ -71,9 +71,6 @@ namespace entity {
 
         virtual void update() = 0;
 
-        bool operator==(const Entity &other) const;
-
-        bool operator!=(const Entity &other) const;
 
     protected:
         [[nodiscard]] std::string _generateName() const;

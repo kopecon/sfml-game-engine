@@ -21,7 +21,7 @@ namespace scenery {
         sf::Color color = sf::Color({40,30,100});
         sf::Texture* getTexture() override;
 
-        void buildRender() override;
+        void buildRender();
     };
 }
 

@@ -63,6 +63,11 @@ namespace entity {
         }
     }
 
+    sf::Shape & RenderComponent::getShape() const {
+        assert(composites.size() == 1 && composites.back().get()->getShapes().size() == 1 && "Render contains multiple objects");
+        return *composites.back()->getShapes().back();
+    }
+
     ShapeComposite & RenderComponent::getShapeComposite(const ShapeComposite &composite) {
         const auto it = std::ranges::find_if(
             composites,

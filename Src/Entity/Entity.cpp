@@ -39,6 +39,24 @@ namespace entity {
     }
 #pragma endregion
 
+#pragma region operators
+    bool Entity::operator==(const Entity &other) const {
+        return this == &other;
+    }
+
+    bool Entity::operator!=(const Entity &other) const {
+        return this != &other;
+    }
+#pragma endregion
+
+    void Entity::setName(std::string entityName) {
+        name = std::move(entityName);
+    }
+
+    std::string_view Entity::getName() {
+        return name;
+    }
+
     sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
         const sf::Vector2f windowSize = static_cast<sf::Vector2f>(world.game.video.getWindowSize());
         const sf::Vector2f shapeSize = pShape->getGlobalBounds().size;
@@ -58,14 +76,6 @@ namespace entity {
         pShape->setOrigin(pShape->getGeometricCenter());
         pShape->setTexture(pTexture);
         std::cout << "Base Init: " << name << " Finished." << "\n\n";
-    }
-
-    bool Entity::operator==(const Entity &other) const {
-        return this == &other;
-    }
-
-    bool Entity::operator!=(const Entity &other) const {
-        return this != &other;
     }
 
     std::string Entity::_generateName() const {

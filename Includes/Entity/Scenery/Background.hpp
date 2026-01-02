@@ -22,7 +22,7 @@ namespace scenery {
 
         sf::Texture* getTexture() override;
 
-        void buildRender() override;
+        void buildRender();
 
         void init() override;
     };
