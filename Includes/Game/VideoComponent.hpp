@@ -15,7 +15,7 @@ class VideoComponent {
     // METADATA
     const std::string windowTitle{};
     // HARDWARE PARAMETERS
-    sf::Vector2u screenSize = sf::VideoMode::getDesktopMode().size;
+    const sf::Vector2u screenSize = sf::VideoMode::getDesktopMode().size;
     // VIDEO SETTINGS
     sf::ContextSettings settings;
     unsigned int fps{144};
@@ -39,6 +39,14 @@ protected:
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
 
 public:
+    static sf::Vector2u getScreenSize() {
+        return sf::VideoMode::getDesktopMode().size;
+    }
+
+    sf::Vector2u getWindowSize() const {
+        return window.getSize();
+    }
+
     const sf::RenderWindow& getWindow();
 
     void recreateWindow();
