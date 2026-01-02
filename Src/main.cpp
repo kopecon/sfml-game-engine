@@ -10,7 +10,7 @@
 int main() {
     #pragma region game settup
     Game game("Bonk Game");
-    const sf::RenderWindow &window = game.video.window;  // Reference the game window
+    const sf::RenderWindow &window = game.video.getWindow();  // Reference the game window
     #pragma endregion
 
     #pragma region world

@@ -17,6 +17,10 @@ VideoComponent::VideoComponent(const std::string &title)
     window.setFramerateLimit(fps);
 }
 
+const sf::RenderWindow& VideoComponent::getWindow() {
+    return window;
+}
+
 void VideoComponent::recreateWindow() {
     window.create(sf::VideoMode(initialWindowSize), windowTitle, sf::Style::Default, windowState, settings);
 }

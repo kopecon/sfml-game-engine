@@ -11,7 +11,7 @@
 World::World(Game &game, std::string name):
 game(game),
 name(text::up(std::move(name))),
-groundLevel(static_cast<float>(game.video.window.getSize().y)*0.9f/2.f)
+groundLevel(static_cast<float>(game.video.getWindow().getSize().y)*0.9f/2.f)
 {}
 #pragma endregion
 

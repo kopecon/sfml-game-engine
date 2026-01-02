@@ -18,26 +18,30 @@ class VideoComponent {
     sf::Vector2u screenSize = sf::VideoMode::getDesktopMode().size;
     // VIDEO SETTINGS
     sf::ContextSettings settings;
-    float windowSizeRatio = 2.f;  // Screen size / window size
     unsigned int fps{144};
     // WINDOW
+    float windowSizeRatio = 2.f;  // Screen size / window size
     sf::State windowState = sf::State::Windowed;  // Initial state when game starts
     sf::Vector2u initialWindowSize = scalar::divide(screenSize, windowSizeRatio);
-        // {
-        // static_cast<unsigned>(static_cast<float>(screenSize.x)/windowSizeRatio),
-        // static_cast<unsigned>(static_cast<float>(screenSize.y)/windowSizeRatio)};
+    sf::RenderWindow window{};
+
 public:
     VideoComponent();
+
     explicit VideoComponent(const std::string &title);
-    sf::RenderWindow window{};
+
     // COMPONENTS
     Camera camera{};
 
-    void recreateWindow();
-
+protected:
     void onClose(const sf::Event::Closed&);
 
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
+
+public:
+    const sf::RenderWindow& getWindow();
+
+    void recreateWindow();
 
     void update(World *pWorld);
 };
