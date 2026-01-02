@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 01/12/2025.
-//
-
 #include "../../../Includes/Entity/Scenery/Scenery.hpp"
 #include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
@@ -37,8 +33,8 @@ namespace scenery {
             const auto cameraRBorder = cameraCenter.x + cameraWidth / 2.f;
             const auto cameraLBorder = cameraCenter.x - cameraWidth / 2.f;
 
-            for (const auto &pShape : render.getShapes()) {
-                const float shapeWidth = pShape->getLocalBounds().size.x;
+            for (const auto &pShapeComposite : render.getShapeComposites()) {
+                const float shapeWidth = pShapeComposite->getShapes().back()->getLocalBounds().size.x;
                 // If camera is viewing outside of background
                 if (cameraRBorder > position.x + shapeWidth/2.f) {
                     position = {

@@ -40,7 +40,7 @@ namespace entity {
 #pragma endregion
 
     sf::Vector2f Entity::getWindowToShapeSizeRatio() const {
-        const sf::Vector2f windowSize = static_cast<sf::Vector2f>(world.game.video.windowSize);
+        const sf::Vector2f windowSize = static_cast<sf::Vector2f>(world.game.video.window.getSize());
         const sf::Vector2f shapeSize = pShape->getGlobalBounds().size;
         const sf::Vector2f sizeRatio = {
             windowSize.x / shapeSize.x,

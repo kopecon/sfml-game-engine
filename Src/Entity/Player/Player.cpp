@@ -80,8 +80,10 @@ namespace player {
         playerShape->setTextureRect(sf::IntRect({0, 0}, {32, 32}));
         playerShape->setOrigin(playerShape->getGeometricCenter());
 
-        render.addShape(std::move(playerShape));
+        auto composite = std::make_unique<entity::ShapeComposite>();
+        composite->addShape(std::move(playerShape));
 
+        render.addComposite(std::move(composite));
     }
 
     void Player::initShapeSize() {

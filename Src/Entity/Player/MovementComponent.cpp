@@ -49,8 +49,8 @@ void player::MovementComponent::updateSpeed() {
     if (player.getState()->ID == RUNNING
         || player.getState()->ID == JUMPING
         && player.stateManager.stateMachine.pPreviousState->ID == RUNNING)
-        _speed = hd::multiply<float>(player.getSize(), runningSpeed);
+        _speed = hd::multiply(player.getSize(), runningSpeed);
     else {
-        _speed = hd::multiply<float>(player.getSize(), walkingSpeed);;
+        _speed = hd::multiply(player.getSize(), walkingSpeed);;
     }
 }

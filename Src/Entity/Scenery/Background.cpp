@@ -6,8 +6,6 @@
 #include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/World/World.hpp"
 
-#include <iostream>
-
 
 namespace scenery {
 
@@ -46,7 +44,10 @@ namespace scenery {
 
         shape->setOrigin(shape->getGeometricCenter());
 
-        render.addShape(std::move(shape));
+        auto composite = std::make_unique<entity::ShapeComposite>();
+        composite->addShape(std::move(shape));
+
+        render.addComposite(std::move(composite));
     }
 
     void Background::init() {

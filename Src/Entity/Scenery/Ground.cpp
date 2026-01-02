@@ -52,8 +52,11 @@ namespace scenery {
 
         bottom->move({top->getPosition().x, top->getPosition().y + top->getSize().y});
 
-        render.addShape(std::move(top));
-        render.addShape(std::move(bottom));
+        auto composite = std::make_unique<entity::ShapeComposite>();
+        composite->addShape(std::move(top));
+        composite->addShape(std::move(bottom));
+
+        render.addComposite(std::move(composite));
         render.setFillColor(color);
     }
 }

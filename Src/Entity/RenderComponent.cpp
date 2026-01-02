@@ -1,21 +1,20 @@
-//
-// Created by Andrew on 30/12/2025.
-//
-
 #include "../../Includes/Entity/RenderComponent.hpp"
-
 #include <iostream>
-
 #include "../../Includes/Entity/Entity.hpp"
 
-namespace entity {
-    RenderComponent::RenderComponent(Entity &entity):entity(entity) {}
 
-    void RenderComponent::addShape(std::unique_ptr<sf::Shape> shape) {
+namespace entity {
+    void ShapeComposite::addShape(std::unique_ptr<sf::Shape> shape) {
         shapes.push_back(std::move(shape));
     }
 
-    sf::Shape & RenderComponent::getShape(const sf::Shape &shape) {
+    void ShapeComposite::setFillColor(const sf::Color &color) const {
+        for (const auto &pShape : shapes) {
+            pShape->setFillColor(color);
+        }
+    }
+
+    sf::Shape& ShapeComposite::getShape(const sf::Shape &shape) {
         const auto it = std::ranges::find_if(
             shapes,
             [&shape](const std::unique_ptr<sf::Shape>& obj) {
@@ -25,8 +24,14 @@ namespace entity {
         return *it->get();
     }
 
-    const std::vector<std::unique_ptr<sf::Shape>> & RenderComponent::getShapes() const {
+    [[nodiscard]] const std::vector<std::unique_ptr<sf::Shape>>& ShapeComposite::getShapes() const {
         return shapes;
+    };
+
+    RenderComponent::RenderComponent(Entity &entity):entity(entity) {}
+
+    const std::vector<std::unique_ptr<ShapeComposite>> & RenderComponent::getShapeComposites() const {
+        return composites;
     }
 
     void RenderComponent::stretchToWidth(sf::RectangleShape *pShape) const {
@@ -46,34 +51,31 @@ namespace entity {
             sf::IntRect({0, 0}, {std::max(3*texWidth, shapeWidth), texHeight}));
     }
 
-    void RenderComponent::move(const sf::Vector2f &offset) const {
-        for (const auto &pShape : shapes) {
-            pShape->move(offset);
-        }
+    void RenderComponent::addComposite(std::unique_ptr<ShapeComposite> composite) {
+        composites.push_back(std::move(composite));
     }
 
     void RenderComponent::setFillColor(const sf::Color &color) const {
-        for (const auto &pShape : shapes) {
-            pShape->setFillColor(color);
+        for (const auto &pComposite : composites) {
+            for (const auto &pShape : pComposite->getShapes()) {
+                pShape->setFillColor(color);
+            }
         }
     }
 
-    void RenderComponent::setPosition(const sf::Vector2f &position) const {
-        /* Sets position to every shape, but keeps the relative position
-             * to the first shape for each other shape.
-             */
-        if (shapes.empty()) return;
-        auto &root = *shapes.begin()->get();
-        for (int i=1; i<shapes.size(); ++i) {
-            const auto posDif = root.getPosition() - shapes[i]->getPosition();
-            const auto newPos = position - posDif;
-            shapes[i]->setPosition(newPos);
-        }
-        root.setPosition(position);
+    ShapeComposite & RenderComponent::getShapeComposite(const ShapeComposite &composite) {
+        const auto it = std::ranges::find_if(
+            composites,
+            [&composite](const std::unique_ptr<ShapeComposite>& obj) {
+                return obj.get() == &composite;
+            });
+        if (it == composites.end()) std::cout << "Composite not found.\n";
+        return *it->get();
     }
-
 
     void RenderComponent::update() const {
-        setPosition(entity.position);
+        for (const auto &pComposite : composites) {
+            pComposite->setPosition(entity.position);
+        }
     }
 } // entity
