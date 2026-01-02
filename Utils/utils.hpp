@@ -75,8 +75,8 @@ namespace scalar {
         || std::is_base_of_v<sf::Vector2f, sfVector> )
     sfVector multiply(const sfVector &vector, const S &scalar) {
         sfVector result{};
-        result.x = (sfVector{vector.x} * scalar);
-        result.y = (sfVector{vector.y} * scalar);
+        result.x = (sfVector{vector.x} * static_cast<float>(scalar));
+        result.y = (sfVector{vector.y} * static_cast<float>(scalar));
         return result;
     }
 
