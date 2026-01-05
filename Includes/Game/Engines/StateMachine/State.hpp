@@ -43,7 +43,7 @@ public:
     // DEBUG SETTINGS
     bool verbose{false};
 
-    bool hasEdges() {
+    bool hasEdges() const {
         if (edges.empty()) return false;
         return true;
     }

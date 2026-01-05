@@ -15,19 +15,19 @@
 template<StateSetConcept StateSet>
 class StateMachine {
     bool verbose{false};
-    void _enter(State<StateSet> *pState) {
-        pCurrentState = pState;
+    void _enter(State<StateSet> &state) {
+        pCurrentState = &state;
         pCurrentState->onEnter();
     }
-    void _exit(State<StateSet> *pState) {
+    void _exit(State<StateSet> &state) {
         pCurrentState->onExit();
-        pPreviousState = pState;
+        pPreviousState = &state;
     }
-    void _generateFallBackEdge(State<StateSet> *pState) {
-        pState->addEdge(std::make_unique<typename State<StateSet>::Edge>(pCurrentState->ID));
+    void _generateFallBackEdge(State<StateSet> &state) {
+        state.addEdge(std::make_unique<typename State<StateSet>::Edge>(pCurrentState->ID));
         #ifndef NDEBUG
         std::cerr << "\nWarning: State "
-                  << StateSet::name(pState->ID)
+                  << StateSet::name(state.ID)
                   << " has no edges. Auto-generated fallback to "
                   << StateSet::name(pCurrentState->ID)
                   << '\n';
@@ -63,13 +63,13 @@ public:
         }
     }
 
-    State<StateSet>* getState(typename StateSet::ID stateID) const {
+    State<StateSet>& getState(typename StateSet::ID stateID) {
         auto it = states.find(stateID);
         if (it == states.end()) {
             if (verbose) std::cout << "Desired state " << StateSet::name(stateID) << " is not implemented!\n";
-            return nullptr;
+            return *pCurrentState;
         }
-        return it->second.get();
+        return *it->second;
     }
 
     template<typename T>
@@ -82,6 +82,7 @@ public:
             pCurrentState = it->second.get();
         }
     }
+
     template<typename T, typename ... Args>
     State<StateSet>* createState(Args&&... args)
     requires std::is_base_of_v<State<StateSet>, T> {
@@ -96,11 +97,11 @@ public:
     void transition() {
         auto newStateID = pCurrentState->next(desiredStateID);
         if (newStateID != pCurrentState->ID) {
-            if (const auto newState = getState(newStateID)) {
-                if (!newState->hasEdges()) _generateFallBackEdge(newState);
-                _exit(pCurrentState);
-                _enter(newState);
-            }
+            getState(newStateID); // No error
+            auto &newState = getState(newStateID); //error
+            if (!newState.hasEdges()) _generateFallBackEdge(newState);
+            _exit(*pCurrentState);
+            _enter(newState);
         }
     }
 
