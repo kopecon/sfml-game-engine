@@ -56,8 +56,8 @@ namespace player {
         return sf::Vector2f(height, width);
     }
 
-    const State<StateSet>* Player::getState() const {
-        return stateManager.stateMachine.pCurrentState;
+    const State<StateSet>& Player::getState() const {
+        return *stateManager.stateMachine.pCurrentState;
     }
 
     sf::Shape & Player::getShape() const {

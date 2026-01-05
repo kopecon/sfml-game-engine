@@ -48,7 +48,7 @@ namespace player {
         StateManager stateManager;
         // GETTERS
         [[nodiscard]] sf::Vector2f getSize() const;
-        [[nodiscard]] const State<StateSet>* getState() const;  //TODO: make return reference instead.
+        [[nodiscard]] const State<StateSet>& getState() const;
         [[nodiscard]] sf::Shape& getShape() const;
         // UPDATE
         void update() override;

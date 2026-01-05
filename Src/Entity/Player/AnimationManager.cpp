@@ -27,8 +27,7 @@ player::AnimationManager::AnimationManager(Player &player) :
 
 void player::AnimationManager::selectAnimation() {
     using enum StateSet::ID;
-
-    switch (player.getState()->ID) {
+    switch (player.getState().ID) {
         case IDLE:
             engine.set(IDLE);
             break;
