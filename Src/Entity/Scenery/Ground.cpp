@@ -51,6 +51,6 @@ namespace scenery {
         render.addComposite(std::move(composite));
         render.setFillColor(color);
         render.setOrigin({render.getGeometricalCenter().x, 0});
-        render.showBoundary();
+        // render.showBoundary();
     }
 }

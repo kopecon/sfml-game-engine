@@ -26,10 +26,10 @@ namespace player {
 
         auto composite = std::make_unique<Composite>();
         composite->addShape(std::move(shape));
-        composite->addShape(std::move(test_shape));
+        // composite->addShape(std::move(test_shape));
 
         player.render.addComposite(std::move(composite));
         player.render.setOrigin(player.render.getGeometricalCenter());
-        player.render.showBoundary(sf::Color::Blue);
+        // player.render.showBoundary(sf::Color::Blue);
     }
 } // player

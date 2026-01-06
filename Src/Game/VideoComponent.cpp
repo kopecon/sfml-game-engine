@@ -78,7 +78,8 @@ void VideoComponent::update(World *pWorld) {
     test_shape.setOrigin(test_shape.getGeometricCenter());
     test_shape.setFillColor(sf::Color(0, 0, 255));
     test_shape.setPosition({0.f, pWorld->groundLevel});
-    window.draw(test_shape);
+    // window.draw(test_shape);
+
     window.display();
     // --- Draw on screen ---
 }
