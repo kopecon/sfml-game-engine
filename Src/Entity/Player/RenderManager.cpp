@@ -29,7 +29,7 @@ namespace player {
         // composite->addShape(std::move(test_shape));
 
         player.render.addComposite(std::move(composite));
-        player.render.setOrigin(player.render.getGeometricalCenter());
+        player.render.setOrigin(player.render.getCenter());
         // player.render.showBoundary(sf::Color::Blue);
     }
 } // player

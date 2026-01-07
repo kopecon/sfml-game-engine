@@ -43,7 +43,7 @@ public:
 
     [[nodiscard]] sf::FloatRect getGlobalBounds() const;
 
-    [[nodiscard]] sf::Vector2f getGeometricalCenter() const;
+    [[nodiscard]] sf::Vector2f getCenter() const;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 

@@ -39,6 +39,6 @@ namespace scenery {
         auto composite = std::make_unique<Composite>();
         composite->addShape(std::move(shape));
         render.addComposite(std::move(composite));
-        render.setOrigin(render.getGeometricalCenter());
+        render.setOrigin(render.getCenter());
     }
 }

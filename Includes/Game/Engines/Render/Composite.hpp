@@ -30,7 +30,7 @@ public:
 
     [[nodiscard]] sf::FloatRect getGlobalBounds() const;
 
-    [[nodiscard]] sf::Vector2f getGeometricalCenter() const;
+    [[nodiscard]] sf::Vector2f getCenter() const;
 
     [[nodiscard]] sf::Shape& getShape(const sf::Shape &shape);
 

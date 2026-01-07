@@ -70,7 +70,7 @@ sf::FloatRect Render::getGlobalBounds() const {
     return {position, size};
 }
 
-sf::Vector2f Render::getGeometricalCenter() const {
+sf::Vector2f Render::getCenter() const {
     const auto localBounds = getLocalBounds();
     const auto x = localBounds.position.x + localBounds.size.x / 2.f;
     const auto y = localBounds.position.y + localBounds.size.y / 2.f;

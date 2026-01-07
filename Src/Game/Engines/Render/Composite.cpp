@@ -23,12 +23,12 @@ void Composite::setFillColor(const sf::Color &color) const {
 
 void Composite::showBoundary(const sf::Color color) {
     auto bounds = getGlobalBounds();
-    auto boundary = std::make_unique<sf::RectangleShape>(bounds.size);
-    boundary->setPosition(bounds.position);
-    boundary->setFillColor(sf::Color::Transparent);
-    boundary->setOutlineColor(color);
-    boundary->setOutlineThickness(5.f);
-    addShape(std::move(boundary));
+    auto outline = std::make_unique<sf::RectangleShape>(bounds.size);
+    outline->setPosition(bounds.position);
+    outline->setFillColor(sf::Color::Transparent);
+    outline->setOutlineColor(color);
+    outline->setOutlineThickness(5.f);
+    boundary = std::move(outline);
 }
 
 sf::FloatRect Composite::getLocalBounds() const {
@@ -51,7 +51,7 @@ sf::FloatRect Composite::getGlobalBounds() const {
     return {position, size};
 }
 
-sf::Vector2f Composite::getGeometricalCenter() const {
+sf::Vector2f Composite::getCenter() const {
     const auto localBounds = getLocalBounds();
     const auto x = localBounds.position.x + localBounds.size.x / 2.f;
     const auto y = localBounds.position.y + localBounds.size.y / 2.f;
