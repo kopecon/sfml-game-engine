@@ -20,9 +20,7 @@ void Render::addShape(std::unique_ptr<sf::Shape> shape) {
 
 void Render::setFillColor(const sf::Color &color) const {
     for (const auto &pComposite : composites) {
-        for (const auto &pShape : pComposite->shapes) {
-            pShape->setFillColor(color);
-        }
+        pComposite->setFillColor(color);
     }
 }
 
