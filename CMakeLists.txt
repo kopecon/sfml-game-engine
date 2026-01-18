@@ -35,8 +35,8 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Entity/Scenery/Background.hpp
         Src/Game/Camera.cpp
         Includes/Game/Camera.hpp
-        Src/Game/Engines/AnimationEngine.cpp
-        Includes/Game/Engines/AnimationEngine.hpp
+        Src/Game/Engines/AnimationEngine/AnimationEngine.cpp
+        Includes/Game/Engines/AnimationEngine/AnimationEngine.hpp
         Src/Entity/Player/PhysicsComponent.cpp
         Includes/Entity/Player/PhysicsComponent.hpp
         Src/Entity/Player/InputComponent.cpp
@@ -91,6 +91,10 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Entity/Player/RenderManager.hpp
         Src/Game/Engines/Render/Composite.cpp
         Includes/Game/Engines/Render/Composite.hpp
+        Src/Game/Engines/AnimationEngine/AnimationSheet.cpp
+        Includes/Game/Engines/AnimationEngine/AnimationSheet.hpp
+        Src/Game/Engines/AnimationEngine/Animation.cpp
+        Includes/Game/Engines/AnimationEngine/Animation.hpp
 )
 
 if (PRODUCTION_BUILD)

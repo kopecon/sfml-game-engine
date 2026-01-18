@@ -6,23 +6,24 @@
 #include "../../../Includes/Entity/Player/Player.hpp"
 #include "../../../Includes/Entity/Player/States/StateSet.hpp"
 #include "../../../Includes/Game/Game.hpp"
+#include "../../../Includes/Game/Engines/AnimationEngine/Animation.hpp"
 #include "../../../Includes/World/World.hpp"
 #include <cmath>
 
 
 player::AnimationManager::AnimationManager(Player &player) :
     player(player),
-    engine({&player.game.textures.player, {32, 32}}, player.getSprite()) {
+    engine(player.getSprite(), AnimationSheet(player.getSprite().getTexture(), sf::Vector2u(32, 32))) {
     using enum StateSet::ID;
-    engine.add(AnimationEntry(IDLE,         2, true));
-    engine.add(AnimationEntry(WINKING,      2, true));
-    engine.add(AnimationEntry(WALKING,      4, true));
-    engine.add(AnimationEntry(RUNNING,      8, true));
-    engine.add(AnimationEntry(CROUCHING,    6, true));
-    engine.add(AnimationEntry(JUMPING,      8, false));
-    engine.add(AnimationEntry(DYING,        8, false));
-    engine.add(AnimationEntry(DISAPPEARING, 4, false));
-    engine.add(AnimationEntry(ATTACKING,    8, false));
+    engine.add(Animation(IDLE,         2, true));
+    engine.add(Animation(WINKING,      2, true));
+    engine.add(Animation(WALKING,      4, true));
+    engine.add(Animation(RUNNING,      8, true));
+    engine.add(Animation(CROUCHING,    6, true));
+    engine.add(Animation(JUMPING,      8, false));
+    engine.add(Animation(DYING,        8, false));
+    engine.add(Animation(DISAPPEARING, 4, false));
+    engine.add(Animation(ATTACKING,    8, false));
 }
 
 void player::AnimationManager::selectAnimation() {

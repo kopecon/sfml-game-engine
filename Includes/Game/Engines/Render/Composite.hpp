@@ -19,6 +19,7 @@ class Composite : public sf::Drawable, public sf::Transformable {
     std::unique_ptr<sf::Sprite> sprite{nullptr};
     std::unique_ptr<sf::RectangleShape> boundary{nullptr};
 
+
 public:
 #pragma region constructors
     explicit Composite();

@@ -5,7 +5,7 @@
 #ifndef BONK_GAME_ANIMATION_MANAGER_HPP
 #define BONK_GAME_ANIMATION_MANAGER_HPP
 
-#include "../../Game/Engines/AnimationEngine.hpp"
+#include "../../../Includes/Game/Engines/AnimationEngine/AnimationEngine.hpp"
 #include "States/StateSet.hpp"
 
 
