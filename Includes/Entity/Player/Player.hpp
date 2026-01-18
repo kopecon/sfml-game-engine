@@ -32,8 +32,8 @@ namespace player {
         // CHARACTERISTICS
         float health{100.f};
         float attackDamage{20.f};
-        float height{256.f};
-        float width{256.f};
+        float height{256.f/1.5};
+        float width{256.f/1.5};
         // CONDITIONS
         bool facingRight{true};
         float eyeDryness{};
