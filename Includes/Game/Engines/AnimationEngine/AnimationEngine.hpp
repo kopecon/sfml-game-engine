@@ -13,7 +13,6 @@
 #include "../../../../Utils/utils.hpp"
 
 
-template<EnumSetConcept AnimationSet>
 class AnimationEngine {
     sf::Sprite &target_;
     AnimationSheet animationSheet_;
@@ -26,8 +25,8 @@ public:
         {}
 #pragma endregion
 
-    Animation<AnimationSet> *pCurrentAnimation{nullptr};
-    std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animationSet;
+    Animation *pCurrentAnimation{nullptr};
+    std::unordered_map<animation_id, std::unique_ptr<Animation>> animationSet;
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const {
         auto framePosition = sf::Vector2i(
@@ -38,7 +37,7 @@ public:
         return {framePosition, frameSize};
     }
 
-    void set(const typename AnimationSet::ID &id) {
+    void set(const animation_id &id) {
         auto *pNewAnimation = animationSet[id].get();
         if (pCurrentAnimation == nullptr) {
             pCurrentAnimation = pNewAnimation;
@@ -51,11 +50,11 @@ public:
         }
     }
 
-    void add(std::unique_ptr<Animation<AnimationSet>> animation) {
-        typename AnimationSet::ID animID = animation->getID();
-        animationSet.emplace(animID, std::move(animation));
+    void add(std::unique_ptr<Animation> animation) {
+        animation_id id = animation->getID();
+        animationSet.emplace(id, std::move(animation));
         if (pCurrentAnimation == nullptr) {
-            set(animID);
+            set(id);
         }
     }
 

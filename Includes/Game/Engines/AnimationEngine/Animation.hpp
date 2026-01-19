@@ -9,9 +9,10 @@
 #include "../../../../Utils/EnumSet.hpp"
 #include "SFML/Graphics/Rect.hpp"
 
-template<EnumSetConcept AnimationSet>
+using animation_id = unsigned;
+
 class Animation {
-    AnimationSet::ID id_{0};  // Represents row index starting from 0;
+    animation_id id_{0};  // Represents row index starting from 0;
     unsigned index_ = 0;
     float timer_{0.0f};  // tracks elapsed time
     unsigned fpr_{};  // frames per row
@@ -26,7 +27,7 @@ public:
 #pragma region constructors
     Animation() = default;
 
-    Animation(const typename AnimationSet::ID &id, const int &fpr, const bool &looping=true) :
+    Animation(const animation_id &id, const int &fpr, const bool &looping=true) :
         id_(id),
         fpr_(fpr),
         fps_(static_cast<float>(fpr)),
@@ -46,7 +47,7 @@ public:
 
     struct Hash {
         size_t operator()(const Animation& anim) const noexcept {
-            return std::hash<typename AnimationSet::ID>()(anim.id_);
+            return std::hash<animation_id>()(anim.id_);
         }
     };
 #pragma endregion
@@ -66,7 +67,7 @@ public:
         fps_ = 1 / spf_;
     }
 
-    [[nodiscard]] typename AnimationSet::ID getID() const {
+    [[nodiscard]] animation_id getID() const {
         return id_;
     }
 
@@ -83,7 +84,7 @@ public:
     }
 
     [[nodiscard]] sf::Vector2u getFrameIndex() {
-        return {index_, static_cast<unsigned>(id_)};
+        return {index_, id_};
     }
 
     void reset() {
