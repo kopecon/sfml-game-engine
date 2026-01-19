@@ -27,12 +27,16 @@ public:
     explicit AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet);
 #pragma endregion
 
-    [[nodiscard]] sf::IntRect getCurrentFrame() const;
-
 
     void add(std::unique_ptr<Animation> animation);
 
     void set(const animation_id &id);
+
+    void setAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet);
+
+    void setTarget(sf::Sprite &sprite);
+
+    [[nodiscard]] sf::IntRect getCurrentFrame() const;
 
     [[nodiscard]] Animation* getCurrentAnimation() const;
 

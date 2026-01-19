@@ -18,7 +18,18 @@ namespace player {
         sprite->setScale(hd::divide(player.getCharacterSize(), sprite->getGlobalBounds().size));
 
         player.render.setSprite(std::move(sprite));
-
+        player.render.animator.setTarget(*player.render.getSprite());
+        player.render.animator.setAnimationSheet(std::make_unique<AnimationSheet>(
+            texture,
+            sf::Vector2u(32, 32)
+            ));
+        player.render.animator.add(
+            std::make_unique<Animation>(0, 2, true)
+        );
+        player.render.animator.add(
+            std::make_unique<Animation>(1, 2, true)
+        );
+        std::cout << player.render.animator.getCurrentAnimation()->getID() << "\n";
         player.render.setOrigin(player.render.getCenter());
         player.render.showOutline(sf::Color::Blue);
     }

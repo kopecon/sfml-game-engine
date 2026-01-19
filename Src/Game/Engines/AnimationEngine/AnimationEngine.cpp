@@ -3,6 +3,9 @@
 //
 
 #include "../../../../Includes/Game/Engines/AnimationEngine/AnimationEngine.hpp"
+
+#include <iostream>
+
 #include "../../../../Includes/Game/Engines/AnimationEngine/AnimationSheet.hpp"
 #include "../../../../Utils/utils.hpp"
 #include "../../../../Includes/Game/Engines/Render/Composite.hpp"
@@ -12,25 +15,16 @@
 AnimationEngine::AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet):
     pTarget_(&target),
     animationSheet_(std::move(animationSheet))
-    {}
+{}
 
 AnimationEngine::AnimationEngine(const Composite &composite) :
     pTarget_(composite.getSprite())  //can be null
-    {}
+{}
 
 AnimationEngine::AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet) :
     pTarget_(composite.getSprite()),  //can be null
     animationSheet_(std::move(animationSheet))
-    {}
-
-sf::IntRect AnimationEngine::getCurrentFrame() const {
-    auto framePosition = sf::Vector2i(
-        hd::multiply(pCurrentAnimation_->getFrameIndex(), animationSheet_->frameSize)
-    );
-    auto frameSize = static_cast<sf::Vector2i>(animationSheet_->frameSize);
-
-    return {framePosition, frameSize};
-}
+{}
 
 void AnimationEngine::add(std::unique_ptr<Animation> animation) {
     animation_id id = animation->getID();
@@ -51,6 +45,23 @@ void AnimationEngine::set(const animation_id &id) {
         // Reset the animation
         pCurrentAnimation_->reset();
     }
+}
+
+void AnimationEngine::setAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet) {
+    animationSheet_ = std::move(animationSheet);
+}
+
+void AnimationEngine::setTarget(sf::Sprite &sprite) {
+    pTarget_ = &sprite;
+}
+
+sf::IntRect AnimationEngine::getCurrentFrame() const {
+    auto framePosition = sf::Vector2i(
+        hd::multiply(pCurrentAnimation_->getFrameIndex(), animationSheet_->frameSize)
+    );
+    auto frameSize = static_cast<sf::Vector2i>(animationSheet_->frameSize);
+
+    return {framePosition, frameSize};
 }
 
 Animation * AnimationEngine::getCurrentAnimation() const {

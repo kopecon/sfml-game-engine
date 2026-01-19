@@ -29,5 +29,6 @@ void Render::loop() const {
 }
 
 void Render::update() {
+    animate(entity_.game.time.get());
     setPosition(entity_.position);
 }

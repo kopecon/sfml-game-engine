@@ -22,13 +22,13 @@ Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite):
 
 Composite::Composite(std::string name, std::unique_ptr<AnimationSheet> animationSheet) :
     name_(std::move(name)),
-    animator_(*this, std::move(animationSheet))
+    animator(*this, std::move(animationSheet))
     {}
 #pragma endregion
 
 
 void Composite::animate(const float &dt) const {
-    animator_.update(dt);
+    animator.update(dt);
 }
 
 void Composite::add(std::unique_ptr<Composite> composite) {
