@@ -6,12 +6,11 @@
 #define BONK_GAME_ANIMATION_HPP
 #include <functional>
 #include "SFML/System/Vector2.hpp"
+#include "../../../../Utils/EnumSet.hpp"
 
-
-template<typename AnimationEnum>
-requires (std::is_enum_v<AnimationEnum>)
+template<EnumSetConcept AnimationSet>
 class Animation {
-    AnimationEnum ID_{0};  // Represents row index starting from 0;
+    AnimationSet::ID ID_{0};  // Represents row index starting from 0;
     unsigned frame_ = 0;
     float timer_{0.0f};  // tracks elapsed time
     unsigned fpr_{};  // frames per row
@@ -26,7 +25,7 @@ public:
 #pragma region constructors
     Animation() = default;
 
-    Animation(const AnimationEnum &id, const int &fpr, const bool &looping=true) :
+    Animation(const typename AnimationSet::ID &id, const int &fpr, const bool &looping=true) :
     ID_(id),
     fpr_(fpr),
     fps_(static_cast<float>(fpr)),
@@ -46,7 +45,7 @@ public:
 
     struct Hash {
         size_t operator()(const Animation& anim) const noexcept {
-            return std::hash<AnimationEnum>()(anim.ID_);
+            return std::hash<typename AnimationSet::ID>()(anim.ID_);
         }
     };
 #pragma endregion
@@ -66,7 +65,7 @@ public:
         fps_ = 1 / spf_;
     }
 
-    [[nodiscard]] AnimationEnum getID() const {
+    [[nodiscard]] typename AnimationSet::ID getID() const {
         return ID_;
     }
 
@@ -115,6 +114,5 @@ public:
         }
     };
 };
-
 
 #endif //BONK_GAME_ANIMATION_HPP

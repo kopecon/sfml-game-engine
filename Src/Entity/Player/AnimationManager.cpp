@@ -15,15 +15,15 @@ player::AnimationManager::AnimationManager(Player &player) :
     player(player),
     engine(player.getSprite(), AnimationSheet(player.getSprite().getTexture(), sf::Vector2u(32, 32))) {
     using enum StateSet::ID;
-    engine.add(std::make_unique<Animation<StateSet::ID>>(IDLE,         2, true ));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(WINKING,      2, true ));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(WALKING,      4, true ));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(RUNNING,      8, true ));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(CROUCHING,    6, true ));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(JUMPING,      8, false));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(DYING,        8, false));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(DISAPPEARING, 4, false));
-    engine.add(std::make_unique<Animation<StateSet::ID>>(ATTACKING,    8, false));
+    engine.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
+    engine.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
+    engine.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
+    engine.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
+    engine.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
+    engine.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
+    engine.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
+    engine.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
+    engine.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
 }
 
 void player::AnimationManager::selectAnimation() {

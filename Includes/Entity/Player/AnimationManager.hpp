@@ -18,7 +18,7 @@ namespace player {
         // REFERENCES
         Player &player;
         // CHARACTERISTICS
-        AnimationEngine<StateSet::ID> engine;
+        AnimationEngine<StateSet> engine;
 
         void selectAnimation();
 
