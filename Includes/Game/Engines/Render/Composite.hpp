@@ -21,8 +21,7 @@ protected:
     std::string name_{"composite"};
     std::unique_ptr<sf::Sprite> sprite_{nullptr};
     std::unique_ptr<sf::RectangleShape> outline_{nullptr};
-    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
-    // AnimationEngine animator_{*this};
+    AnimationEngine animator_{*this};
 
 public:
 #pragma region constructors
@@ -30,13 +29,14 @@ public:
 
     explicit Composite(std::string name);
 
-    explicit Composite(std::string name, sf::Texture &texture);
-
     explicit Composite(std::string name, std::unique_ptr<sf::Sprite> sprite);
 
+    explicit Composite(std::string name, std::unique_ptr<AnimationSheet> animationSheet);
 #pragma endregion
 
     std::vector<std::unique_ptr<Composite>> composites{};
+
+    void animate(const float &dt) const;
 
     void add(std::unique_ptr<Composite> composite);
 

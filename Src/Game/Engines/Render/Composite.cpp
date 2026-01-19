@@ -15,17 +15,21 @@ Composite::Composite(std::string name):
     name_(std::move(name))
     {}
 
-Composite::Composite(std::string name, sf::Texture &texture):
-    name_(std::move(name)),
-    sprite_(std::make_unique<sf::Sprite>(texture))
-    {}
-
 Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite):
     name_(std::move(name)),
     sprite_(std::move(sprite))
     {}
+
+Composite::Composite(std::string name, std::unique_ptr<AnimationSheet> animationSheet) :
+    name_(std::move(name)),
+    animator_(*this, std::move(animationSheet))
+    {}
 #pragma endregion
 
+
+void Composite::animate(const float &dt) const {
+    animator_.update(dt);
+}
 
 void Composite::add(std::unique_ptr<Composite> composite) {
     composite->setOrigin({0.f, 0.f});

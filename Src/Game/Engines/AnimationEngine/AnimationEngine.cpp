@@ -8,13 +8,18 @@
 #include "../../../../Includes/Game/Engines/Render/Composite.hpp"
 
 
+
 AnimationEngine::AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet):
-    target_(target),
+    pTarget_(&target),
     animationSheet_(std::move(animationSheet))
     {}
 
+AnimationEngine::AnimationEngine(const Composite &composite) :
+    pTarget_(composite.getSprite())  //can be null
+    {}
+
 AnimationEngine::AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet) :
-    target_(*composite.getSprite()),  //can be null
+    pTarget_(composite.getSprite()),  //can be null
     animationSheet_(std::move(animationSheet))
     {}
 
@@ -53,6 +58,8 @@ Animation * AnimationEngine::getCurrentAnimation() const {
 }
 
 void AnimationEngine::update(const float &dt) const {
-    pCurrentAnimation_->update(dt);
-    target_.setTextureRect(getCurrentFrame());
+    if (pTarget_ && animationSheet_) {
+        pCurrentAnimation_->update(dt);
+        pTarget_->setTextureRect(getCurrentFrame());
+    }
 }

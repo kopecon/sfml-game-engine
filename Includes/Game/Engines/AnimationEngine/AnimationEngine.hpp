@@ -15,7 +15,7 @@ class AnimationSheet;
 
 
 class AnimationEngine {
-    sf::Sprite &target_;
+    sf::Sprite *pTarget_;
     std::unique_ptr<AnimationSheet> animationSheet_;
     std::unordered_map<animation_id, std::unique_ptr<Animation>> animations_;
     Animation *pCurrentAnimation_{nullptr};
@@ -23,6 +23,7 @@ class AnimationEngine {
 public:
 #pragma region constructors
     explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet);
+    explicit AnimationEngine(const Composite &composite);
     explicit AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet);
 #pragma endregion
 
