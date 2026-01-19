@@ -12,58 +12,58 @@
 
 
 player::AnimationManager::AnimationManager(Player &player) :
-    player(player),
-    engine(player.getSprite(), AnimationSheet(player.getSprite().getTexture(), sf::Vector2u(32, 32))) {
+    player_(player),
+    engine_(player.getSprite(), AnimationSheet(player.getSprite().getTexture(), sf::Vector2u(32, 32))) {
     using enum StateSet::ID;
-    engine.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
-    engine.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
-    engine.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
-    engine.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
-    engine.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
-    engine.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
-    engine.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
-    engine.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
-    engine.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
+    engine_.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
+    engine_.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
+    engine_.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
+    engine_.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
+    engine_.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
+    engine_.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
+    engine_.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
+    engine_.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
+    engine_.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
 }
 
-void player::AnimationManager::selectAnimation() {
+void player::AnimationManager::selectAnimation_() {
     using enum StateSet::ID;
-    switch (player.getState().ID) {
+    switch (player_.getState().ID) {
         case IDLE:
-            engine.set(IDLE);
+            engine_.set(IDLE);
             break;
         case WINKING:
-            engine.set(WINKING);
+            engine_.set(WINKING);
             break;
         case WALKING:
-            engine.set(WALKING);
+            engine_.set(WALKING);
             break;
         case RUNNING:
-            engine.set(RUNNING);
+            engine_.set(RUNNING);
             break;
         case CROUCHING:
-            engine.set(CROUCHING);
+            engine_.set(CROUCHING);
             break;
         case JUMPING:
-            engine.set(JUMPING);
+            engine_.set(JUMPING);
             break;
         case DISAPPEARING:
-            engine.set(DISAPPEARING);
+            engine_.set(DISAPPEARING);
             break;
         case DYING:
-            engine.set(DYING);
+            engine_.set(DYING);
             break;
         case ATTACKING:
-            engine.set(ATTACKING);
+            engine_.set(ATTACKING);
             break;
         default:
-            engine.set(IDLE);
+            engine_.set(IDLE);
     }
 }
 
-void player::AnimationManager::updateFPS() const {
+void player::AnimationManager::updateFPS_() const {
     using enum StateSet::ID;
-    auto &currentAnim = *engine.pCurrentAnimation;
+    auto &currentAnim = *engine_.pCurrentAnimation;
     switch (currentAnim.getID()) {
         case NONE: {
             break;
@@ -77,14 +77,14 @@ void player::AnimationManager::updateFPS() const {
 
         case WALKING:{
             const float speedFactor = std::fabs(
-            player.movement.getSpeed().x / player.velocity.x
+            player_.movement.getSpeed().x / player_.velocity.x
             );
             currentAnim.setSPF(1.f/currentAnim.getFPR() * speedFactor);
             break;
         }
         case RUNNING:{
             const float speedFactor = std::fabs(
-            player.movement.getSpeed().x / player.velocity.x
+            player_.movement.getSpeed().x / player_.velocity.x
             );
             currentAnim.setSPF(1.f/currentAnim.getFPR() * speedFactor * 0.7f);
             break;
@@ -94,7 +94,7 @@ void player::AnimationManager::updateFPS() const {
         }
         case JUMPING:{
             const float speedFactor = std::fabs(
-            player.movement.getSpeed().y / player.velocity.y
+            player_.movement.getSpeed().y / player_.velocity.y
             );
             currentAnim.setSPF(1.f/currentAnim.getFPR() * speedFactor * 0.5f);
             break;
@@ -119,7 +119,7 @@ void player::AnimationManager::updateFPS() const {
 }
 
 void player::AnimationManager::update() {
-    selectAnimation();
-    updateFPS();
-    engine.update(player.game.time.get());
+    selectAnimation_();
+    updateFPS_();
+    engine_.update(player_.game.time.get());
 }

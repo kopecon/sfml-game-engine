@@ -13,17 +13,17 @@ namespace player {
     class Player;
 
     class AnimationManager final {
+        // REFERENCES
+        Player &player_;
+        // CHARACTERISTICS
+        AnimationEngine<StateSet> engine_;
+
+        void selectAnimation_();
+
+        void updateFPS_() const;
+
     public:
         explicit AnimationManager(Player &player);
-        // REFERENCES
-        Player &player;
-        // CHARACTERISTICS
-        AnimationEngine<StateSet> engine;
-
-        void selectAnimation();
-
-        void updateFPS() const;
-
         void update();
     };
 }
