@@ -38,10 +38,6 @@ namespace player {
         return {height, width};
     }
 
-    sf::Vector2f Player::getRenderSize() const {
-        return render.getGlobalBounds().size;
-    }
-
     const State<StateSet>& Player::getState() const {
         return *stateManager.stateMachine.pCurrentState;
     }
