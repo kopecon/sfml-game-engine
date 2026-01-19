@@ -14,25 +14,26 @@
 
 template<EnumSetConcept AnimationSet>
 class AnimationEngine {
+    sf::Sprite &target_;
+    AnimationSheet animationSheet_;
+
 public:
 #pragma region constructors
     explicit AnimationEngine(sf::Sprite &target, const AnimationSheet &animationSheet) :
-        target(target),
-        animationSheet(animationSheet)
+        target_(target),
+        animationSheet_(animationSheet)
         {}
 #pragma endregion
 
-    sf::Sprite &target;
-    AnimationSheet animationSheet;
     Animation<AnimationSet> *pCurrentAnimation{nullptr};
     std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animationSet;
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const {
         auto frameCoord = sf::Vector2i(
-            pCurrentAnimation->getFrameIndex().x*animationSheet.frameSize.x,
-            pCurrentAnimation->getFrameIndex().y*animationSheet.frameSize.y
+            pCurrentAnimation->getFrameIndex().x*animationSheet_.frameSize.x,
+            pCurrentAnimation->getFrameIndex().y*animationSheet_.frameSize.y
         );
-        return {frameCoord, static_cast<sf::Vector2i>(animationSheet.frameSize)};
+        return {frameCoord, static_cast<sf::Vector2i>(animationSheet_.frameSize)};
     }
 
     void set(const typename AnimationSet::ID &animationID) {
@@ -58,7 +59,7 @@ public:
 
     void update(const float &dt) const {
         pCurrentAnimation->update(dt);
-        target.setTextureRect(getCurrentFrame());
+        target_.setTextureRect(getCurrentFrame());
     }
 };
 #endif //BONK_GAME_ANIMATION_ENGINE_HPP
