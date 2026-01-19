@@ -5,8 +5,6 @@
 #include "../../../../Includes/Game/Engines/Render/Composite.hpp"
 #include "../../../../Utils/utils.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
-#include <iostream>
-
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 

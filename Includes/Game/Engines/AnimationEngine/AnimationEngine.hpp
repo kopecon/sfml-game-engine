@@ -8,62 +8,31 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include "Animation.hpp"
-#include "AnimationSheet.hpp"
-#include "../../../../Utils/utils.hpp"
+
+
+class AnimationSheet;
 
 
 class AnimationEngine {
     sf::Sprite &target_;
-    AnimationSheet animationSheet_;
-    Animation *pCurrentAnimation{nullptr};
-    std::unordered_map<animation_id, std::unique_ptr<Animation>> animations;
+    std::unique_ptr<AnimationSheet> animationSheet_;
+    std::unordered_map<animation_id, std::unique_ptr<Animation>> animations_;
+    Animation *pCurrentAnimation_{nullptr};
 
 public:
 #pragma region constructors
-    explicit AnimationEngine(sf::Sprite &target, const AnimationSheet &animationSheet) :
-        target_(target),
-        animationSheet_(animationSheet)
-        {}
+    explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet);
 #pragma endregion
 
-    [[nodiscard]] sf::IntRect getCurrentFrame() const {
-        auto framePosition = sf::Vector2i(
-            hd::multiply(pCurrentAnimation->getFrameIndex(), animationSheet_.frameSize)
-        );
-        auto frameSize = static_cast<sf::Vector2i>(animationSheet_.frameSize);
-
-        return {framePosition, frameSize};
-    }
+    [[nodiscard]] sf::IntRect getCurrentFrame() const;
 
 
-    void add(std::unique_ptr<Animation> animation) {
-        animation_id id = animation->getID();
-        animations.emplace(id, std::move(animation));
-        if (pCurrentAnimation == nullptr) {
-            set(id);
-        }
-    }
+    void add(std::unique_ptr<Animation> animation);
 
-    void set(const animation_id &id) {
-        auto *pNewAnimation = animations[id].get();
-        if (pCurrentAnimation == nullptr) {
-            pCurrentAnimation = pNewAnimation;
-        }
-        else if (pCurrentAnimation != pNewAnimation) {
-            // Load desired animation
-            pCurrentAnimation = pNewAnimation;
-            // Reset the animation
-            pCurrentAnimation->reset();
-        }
-    }
+    void set(const animation_id &id);
 
-    [[nodiscard]] Animation* getCurrentAnimation() const {
-        return pCurrentAnimation;
-    }
+    [[nodiscard]] Animation* getCurrentAnimation() const;
 
-    void update(const float &dt) const {
-        pCurrentAnimation->update(dt);
-        target_.setTextureRect(getCurrentFrame());
-    }
+    void update(const float &dt) const;
 };
 #endif //BONK_GAME_ANIMATION_ENGINE_HPP

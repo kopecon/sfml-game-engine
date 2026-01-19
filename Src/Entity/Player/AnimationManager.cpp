@@ -13,7 +13,10 @@
 
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
-    engine_(player.getSprite(), AnimationSheet(player.getSprite().getTexture(), sf::Vector2u(32, 32))) {
+    engine_(
+        player.getSprite(),
+        std::make_unique<AnimationSheet>(player.getSprite().getTexture(), sf::Vector2u(32, 32)))
+{
     using enum StateSet::ID;
     addAnimation<StateSet>(IDLE,         2, true );
     addAnimation<StateSet>(WINKING,      2, true );
