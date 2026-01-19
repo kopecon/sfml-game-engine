@@ -14,12 +14,12 @@ namespace entity {
 
 #pragma region constructors
     Entity::~Entity() {
-        std::cout << "Entity: " << name << " removed.\n";
+        std::cout << "Entity: " << name_ << " removed.\n";
     }
 
     Entity::Entity(World &world, const entityID ID, std::string name):
-        ID(ID),
-        name(std::move(name)),
+        id_(ID),
+        name_(std::move(name)),
         world(world),
         game(world.game),
         render(*this)
@@ -37,15 +37,17 @@ namespace entity {
 #pragma endregion
 
     void Entity::setName(std::string entityName) {
-        name = std::move(entityName);
+        name_ = std::move(entityName);
     }
 
     std::string_view Entity::getName() {
-        return name;
+        return name_;
     }
 
     std::string Entity::getClassName() {
         return "Entity";
     }
+
+    entityID Entity::getID() const {return id_;}
 }
 

@@ -19,8 +19,8 @@ class Game;
 
 namespace entity {
     class Entity {
-        const entityID ID;
-        std::string name{};
+        const entityID id_;
+        std::string name_{};
     public:
         #pragma region constructors
         virtual ~Entity();
@@ -51,7 +51,7 @@ namespace entity {
 
         [[nodiscard]] static std::string getClassName();
 
-        [[nodiscard]] entityID getID() const {return ID;}
+        [[nodiscard]] entityID getID() const;
 
         virtual void update() = 0;
     };

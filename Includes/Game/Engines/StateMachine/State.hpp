@@ -15,6 +15,11 @@
 
 template <EnumSetConcept StateSet>
 class State {
+protected:
+    // STATE IDENTITY
+    typename StateSet::ID id_{};  // Enum value representing the id of the state
+    std::string_view name_{};  // String value representing the name of the state
+
 public:
     struct Edge {
         #pragma region constructors
@@ -32,12 +37,12 @@ public:
     #pragma region constructors
     virtual ~State() = default;
 
-    explicit State(const typename StateSet::ID &stateID) : ID(stateID), name(StateSet::name(stateID)) {}
+    explicit State(const typename StateSet::ID &stateID) :
+        id_(stateID),
+        name_(StateSet::name(stateID))
+        {}
     #pragma endregion
 
-    // STATE IDENTITY
-    typename StateSet::ID ID{};  // Enum value representing the id of the state
-    std::string_view name{};  // String value representing the name of the state
     // DEBUG SETTINGS
     bool verbose{false};
 
@@ -51,12 +56,12 @@ public:
     }
 
     void connect(const State &state) {
-        auto edge = std::make_unique<Edge>(state.ID);
+        auto edge = std::make_unique<Edge>(state.id_);
         edges.push_back(std::move(edge));
     }
 
     void connect(std::function<bool()> condition, const State &state) {
-        auto edge = std::make_unique<Edge>(std::move(condition), state.ID);
+        auto edge = std::make_unique<Edge>(std::move(condition), state.id_);
         edges.push_back(std::move(edge));
     }
 
@@ -72,11 +77,10 @@ public:
         // Actions are called in the order they were added in. FIFO.
         exitActions.push_back(std::move(action));
     }
-
     typename StateSet::ID next(const typename StateSet::ID &nextStateID) {
         // 0. Warn that state has no edges
         if (edges.empty()) {
-            if (verbose) std::cout << "State: " << name << " has no edges!\n";
+            if (verbose) std::cout << "State: " << name_ << " has no edges!\n";
         }
         // 1. Choose edge
         for (const auto &edge : this->edges) {
@@ -93,28 +97,31 @@ public:
                 }
             }
         }
-
         // 2. No edge conditions met. Staying in this state
-        return this->ID;
+        return this->id_;
     }
 
     virtual void onEnter() {
-        if (verbose) std::cout << "Entered state: " << name << "\n";
-        if (verbose && enterActions.empty()) std::cout << "State: " << name << " has no enter actions!\n";
+        if (verbose) std::cout << "Entered state: " << name_ << "\n";
+        if (verbose && enterActions.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
         for (const auto &action : enterActions) {
             action();
         }
     }
     virtual void onExit() {
-        if (verbose) std::cout << "Exited state: " << name << "\n";
-        if (verbose && exitActions.empty()) std::cout << "State: " << name << " has no exit actions!\n";
+        if (verbose) std::cout << "Exited state: " << name_ << "\n";
+        if (verbose && exitActions.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
         for (const auto &action : exitActions) {
             action();
         }
     }
 
+    [[nodiscard]] typename StateSet::ID getID() const {
+        return id_;
+    }
+
     virtual void update() {
-        if (verbose && actions.empty()) std::cout << "State: " << name << " has no actions!\n";
+        if (verbose && actions.empty()) std::cout << "State: " << name_ << " has no actions!\n";
         for (auto const &action : actions) {
             action();
         }

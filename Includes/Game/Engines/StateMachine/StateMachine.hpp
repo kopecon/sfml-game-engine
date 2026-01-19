@@ -25,12 +25,12 @@ class StateMachine {
         pPreviousState = &state;
     }
     void _generateFallBackEdge(State<StateSet> &state) {
-        state.addEdge(std::make_unique<typename State<StateSet>::Edge>(pCurrentState->ID));
+        state.addEdge(std::make_unique<typename State<StateSet>::Edge>(pCurrentState->getID()));
         #ifndef NDEBUG
         std::cerr << "\nWarning: State "
-                  << StateSet::name(state.ID)
+                  << StateSet::name(state.getID())
                   << " has no edges. Auto-generated fallback to "
-                  << StateSet::name(pCurrentState->ID)
+                  << StateSet::name(pCurrentState->getID())
                   << '\n';
         #endif
     }
@@ -88,7 +88,7 @@ public:
     State<StateSet>* createState(Args&&... args)
     requires std::is_base_of_v<State<StateSet>, T> {
         auto newState = std::make_unique<T>(std::forward<Args>(args)...);
-        auto [it, inserted] = states.try_emplace(newState->ID, std::move(newState));
+        auto [it, inserted] = states.try_emplace(newState->getID(), std::move(newState));
         if (!pCurrentState && inserted) {
             pCurrentState = it->second.get();
         }
@@ -97,7 +97,7 @@ public:
 
     void transition() {
         auto newStateID = pCurrentState->next(desiredStateID);
-        if (newStateID != pCurrentState->ID) {
+        if (newStateID != pCurrentState->getID()) {
             getState(newStateID); // No error
             auto &newState = getState(newStateID); //error
             if (!newState.hasEdges()) _generateFallBackEdge(newState);

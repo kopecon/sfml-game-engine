@@ -46,9 +46,9 @@ sf::Vector2f player::MovementComponent::getSpeed() {
 }
 
 void player::MovementComponent::update() {
-    if (player.getState().ID == RUNNING
-        || player.getState().ID == JUMPING
-        && player.stateManager.stateMachine.pPreviousState->ID == RUNNING)
+    if (player.getState().getID() == RUNNING
+        || player.getState().getID() == JUMPING
+        && player.stateManager.stateMachine.pPreviousState->getID() == RUNNING)
         _speed = hd::multiply(player.getRenderSize(), runningSpeed);
     else {
         _speed = hd::multiply(player.getRenderSize(), walkingSpeed);

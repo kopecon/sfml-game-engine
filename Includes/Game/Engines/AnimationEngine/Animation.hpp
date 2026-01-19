@@ -10,7 +10,7 @@
 
 template<EnumSetConcept AnimationSet>
 class Animation {
-    AnimationSet::ID ID_{0};  // Represents row index starting from 0;
+    AnimationSet::ID id_{0};  // Represents row index starting from 0;
     unsigned frame_ = 0;
     float timer_{0.0f};  // tracks elapsed time
     unsigned fpr_{};  // frames per row
@@ -26,7 +26,7 @@ public:
     Animation() = default;
 
     Animation(const typename AnimationSet::ID &id, const int &fpr, const bool &looping=true) :
-    ID_(id),
+    id_(id),
     fpr_(fpr),
     fps_(static_cast<float>(fpr)),
     spf_(1.f/fps_),
@@ -36,16 +36,16 @@ public:
 
 #pragma region operators
     bool operator!=(const Animation &other) const {
-        return this->ID_ != other.ID_;
+        return this->id_ != other.id_;
     };
 
     bool operator==(const Animation &other) const {
-        return this->ID_ == other.ID_;
+        return this->id_ == other.id_;
     };
 
     struct Hash {
         size_t operator()(const Animation& anim) const noexcept {
-            return std::hash<typename AnimationSet::ID>()(anim.ID_);
+            return std::hash<typename AnimationSet::ID>()(anim.id_);
         }
     };
 #pragma endregion
@@ -66,7 +66,7 @@ public:
     }
 
     [[nodiscard]] typename AnimationSet::ID getID() const {
-        return ID_;
+        return id_;
     }
 
     [[nodiscard]] unsigned getFPR() const {
@@ -82,7 +82,7 @@ public:
     }
 
     [[nodiscard]] sf::Vector2u getFrameIndex() {
-        return {frame_, static_cast<unsigned>(ID_)};
+        return {frame_, static_cast<unsigned>(id_)};
     }
 
     void reset() {
