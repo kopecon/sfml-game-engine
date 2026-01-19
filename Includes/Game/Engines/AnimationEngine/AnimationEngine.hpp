@@ -10,6 +10,7 @@
 #include "Animation.hpp"
 
 
+class Composite;
 class AnimationSheet;
 
 
@@ -22,6 +23,7 @@ class AnimationEngine {
 public:
 #pragma region constructors
     explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet);
+    explicit AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet);
 #pragma endregion
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const;

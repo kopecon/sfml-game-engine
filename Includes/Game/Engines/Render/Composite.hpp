@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "../AnimationEngine/AnimationEngine.hpp"
 #include "../AnimationEngine/AnimationSheet.hpp"
 #include "SFML/Graphics/Drawable.hpp"
 #include "SFML/Graphics/Transformable.hpp"
@@ -21,6 +22,7 @@ protected:
     std::unique_ptr<sf::Sprite> sprite_{nullptr};
     std::unique_ptr<sf::RectangleShape> outline_{nullptr};
     std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
+    // AnimationEngine animator_{*this};
 
 public:
 #pragma region constructors

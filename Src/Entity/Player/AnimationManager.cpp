@@ -13,8 +13,7 @@
 
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
-    engine_(
-        player.getSprite(),
+    engine_(player.render,
         std::make_unique<AnimationSheet>(player.getSprite().getTexture(), sf::Vector2u(32, 32)))
 {
     using enum StateSet::ID;

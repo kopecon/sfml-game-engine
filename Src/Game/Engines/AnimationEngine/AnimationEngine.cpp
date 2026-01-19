@@ -5,11 +5,18 @@
 #include "../../../../Includes/Game/Engines/AnimationEngine/AnimationEngine.hpp"
 #include "../../../../Includes/Game/Engines/AnimationEngine/AnimationSheet.hpp"
 #include "../../../../Utils/utils.hpp"
+#include "../../../../Includes/Game/Engines/Render/Composite.hpp"
 
 
 AnimationEngine::AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet):
     target_(target),
-    animationSheet_(std::move(animationSheet)) {}
+    animationSheet_(std::move(animationSheet))
+    {}
+
+AnimationEngine::AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet) :
+    target_(*composite.getSprite()),  //can be null
+    animationSheet_(std::move(animationSheet))
+    {}
 
 sf::IntRect AnimationEngine::getCurrentFrame() const {
     auto framePosition = sf::Vector2i(
