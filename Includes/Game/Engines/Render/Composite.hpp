@@ -30,13 +30,10 @@ public:
 
     explicit Composite(std::string name);
 
-    explicit Composite(sf::Texture &texture);
-
-    explicit Composite(std::unique_ptr<sf::Sprite> sprite);
-
     explicit Composite(std::string name, sf::Texture &texture);
 
     explicit Composite(std::string name, std::unique_ptr<sf::Sprite> sprite);
+
 #pragma endregion
 
     std::vector<std::unique_ptr<Composite>> composites{};

@@ -5,22 +5,14 @@
 #include "../../../../Includes/Game/Engines/Render/Composite.hpp"
 #include "../../../../Utils/utils.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+
 
 #pragma region constructors
 Composite::Composite() = default;
 
 Composite::Composite(std::string name):
     name_(std::move(name))
-    {}
-
-Composite::Composite(sf::Texture &texture):
-    sprite_(std::make_unique<sf::Sprite>(texture))
-    {}
-
-Composite::Composite(std::unique_ptr<sf::Sprite> sprite):
-    sprite_(std::move(sprite))
     {}
 
 Composite::Composite(std::string name, sf::Texture &texture):
@@ -33,6 +25,7 @@ Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite):
     sprite_(std::move(sprite))
     {}
 #pragma endregion
+
 
 void Composite::add(std::unique_ptr<Composite> composite) {
     composite->setOrigin({0.f, 0.f});
