@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "../AnimationEngine/AnimationSheet.hpp"
 #include "SFML/Graphics/Drawable.hpp"
 #include "SFML/Graphics/Transformable.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
@@ -19,6 +20,7 @@ protected:
     std::string name_{"composite"};
     std::unique_ptr<sf::Sprite> sprite_{nullptr};
     std::unique_ptr<sf::RectangleShape> outline_{nullptr};
+    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
 
 public:
 #pragma region constructors

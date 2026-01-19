@@ -15,6 +15,8 @@
 class AnimationEngine {
     sf::Sprite &target_;
     AnimationSheet animationSheet_;
+    Animation *pCurrentAnimation{nullptr};
+    std::unordered_map<animation_id, std::unique_ptr<Animation>> animations;
 
 public:
 #pragma region constructors
@@ -23,9 +25,6 @@ public:
         animationSheet_(animationSheet)
         {}
 #pragma endregion
-
-    Animation *pCurrentAnimation{nullptr};
-    std::unordered_map<animation_id, std::unique_ptr<Animation>> animationSet;
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const {
         auto framePosition = sf::Vector2i(
@@ -36,8 +35,17 @@ public:
         return {framePosition, frameSize};
     }
 
+
+    void add(std::unique_ptr<Animation> animation) {
+        animation_id id = animation->getID();
+        animations.emplace(id, std::move(animation));
+        if (pCurrentAnimation == nullptr) {
+            set(id);
+        }
+    }
+
     void set(const animation_id &id) {
-        auto *pNewAnimation = animationSet[id].get();
+        auto *pNewAnimation = animations[id].get();
         if (pCurrentAnimation == nullptr) {
             pCurrentAnimation = pNewAnimation;
         }
@@ -49,12 +57,8 @@ public:
         }
     }
 
-    void add(std::unique_ptr<Animation> animation) {
-        animation_id id = animation->getID();
-        animationSet.emplace(id, std::move(animation));
-        if (pCurrentAnimation == nullptr) {
-            set(id);
-        }
+    [[nodiscard]] Animation* getCurrentAnimation() const {
+        return pCurrentAnimation;
     }
 
     void update(const float &dt) const {
