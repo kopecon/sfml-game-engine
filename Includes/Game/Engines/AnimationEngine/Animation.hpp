@@ -7,11 +7,12 @@
 #include <functional>
 #include "SFML/System/Vector2.hpp"
 #include "../../../../Utils/EnumSet.hpp"
+#include "SFML/Graphics/Rect.hpp"
 
 template<EnumSetConcept AnimationSet>
 class Animation {
     AnimationSet::ID id_{0};  // Represents row index starting from 0;
-    unsigned frame_ = 0;
+    unsigned index_ = 0;
     float timer_{0.0f};  // tracks elapsed time
     unsigned fpr_{};  // frames per row
     float    fps_{};  // frames per second  (by default is equal to fpr: "it takes one second to play every frame")
@@ -26,12 +27,12 @@ public:
     Animation() = default;
 
     Animation(const typename AnimationSet::ID &id, const int &fpr, const bool &looping=true) :
-    id_(id),
-    fpr_(fpr),
-    fps_(static_cast<float>(fpr)),
-    spf_(1.f/fps_),
-    looping(looping)
-    {}
+        id_(id),
+        fpr_(fpr),
+        fps_(static_cast<float>(fpr)),
+        spf_(1.f/fps_),
+        looping(looping)
+        {}
 #pragma endregion
 
 #pragma region operators
@@ -82,12 +83,12 @@ public:
     }
 
     [[nodiscard]] sf::Vector2u getFrameIndex() {
-        return {frame_, static_cast<unsigned>(id_)};
+        return {index_, static_cast<unsigned>(id_)};
     }
 
     void reset() {
         status = Status::READY;
-        frame_ = 0;
+        index_ = 0;
     }
 
     void update(const float &dt) {
@@ -99,17 +100,17 @@ public:
         timer_ += dt;
         // When it is the time to move to the next frame
         if (timer_ >= spf_) {
-            frame_ += 1;
+            index_ += 1;
             timer_ = 0.f;  // Reset timer
         }
         // Evaluate the end of animationManager
-        if (frame_+1 > fpr_) {
+        if (index_+1 > fpr_) {
             // LOOP
-            if (looping) frame_ = 0;
+            if (looping) index_ = 0;
             // DONT LOOP
             else {
                 status = Status::END;
-                frame_ = fpr_-1;
+                index_ = fpr_-1;
             }
         }
     };

@@ -67,6 +67,7 @@ namespace hadamard {
 }
 
 namespace hd = hadamard;
+namespace elements = hadamard;
 
 namespace scalar {
     template<typename sfVector, typename S>

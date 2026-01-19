@@ -10,6 +10,7 @@
 #include "Animation.hpp"
 #include "AnimationSheet.hpp"
 #include "../../../../Utils/EnumSet.hpp"
+#include "../../../../Utils/utils.hpp"
 
 
 template<EnumSetConcept AnimationSet>
@@ -29,11 +30,12 @@ public:
     std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animationSet;
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const {
-        auto frameCoord = sf::Vector2i(
-            pCurrentAnimation->getFrameIndex().x*animationSheet_.frameSize.x,
-            pCurrentAnimation->getFrameIndex().y*animationSheet_.frameSize.y
+        auto framePosition = sf::Vector2i(
+            hd::multiply(pCurrentAnimation->getFrameIndex(), animationSheet_.frameSize)
         );
-        return {frameCoord, static_cast<sf::Vector2i>(animationSheet_.frameSize)};
+        auto frameSize = static_cast<sf::Vector2i>(animationSheet_.frameSize);
+
+        return {framePosition, frameSize};
     }
 
     void set(const typename AnimationSet::ID &animationID) {
