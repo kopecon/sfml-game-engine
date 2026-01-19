@@ -18,21 +18,21 @@ Composite::Composite(std::string name):
     {}
 
 Composite::Composite(sf::Texture &texture):
-    sprite(std::make_unique<sf::Sprite>(texture))
+    mainSprite(std::make_unique<sf::Sprite>(texture))
     {}
 
 Composite::Composite(std::unique_ptr<sf::Sprite> sprite):
-    sprite(std::move(sprite))
+    mainSprite(std::move(sprite))
     {}
 
 Composite::Composite(std::string name, sf::Texture &texture):
     name(std::move(name)),
-    sprite(std::make_unique<sf::Sprite>(texture))
+    mainSprite(std::make_unique<sf::Sprite>(texture))
     {}
 
 Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite):
     name(std::move(name)),
-    sprite(std::move(sprite))
+    mainSprite(std::move(sprite))
     {}
 #pragma endregion
 
@@ -41,14 +41,14 @@ void Composite::add(std::unique_ptr<Composite> composite) {
     composites.push_back(std::move(composite));
 }
 
-void Composite::add(std::unique_ptr<sf::Sprite> newSprite) {
+void Composite::add(std::unique_ptr<sf::Sprite> newSprite, std::string spriteName) {
     newSprite->setOrigin({0.f, 0.f});
-    auto composite = std::make_unique<Composite>("new", std::move(newSprite));
+    auto composite = std::make_unique<Composite>(std::move(spriteName), std::move(newSprite));
     add(std::move(composite));
 }
 
 void Composite::setSprite(std::unique_ptr<sf::Sprite> newSprite) {
-    sprite = std::move(newSprite);
+    mainSprite = std::move(newSprite);
 }
 
 void Composite::setColor(const sf::Color &color) const {
@@ -72,8 +72,8 @@ sf::FloatRect Composite::getLocalBounds() const {
     sf::Vector2f minPosition{};
     sf::Vector2f maxSize{};
 
-    if (sprite) {
-        const auto mainSpriteBounds = sprite->getGlobalBounds();
+    if (mainSprite) {
+        const auto mainSpriteBounds = mainSprite->getGlobalBounds();
         minPosition = mainSpriteBounds.position;
         maxSize = mainSpriteBounds.size;
     }
@@ -102,13 +102,13 @@ sf::Vector2f Composite::getCenter() const {
 }
 
 sf::Sprite* Composite::getSprite() const {
-    return sprite.get();
+    return mainSprite.get();
 }
 
 std::vector<sf::Sprite*> Composite::getAllSprites() const {
     std::vector<sf::Sprite*> sprites{};
-    if (sprite) {
-        sprites.push_back(sprite.get());
+    if (mainSprite) {
+        sprites.push_back(mainSprite.get());
     }
     for (const auto &pComposite : composites) {
         std::vector<sf::Sprite*> subSprites = pComposite->getAllSprites();
@@ -121,10 +121,10 @@ void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform(); // getTransform() is defined by sf::Transformable
 
     // DRAW MAIN SPRITE
-    if (sprite) {
+    if (mainSprite) {
         // apply the texture
-        states.texture = &sprite->getTexture();
-        target.draw(*sprite, states);
+        states.texture = &mainSprite->getTexture();
+        target.draw(*mainSprite, states);
     }
     // DRAW OTHER COMPOSITES
     for (const auto &pComposite : composites) {

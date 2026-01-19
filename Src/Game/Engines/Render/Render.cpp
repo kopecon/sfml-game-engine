@@ -1,9 +1,15 @@
 #include "../../../../Includes/Game/Game.hpp"
 #include "../../../../Includes/Game/Engines/Render/Render.hpp"
+
+#include <iostream>
+
 #include "../../../../Includes/Entity/Entity.hpp"
 
 
-Render::Render(entity::Entity &entity):entity(entity) {}
+Render::Render(entity::Entity &entity) :
+    Composite(entity.getName().data()),
+    entity(entity) {
+}
 
 void Render::loop() const {
     // This could be improved, but I don't care anymore... it works well enough now.

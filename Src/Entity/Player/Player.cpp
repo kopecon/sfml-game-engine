@@ -6,27 +6,6 @@ namespace player {
     using enum StateSet::ID;
 
     #pragma region constructors
-    Player::Player(World &world, const entityID ID) :
-        Entity(world, ID),
-        input(*this),
-        physics(*this),
-        movement(*this),
-        combat(*this),
-        renderManager(*this),
-        animationManager(*this),
-        stateManager(*this) {
-    }
-
-    Player::Player(World &world, const entityID ID, const Controls &controls) :
-        Entity(world, ID),
-        input(*this, controls),
-        physics(*this),
-        movement(*this),
-        combat(*this),
-        renderManager(*this),
-        animationManager(*this),
-        stateManager(*this) {
-    }
 
     Player::Player(World &world, const entityID ID, std::string name) :
         Entity(world, ID, std::move(name)),
@@ -39,8 +18,8 @@ namespace player {
         stateManager(*this) {
     }
 
-    Player::Player(World &world, const entityID ID, std::string name, const Controls &controls) : Entity(world, ID,
-            std::move(name)),
+    Player::Player(World &world, const entityID ID, std::string name, const Controls &controls) :
+        Entity(world, ID, std::move(name)),
         input(*this, controls),
         physics(*this),
         movement(*this),
@@ -51,7 +30,7 @@ namespace player {
     }
     #pragma endregion
 
-    std::string Player::getClassName() const {
+    std::string Player::getClassName() {
         return "Player";
     }
 

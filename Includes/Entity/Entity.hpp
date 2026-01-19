@@ -24,8 +24,6 @@ namespace entity {
     public:
         #pragma region constructors
         virtual ~Entity();
-        Entity(World &world, entityID ID);
-
         Entity(World &world, entityID ID, std::string name);
         #pragma endregion
 
@@ -51,17 +49,11 @@ namespace entity {
 
         std::string_view getName();
 
-        [[nodiscard]] virtual std::string getClassName() const;
+        [[nodiscard]] static std::string getClassName();
 
         [[nodiscard]] entityID getID() const {return ID;}
 
-        virtual void init();
-
         virtual void update() = 0;
-
-
-    protected:
-        [[nodiscard]] std::string _generateName() const;
     };
 }
 

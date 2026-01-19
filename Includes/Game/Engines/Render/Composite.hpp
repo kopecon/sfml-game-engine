@@ -15,10 +15,10 @@
 
 
 class Composite : public sf::Drawable, public sf::Transformable {
-    std::string name{"base"};
-    std::unique_ptr<sf::Sprite> sprite{nullptr};
+protected:
+    std::string name{"composite"};
+    std::unique_ptr<sf::Sprite> mainSprite{nullptr};
     std::unique_ptr<sf::RectangleShape> boundary{nullptr};
-
 
 public:
 #pragma region constructors
@@ -39,7 +39,7 @@ public:
 
     void add(std::unique_ptr<Composite> composite);
 
-    void add(std::unique_ptr<sf::Sprite> newSprite);
+    void add(std::unique_ptr<sf::Sprite> newSprite, std::string spriteName = "sprite");
 
     void setSprite(std::unique_ptr<sf::Sprite> newSprite);
 

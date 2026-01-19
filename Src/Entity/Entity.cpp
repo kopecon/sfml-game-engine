@@ -6,8 +6,6 @@
 #include "../../Includes/Entity/Entity.hpp"
 
 #include <iostream>
-
-#include "../../Utils/utils.hpp"
 #include "../../Includes/World/World.hpp"
 #include "../../Includes/Game/Game.hpp"
 
@@ -18,13 +16,6 @@ namespace entity {
     Entity::~Entity() {
         std::cout << "Entity: " << name << " removed.\n";
     }
-
-    Entity::Entity(World &world, const entityID ID) :
-        ID(ID),
-        world(world),
-        game(world.game),
-        render(*this)
-        {}
 
     Entity::Entity(World &world, const entityID ID, std::string name):
         ID(ID),
@@ -53,18 +44,8 @@ namespace entity {
         return name;
     }
 
-    std::string Entity::getClassName() const {
+    std::string Entity::getClassName() {
         return "Entity";
-    }
-
-    void Entity::init() {
-        setName(_generateName());
-        std::cout << "Base Init: " << name << "\n";
-    }
-
-    std::string Entity::_generateName() const {
-        auto result = getClassName() + std::to_string(world.getEntityCount(*this) + 1);
-        return result;
     }
 }
 

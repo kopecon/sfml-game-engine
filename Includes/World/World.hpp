@@ -9,9 +9,8 @@
 #include <unordered_map>
 #include <memory>
 #include <typeindex>
-
-#include "../../Utils/utils.hpp"
 #include "../Entity/Entity.hpp"
+#include "../Entity/Player/Player.hpp"
 
 
 class Game;
@@ -42,31 +41,25 @@ public:
     template<typename T, typename ... Args>
     T& createEntity(Args&&... args)
     requires (std::is_base_of_v<entity::Entity, T>) {
-        // Create entity
-        auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
-        // Init entity
-        pEntity->init();
         // Count entity
-        entityCounter[typeid(*pEntity)] += 1;
+        entityCounter[typeid(T)] += 1;
+        auto entityName = T::getClassName() + std::to_string(getEntityCount(typeid(T)));
+        // Create entity
+        auto pEntity = std::make_unique<T>(*this, ++newEntityID, entityName, std::forward<Args>(args)...);
         // Store in the list of entities
         auto [it, inserted] = entities.emplace(pEntity->getID(), std::move(pEntity));
-        return getEntity<T>(*it->second.get());
+        std::cout << entityName << " created. \n";
+        return getEntity<T>(*it->second);
     }
 
-    // Create Entity at a defined position
+    // Create Entity at [x,y]
     template<typename T, typename ... Args>
     T& createEntity(sf::Vector2f position, Args&&... args)
     requires (std::is_base_of_v<entity::Entity, T>) {
         // Create the entity
-        auto pEntity = std::make_unique<T>(*this, ++newEntityID, std::forward<Args>(args)...);
-        // Init the entity
-        pEntity->init();
+        auto pEntity = &createEntity<T>(args...);
         pEntity->position = position;
-        // Count entity
-        entityCounter[typeid(*pEntity)] += 1;
-        // Store in the list of entities
-        auto [it, inserted] = entities.emplace(pEntity->getID(), std::move(pEntity));
-        return getEntity<T>(*it->second.get());
+        return *pEntity;
     }
 
     template<typename T>
@@ -105,8 +98,8 @@ public:
         return &entities;
     }
 
-    std::size_t getEntityCount(const entity::Entity &entity) {
-        return entityCounter[typeid(entity)];
+    [[nodiscard]] std::size_t getEntityCount(const std::type_info &entityInfo) const {
+        return entityCounter.at(entityInfo);
     }
 
     void update();

@@ -10,19 +10,13 @@
 namespace scenery {
 
 #pragma region constructors
-    Ground::Ground(World &world, const entityID ID) :
-        Entity(world, ID)
-        {
-            buildRender();
-        }
-
     Ground::Ground(World &world, const entityID ID, std::string name) :
         Entity(world, ID, std::move(name))
         {
             buildRender();
         }
 
-    std::string Ground::getClassName() const {
+    std::string Ground::getClassName() {
         return "Ground";
     }
 #pragma endregion

@@ -23,8 +23,6 @@ namespace player {
     class Player final : public entity::Entity {
     public:
 #pragma region constructors
-        explicit Player(World &world, entityID ID);
-        explicit Player(World &world, entityID ID, const Controls &controls);
         explicit Player(World &world, entityID ID, std::string name);
         explicit Player(World &world, entityID ID, std::string name, const Controls &controls);
 #pragma endregion
@@ -47,7 +45,7 @@ namespace player {
         AnimationManager animationManager;
         StateManager stateManager;
         // GETTERS
-        [[nodiscard]] std::string getClassName() const override;
+        [[nodiscard]] static std::string getClassName();
         [[nodiscard]] sf::Vector2f getCharacterSize() const;
         [[nodiscard]] sf::Vector2f getRenderSize() const;
         [[nodiscard]] const State<StateSet>& getState() const;

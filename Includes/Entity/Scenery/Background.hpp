@@ -14,9 +14,8 @@ namespace scenery {
     public:
 
 #pragma region constructors
-        explicit Background(World &world, entityID ID);
         explicit Background(World &world, entityID ID, std::string name);
-        [[nodiscard]] std::string getClassName() const override;
+        [[nodiscard]] static  std::string getClassName();
 #pragma endregion
 
         void buildRender();
