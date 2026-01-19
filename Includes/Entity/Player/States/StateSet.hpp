@@ -5,7 +5,7 @@
 #ifndef BONK_GAME_PLAYER_STATES_HPP
 #define BONK_GAME_PLAYER_STATES_HPP
 
-#include "../../../Game/Engines/StateMachine/StateSetBase.hpp"
+#include "../../../../Utils/EnumSet.hpp"
 
 
 namespace player {
@@ -13,7 +13,7 @@ namespace player {
 }
 
 template<>
-struct StateSetTraits<player::StateSet> {
+struct EnumSetTraits<player::StateSet> {
     enum class Enum {
         NONE = -1,
         IDLE,
@@ -50,7 +50,7 @@ struct StateSetTraits<player::StateSet> {
 };
 
 namespace player {
-    struct StateSet : StateSetBase<StateSet> {};
+    struct StateSet : EnumSet<StateSet> {};
 }
 
 

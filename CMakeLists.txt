@@ -67,7 +67,7 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Entity/Player/CombatComponent.hpp
         Includes/Game/Engines/StateMachine/State.hpp
         Includes/Entity/Player/States/StateSet.hpp
-        Includes/Game/Engines/StateMachine/StateSetBase.hpp
+        Utils/EnumSet.hpp
         Includes/Entity/Player/States/PlayerState.hpp
         Src/Entity/Player/States/StateManager.cpp
         Includes/Entity/Player/States/StateManager.hpp

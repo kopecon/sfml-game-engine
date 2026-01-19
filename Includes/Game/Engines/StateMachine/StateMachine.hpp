@@ -8,11 +8,12 @@
 #include <iostream>
 #include <memory>
 #include <unordered_map>
-
 #include "State.hpp"
 
+class Entity;
 
-template<StateSetConcept StateSet>
+
+template<EnumSetConcept StateSet>
 class StateMachine {
     bool verbose{false};
     void _enter(State<StateSet> &state) {

@@ -12,7 +12,7 @@ namespace player {
 
     class PlayerState : public State<StateSet> {
     public:
-        PlayerState(Player &player, const StateSetBase<StateSet>::ID &stateID) :
+        PlayerState(Player &player, const EnumSet<StateSet>::ID &stateID) :
             State(stateID),
             player(player)
             {}

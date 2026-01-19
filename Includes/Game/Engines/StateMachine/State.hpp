@@ -10,12 +10,10 @@
 #include <vector>
 #include <memory>
 
-#include "StateSetBase.hpp"
-
-class Entity;
+#include "../../../../Utils/EnumSet.hpp"
 
 
-template <StateSetConcept StateSet>
+template <EnumSetConcept StateSet>
 class State {
 public:
     struct Edge {
