@@ -16,8 +16,9 @@
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
     animator_(
+        //TODO: No typecheck... Only temporary for debugging
         std::any_cast<std::reference_wrapper<AnimationEngine<StateSet>>>(
-            dynamic_cast<Animatable*>(&player.render.getRoot())->animator())
+            dynamic_cast<Animatable*>(&player.render.getRoot())->animator()).get()
         )
     {
     using enum StateSet::ID;

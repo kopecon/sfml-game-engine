@@ -14,12 +14,20 @@ namespace player {
         auto &texture = player.game.textures.player;
         auto animationSheet = std::make_unique<AnimationSheet>(texture, sf::Vector2u(32, 32));
 
-        auto aComposite = AnimatedComposite<StateSet>(std::move(animationSheet));
+        auto aComposite = std::make_unique<AnimatedComposite<StateSet>>(std::move(animationSheet));
 
-        aComposite.setScale(hd::divide(player.getCharacterSize(), aComposite.getGlobalBounds().size));
+        aComposite->setScale(hd::divide(player.getCharacterSize(), aComposite->getGlobalBounds().size));
 
-        player.render.setRoot(aComposite);
+        player.render.setRoot(std::move(aComposite));
         player.render.getRoot().setOrigin(player.render.getRoot().getCenter());
         player.render.getRoot().showOutline(sf::Color::Blue);
+
+        if (auto *anim = dynamic_cast<Animatable*>(&player.render.getRoot())) {
+                std::cout << anim->animator().type().name() << "\n";
+            if (anim->animator().type() == typeid(
+                std::reference_wrapper<AnimationEngine<StateSet>>)) {
+                // std::cout << std::any_cast<std::reference_wrapper<AnimationEngine<StateSet>>>(anim->animator()).get();
+            }
+        }
     }
 } // player

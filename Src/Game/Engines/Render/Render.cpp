@@ -7,8 +7,19 @@
 
 Render::Render(entity::Entity &entity) :
     entity_(entity),
-    root_(static_cast<std::string>(entity_.getName()) + "render_root")
+    root_(
+        std::make_unique<Composite>(
+            static_cast<std::string>(entity_.getName()) + "render_root")
+        )
     {}
+
+void Render::setRoot(std::unique_ptr<Composite> composite) {
+    root_ = std::move(composite);
+}
+
+Composite & Render::getRoot() const {
+    return *root_;
+}
 
 void Render::loop() const {
     // This could be improved, but I don't care anymore... it works well enough now.
@@ -30,10 +41,10 @@ void Render::loop() const {
     }
 }
 
-void Render::update() {
-    if (auto* anim = dynamic_cast<Animatable*>(&root_)) {
+void Render::update() const {
+    if (auto* anim = dynamic_cast<Animatable*>(root_.get())) {
         std::any_cast<std::reference_wrapper<AnimationEngine<player::StateSet>>>(
             anim->animator()).get().update(entity_.game.time.get());
     }
-    root_.setPosition(entity_.position);
+    root_->setPosition(entity_.position);
 }

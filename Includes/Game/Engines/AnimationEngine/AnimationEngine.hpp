@@ -71,7 +71,7 @@ public:
     void update(const float &dt) const {
         if (animationSheet_) {
             pCurrentAnimation_->update(dt);
-            target_.setTextureRect(getCurrentFrame());
+            // target_.setTextureRect(getCurrentFrame()); // FIXME
         }
     }
 };
