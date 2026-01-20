@@ -15,31 +15,31 @@
 
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
-    animator_(
+    artist_(
         //TODO: No typecheck... Only temporary for debugging
         std::any_cast<std::reference_wrapper<AnimationEngine<StateSet>>>(
             dynamic_cast<Animatable*>(&player.render.getRoot())->animator()).get()
         )
     {
     using enum StateSet::ID;
-    animator_.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
-    animator_.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
-    animator_.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
-    animator_.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
-    animator_.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
-    animator_.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
-    animator_.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
-    animator_.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
-    animator_.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
+    artist_.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
+    artist_.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
+    artist_.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
+    artist_.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
+    artist_.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
+    artist_.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
+    artist_.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
+    artist_.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
+    artist_.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
 }
 
 void player::AnimationManager::selectAnimation_() const {
-    animator_.set(player_.getState().getID());
+    artist_.set(player_.getState().getID());
 }
 
 void player::AnimationManager::updateFPS_() const {
     using enum StateSet::ID;
-    if (const auto pCurrentAnim = animator_.getCurrentAnimation()) {
+    if (const auto pCurrentAnim = artist_.getCurrentAnimation()) {
         switch (pCurrentAnim->getID()) {
             case WALKING:{
                 const float speedFactor = std::fabs(
@@ -71,5 +71,5 @@ void player::AnimationManager::updateFPS_() const {
 void player::AnimationManager::update() const {
     selectAnimation_();
     updateFPS_();
-    animator_.update(player_.game.time.get());
+    artist_.update(player_.game.time.get());
 }

@@ -21,13 +21,5 @@ namespace player {
         player.render.setRoot(std::move(aComposite));
         player.render.getRoot().setOrigin(player.render.getRoot().getCenter());
         player.render.getRoot().showOutline(sf::Color::Blue);
-
-        if (auto *anim = dynamic_cast<Animatable*>(&player.render.getRoot())) {
-                std::cout << anim->animator().type().name() << "\n";
-            if (anim->animator().type() == typeid(
-                std::reference_wrapper<AnimationEngine<StateSet>>)) {
-                // std::cout << std::any_cast<std::reference_wrapper<AnimationEngine<StateSet>>>(anim->animator()).get();
-            }
-        }
     }
 } // player
