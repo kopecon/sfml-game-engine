@@ -38,7 +38,7 @@ int main() {
     auto &player1 = worldForest.createEntity<player::Player>({-0.f, 10.f}, p1controls);
     auto &player2 = worldForest.createEntity<player::Player>({ 100.f, 10.f}, p2controls);
     game.video.camera.pTarget = &player1;
-    player2.render.setColor(sf::Color({0,200,255}));
+    player2.render.root.setColor(sf::Color({0,200,255}));
     worldForest.remove(player2);
     #pragma endregion
 

@@ -13,13 +13,13 @@
 
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
-    animator_(player.render.animator)
+    animator_(player.render.root.animator)
 {
     animator_.setAnimationSheet(std::make_unique<AnimationSheet>(
-            player.render.getSprite()->getTexture(),
+            player.render.root.getSprite()->getTexture(),
             sf::Vector2u(32, 32)
             ));
-    animator_.setTarget(*player.render.getSprite());
+    animator_.setTarget(*player.render.root.getSprite());
     using enum StateSet::ID;
     addAnimation<StateSet>(IDLE,         2, true );
     addAnimation<StateSet>(WINKING,      2, true );
@@ -101,5 +101,4 @@ void player::AnimationManager::updateFPS_() const {
 void player::AnimationManager::update() {
     selectAnimation_();
     updateFPS_();
-    // engine_.update(player_.game.time.get());
 }

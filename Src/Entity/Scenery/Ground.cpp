@@ -33,7 +33,7 @@ namespace scenery {
 
         bottom->move({top->getPosition().x, top->getPosition().y + top->getGlobalBounds().size.y});
 
-        auto composite = std::make_unique<Composite>(static_cast<std::string>(render.getName()) + "_composite");
+        auto composite = std::make_unique<Composite>(static_cast<std::string>(render.root.getName()) + "_composite");
         composite->add(std::move(top), "top");
         composite->add(std::move(bottom), "bottom");
 
@@ -52,9 +52,9 @@ namespace scenery {
             );
         }
 
-        render.add(std::move(composite));
-        render.setColor(color);
-        render.setOrigin({render.getCenter().x, 0});
+        render.root.add(std::move(composite));
+        render.root.setColor(color);
+        render.root.setOrigin({render.root.getCenter().x, 0});
         // render.showBoundary();
     }
 

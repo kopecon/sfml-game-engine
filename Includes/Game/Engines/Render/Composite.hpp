@@ -16,7 +16,7 @@
 #include "SFML/Graphics/Sprite.hpp"
 
 
-class Composite : public sf::Drawable, public sf::Transformable {
+class Composite final : public sf::Drawable, public sf::Transformable {
 protected:
     std::string name_{"composite"};
     std::unique_ptr<sf::Sprite> sprite_{nullptr};
@@ -27,15 +27,11 @@ public:
     explicit Composite();
 
     explicit Composite(std::string name);
-
-    explicit Composite(std::string name, std::unique_ptr<sf::Sprite> sprite);
-
-    explicit Composite(std::string name, std::unique_ptr<AnimationSheet> animationSheet);
 #pragma endregion
 
     AnimationEngine animator{*this};
 
-    std::vector<std::unique_ptr<Composite>> composites{};
+    std::vector<std::unique_ptr<Composite>> children{};
 
     void animate(const float &dt) const;
 

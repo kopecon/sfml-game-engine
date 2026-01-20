@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include "../../Includes/World/World.hpp"
-#include "../../Includes/Game/Game.hpp"
 
 
 namespace entity {

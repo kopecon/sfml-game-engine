@@ -7,17 +7,20 @@
 #include "Composite.hpp"
 
 
+
 namespace entity {
     class Entity;
 }
 
 
-class Render final: public Composite {
+class Render {
 protected:
     entity::Entity &entity_;
 
 public:
     explicit Render(entity::Entity &entity);
+
+    Composite root{};
 
     void loop() const;
 
