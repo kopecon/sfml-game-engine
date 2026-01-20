@@ -13,7 +13,7 @@
 template<EnumSetConcept AnimationSet>
 class Animation {
     typename AnimationSet::ID id_{0};
-    sf::Vector2i frameIndex_{0, id_};
+    sf::Vector2u frameIndex_{0, static_cast<unsigned>(id_)};
     float timer_{0.0f};  // tracks elapsed time
     unsigned fpr_{};  // frames per row
     float    fps_{};  // frames per second  (by default is equal to fpr: "it takes one second to play every frame")
@@ -67,7 +67,7 @@ public:
         fps_ = 1 / spf_;
     }
 
-    [[nodiscard]] const sf::Vector2i& getFrame() const {
+    [[nodiscard]] const sf::Vector2u& getFrame() const {
         return frameIndex_;
     }
 

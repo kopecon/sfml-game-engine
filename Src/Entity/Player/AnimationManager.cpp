@@ -10,11 +10,16 @@
 #include "../../../Includes/World/World.hpp"
 #include <cmath>
 
+#include "../../../Includes/Game/Engines/AnimationEngine/Animatable.hpp"
+
 
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
-    animator_(player.render.getRoot().animator){
-
+    animator_(
+        std::any_cast<std::reference_wrapper<AnimationEngine<StateSet>>>(
+            dynamic_cast<Animatable*>(&player.render.getRoot())->animator())
+        )
+    {
     using enum StateSet::ID;
     animator_.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
     animator_.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));

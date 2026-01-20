@@ -5,7 +5,7 @@
 #include "../../../Includes/Entity/Player/RenderManager.hpp"
 #include "../../../Includes/Game/Game.hpp"
 #include "../../../Includes/Entity/Player/Player.hpp"
-#include "../../../Includes/Game/Engines/Render/AnimatedSprite.hpp"
+#include "../../../Includes/Game/Engines/Render/AnimatedComposite.hpp"
 #include "../../../Includes/World/World.hpp"
 
 
@@ -14,11 +14,11 @@ namespace player {
         auto &texture = player.game.textures.player;
         auto animationSheet = std::make_unique<AnimationSheet>(texture, sf::Vector2u(32, 32));
 
-        auto aSprite = AnimatedSprite<StateSet>(std::move(animationSheet));
+        auto aComposite = AnimatedComposite<StateSet>(std::move(animationSheet));
 
-        aSprite.setScale(hd::divide(player.getCharacterSize(), aSprite.getGlobalBounds().size));
+        aComposite.setScale(hd::divide(player.getCharacterSize(), aComposite.getGlobalBounds().size));
 
-        player.render.setRoot(aSprite);
+        player.render.setRoot(aComposite);
         player.render.getRoot().setOrigin(player.render.getRoot().getCenter());
         player.render.getRoot().showOutline(sf::Color::Blue);
     }

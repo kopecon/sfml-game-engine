@@ -1,6 +1,8 @@
 #include "../../../../Includes/Game/Game.hpp"
 #include "../../../../Includes/Game/Engines/Render/Render.hpp"
 #include "../../../../Includes/Entity/Entity.hpp"
+#include "../../../../Includes/Entity/Player/States/StateSet.hpp"
+#include "../../../../Includes/Game/Engines/AnimationEngine/Animatable.hpp"
 
 
 Render::Render(entity::Entity &entity) :
@@ -18,8 +20,8 @@ void Render::loop() const {
     const auto cameraRBorder = cameraCenter.x + cameraWidth / 2.f;
     const auto cameraLBorder = cameraCenter.x - cameraWidth / 2.f;
 
-    const auto renderRBorder = entity_.position.x + entity_.render.root_.getGlobalBounds().size.x / 2.f;
-    const auto renderLBorder = entity_.position.x - entity_.render.root_.getGlobalBounds().size.x / 2.f;
+    const auto renderRBorder = entity_.position.x + entity_.render.getRoot().getGlobalBounds().size.x / 2.f;
+    const auto renderLBorder = entity_.position.x - entity_.render.getRoot().getGlobalBounds().size.x / 2.f;
 
     if (cameraRBorder > renderRBorder || cameraLBorder < renderLBorder) {
         entity_.position = {
@@ -29,6 +31,9 @@ void Render::loop() const {
 }
 
 void Render::update() {
-    root_.animate(entity_.game.time.get());
+    if (auto* anim = dynamic_cast<Animatable*>(&root_)) {
+        std::any_cast<std::reference_wrapper<AnimationEngine<player::StateSet>>>(
+            anim->animator()).get().update(entity_.game.time.get());
+    }
     root_.setPosition(entity_.position);
 }

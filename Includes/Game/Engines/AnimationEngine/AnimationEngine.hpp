@@ -49,7 +49,7 @@ public:
     }
 
     void setAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet) {
-        target_.setTexture(animationSheet->texture);
+        // target_.setTexture(animationSheet->texture);
         animationSheet_ = std::move(animationSheet);
     }
 

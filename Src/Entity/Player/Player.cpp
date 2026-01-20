@@ -28,9 +28,9 @@ namespace player {
         return *stateManager.stateMachine.pCurrentState;
     }
 
-    sf::Sprite & Player::getSprite() const {
+    sf::Sprite & Player::getSprite() {
         //TODO: implement propper shape accessing
-        return *render.root_.getSprite();
+        return *render.getRoot().getSprite();
     }
 
     void Player::update() {
