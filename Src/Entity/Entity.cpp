@@ -36,7 +36,8 @@ namespace entity {
     }
 #pragma endregion
 
-    void Entity::setName(std::string entityName) {
+    void Entity::rename(std::string entityName) {
+        //TODO: check nonexistence before renaming
         name_ = std::move(entityName);
     }
 
