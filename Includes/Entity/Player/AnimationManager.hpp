@@ -16,19 +16,19 @@ namespace player {
         // REFERENCES
         Player &player_;
         // CHARACTERISTICS
-        AnimationEngine engine_;
+        AnimationEngine &animator_;
 
         template<EnumSetConcept AnimationSet, typename... Args>
         void addAnimation(const typename AnimationSet::ID &id, Args&&... args) {
             auto animation = std::make_unique<Animation>(
                 static_cast<animation_id>(id), args...
             );
-            engine_.add(std::move(animation));
+            animator_.add(std::move(animation));
         }
 
         template<EnumSetConcept AnimationSet>
         void setAnimation(const typename AnimationSet::ID &id) {
-            engine_.set(static_cast<animation_id>(id));
+            animator_.set(static_cast<animation_id>(id));
         }
 
         void selectAnimation_();

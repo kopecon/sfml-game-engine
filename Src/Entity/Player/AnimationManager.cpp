@@ -13,9 +13,13 @@
 
 player::AnimationManager::AnimationManager(Player &player) :
     player_(player),
-    engine_(player.render,
-        std::make_unique<AnimationSheet>(player.getSprite().getTexture(), sf::Vector2u(32, 32)))
+    animator_(player.render.animator)
 {
+    animator_.setAnimationSheet(std::make_unique<AnimationSheet>(
+            player.render.getSprite()->getTexture(),
+            sf::Vector2u(32, 32)
+            ));
+    animator_.setTarget(*player.render.getSprite());
     using enum StateSet::ID;
     addAnimation<StateSet>(IDLE,         2, true );
     addAnimation<StateSet>(WINKING,      2, true );
@@ -65,57 +69,31 @@ void player::AnimationManager::selectAnimation_() {
 
 void player::AnimationManager::updateFPS_() const {
     using enum StateSet::ID;
-    if (const auto pCurrentAnim = engine_.getCurrentAnimation()) {
+    if (const auto pCurrentAnim = animator_.getCurrentAnimation()) {
         switch (static_cast<StateSet::ID>(pCurrentAnim->getID())) {
-            case NONE: {
-                break;
-            }
-            case IDLE: {
-                break;
-            }
-            case WINKING: {
-                break;
-            }
-
             case WALKING:{
                 const float speedFactor = std::fabs(
                 player_.movement.getSpeed().x / player_.velocity.x
                 );
-                pCurrentAnim->setSPF(1.f/pCurrentAnim->getFPR() * speedFactor);
+                pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor);
                 break;
             }
             case RUNNING:{
                 const float speedFactor = std::fabs(
                 player_.movement.getSpeed().x / player_.velocity.x
                 );
-                pCurrentAnim->setSPF(1.f/pCurrentAnim->getFPR() * speedFactor * 0.7f);
-                break;
-            }
-            case CROUCHING:{
+                pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor * 0.7f);
                 break;
             }
             case JUMPING:{
                 const float speedFactor = std::fabs(
                 player_.movement.getSpeed().y / player_.velocity.y
                 );
-                pCurrentAnim->setSPF(1.f/pCurrentAnim->getFPR() * speedFactor * 0.5f);
+                pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor * 0.5f);
                 break;
             }
-            case DISAPPEARING:{
+            default:
                 break;
-            }
-            case DYING:{
-                break;
-            }
-            case ATTACKING:{
-                break;
-            }
-            case BRAKING:{
-                break;
-            }
-            case STOPPING:{
-                break;
-            }
         }
     }
 }
