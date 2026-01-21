@@ -5,7 +5,6 @@
 #ifndef BONK_GAME_ANIMATION_ENGINE_HPP
 #define BONK_GAME_ANIMATION_ENGINE_HPP
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include "Animation.hpp"
@@ -19,10 +18,11 @@ class AnimationEngine {
     std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animations_;
     Animation<AnimationSet> *pCurrentAnimation_{nullptr};
     std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
-    std::function<void()> selectAnimation_{[](){}};
+    std::function<void()> selectAnimation_{[this](){selectAnimation();}};
 
 public:
 #pragma region constructors
+    virtual ~AnimationEngine() = default;
     explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet) :
         target_(target),
         animationSheet_(std::move(animationSheet))
@@ -50,6 +50,8 @@ public:
             pCurrentAnimation_->reset();
         }
     }
+
+    virtual void selectAnimation(){}
 
     void setSelectionStrategy(std::function<void()> strategy) {
         selectAnimation_ = std::move(strategy);

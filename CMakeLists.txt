@@ -58,8 +58,6 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/TextureComponent.hpp
         Src/Game/Engines/PhysicsEngine.cpp
         Includes/Game/Engines/PhysicsEngine.hpp
-        Src/Entity/Player/AnimationManager.cpp
-        Includes/Entity/Player/AnimationManager.hpp
         Src/Entity/Player/MovementComponent.cpp
         Includes/Entity/Player/MovementComponent.hpp
         Src/Entity/Player/CombatComponent.cpp
@@ -95,6 +93,8 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/Engines/AnimationEngine/Animation.hpp
         Includes/Game/Engines/Render/AnimatedComposite.hpp
         Includes/Game/Engines/AnimationEngine/Animatable.hpp
+        Src/Entity/Player/PlayerSprite.cpp
+        Includes/Entity/Player/PlayerSprite.hpp
 )
 
 if (PRODUCTION_BUILD)

@@ -7,7 +7,6 @@
 #include "Composite.hpp"
 
 
-
 namespace entity {
     class Entity;
 }
@@ -26,6 +25,8 @@ public:
     Composite& getRoot() const;
 
     void loop() const;
+
+    void playAnimations(const float &dt) const;
 
     void update() const;
 };

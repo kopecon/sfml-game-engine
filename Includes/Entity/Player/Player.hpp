@@ -8,7 +8,6 @@
 #include <SFML/Graphics.hpp>
 #include "../Entity.hpp"
 #include "States/StateSet.hpp"
-#include "AnimationManager.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
 #include "MovementComponent.hpp"
@@ -43,12 +42,11 @@ namespace player {
         // MANAGERS
         StateManager stateManager{*this};
         RenderManager renderManager{*this};
-        AnimationManager animationManager{*this};
         // GETTERS
         [[nodiscard]] static std::string getClassName();
         [[nodiscard]] sf::Vector2f getCharacterSize() const;
         [[nodiscard]] const State<StateSet>& getState() const;
-        [[nodiscard]] sf::Sprite& getSprite();
+        [[nodiscard]] sf::Sprite& getSprite() const;
 
         // UPDATE
         void update() override;

@@ -8,8 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "../AnimationEngine/AnimationEngine.hpp"
-#include "../AnimationEngine/AnimationSheet.hpp"
 #include "SFML/Graphics/Drawable.hpp"
 #include "SFML/Graphics/Transformable.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
@@ -36,6 +34,8 @@ public:
     void add(std::unique_ptr<Composite> composite);
 
     void add(std::unique_ptr<sf::Sprite> sprite, std::string name = "sprite");
+
+    bool play(const float &dt);
 
     void setSprite(std::unique_ptr<sf::Sprite> sprite);
 

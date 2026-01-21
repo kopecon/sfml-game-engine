@@ -2,7 +2,6 @@
 #include "../../../../Includes/Game/Engines/Render/Render.hpp"
 #include "../../../../Includes/Entity/Entity.hpp"
 #include "../../../../Includes/Entity/Player/States/StateSet.hpp"
-#include "../../../../Includes/Game/Engines/AnimationEngine/Animatable.hpp"
 
 
 Render::Render(entity::Entity &entity) :
@@ -41,9 +40,14 @@ void Render::loop() const {
     }
 }
 
-void Render::update() const {
-    if (auto* anim = dynamic_cast<AnimationEngine<player::StateSet>*>(root_.get())) {
-        anim->update(entity_.game.time.get());
+void Render::playAnimations(const float &dt) const {
+    getRoot().play(dt);
+    for (const auto &pComposite : getRoot().children) {
+        pComposite->play(dt);
     }
+}
+
+void Render::update() const {
+    playAnimations(entity_.game.time.get());
     root_->setPosition(entity_.position);
 }

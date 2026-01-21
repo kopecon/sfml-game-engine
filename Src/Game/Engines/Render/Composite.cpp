@@ -2,10 +2,11 @@
 // Created by Andrew on 05/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/Render/Composite.hpp"
 #include "../../../../Utils/utils.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "../../../../Includes/Game/Engines/Render/Composite.hpp"
+#include "../../../../Includes/Game/Engines/AnimationEngine/Animatable.hpp"
 
 
 #pragma region constructors
@@ -37,6 +38,14 @@ void Composite::add(std::unique_ptr<sf::Sprite> sprite, std::string name) {
         composite->setSprite(std::move(sprite));
         add(std::move(composite));
     }
+}
+
+bool Composite::play(const float &dt) {
+    if (auto *animated = dynamic_cast<Animatable*>(this)) {
+        animated->animate(dt);
+        return true;
+    }
+    return false;
 }
 
 void Composite::setSprite(std::unique_ptr<sf::Sprite> sprite) {
