@@ -92,7 +92,7 @@ public:
         frameIndex_.x = 0;
     }
 
-    void update(const float &dt) {
+    void play(float dt) {
         if (status == Status::END) {
             status = Status::COMPLETED;
             return;

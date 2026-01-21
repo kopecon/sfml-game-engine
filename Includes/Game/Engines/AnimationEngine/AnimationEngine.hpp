@@ -13,12 +13,12 @@
 
 
 template<EnumSetConcept AnimationSet>
-class AnimationEngine {
+class AnimationEngine final {
     sf::Sprite &target_;
     std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animations_;
-    Animation<AnimationSet> *pCurrentAnimation_{nullptr};
-    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
-    std::function<void()> selectAnimation_{[this](){selectAnimation();}};
+    Animation<AnimationSet> *pCurrentAnimation_{nullptr};  // Can be null
+    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};  // Can't be null
+    std::function<void()> selectAnimationStrategy_{};
 
 public:
 #pragma region constructors
@@ -33,17 +33,18 @@ public:
         typename AnimationSet::ID id = animation->getID();
 
         animations_.emplace(id, std::move(animation));
+
         if (pCurrentAnimation_ == nullptr) {
-            setAnimation(id);
+            pCurrentAnimation_ = animations_[id].get();
         }
     }
 
     void setAnimation(const typename AnimationSet::ID &id) {
+        if (!animations_.contains(id)) return;
+
         auto *pNewAnimation = animations_[id].get();
-        if (pCurrentAnimation_ == nullptr) {
-            pCurrentAnimation_ = pNewAnimation;
-        }
-        else if (pCurrentAnimation_ != pNewAnimation) {
+
+        if (pCurrentAnimation_ != pNewAnimation) {
             // Load desired animation
             pCurrentAnimation_ = pNewAnimation;
             // Reset the animation
@@ -51,10 +52,8 @@ public:
         }
     }
 
-    virtual void selectAnimation(){}
-
     void setSelectionStrategy(std::function<void()> strategy) {
-        selectAnimation_ = std::move(strategy);
+        selectAnimationStrategy_ = std::move(strategy);
     }
 
     void changeAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet) {
@@ -63,27 +62,31 @@ public:
     }
 
     [[nodiscard]] Animation<AnimationSet>* getCurrentAnimation() const {
+        assert(pCurrentAnimation_);
         return pCurrentAnimation_;
     }
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const {
-        auto framePosition = sf::Vector2i(hd::multiply(
+        sf::Vector2i framePosition{0, 0};
+        if (pCurrentAnimation_) {
+             framePosition = sf::Vector2i(hd::multiply(
                 pCurrentAnimation_->getFrame(),
                 animationSheet_->frameSize)
                 );
+        }
 
         auto frameSize = static_cast<sf::Vector2i>(animationSheet_->frameSize);
 
         return {framePosition, frameSize};
     }
 
-    void update(const float &dt) const {
-        selectAnimation_();
+    void animate(float dt) const {
+        if (!pCurrentAnimation_ || !animationSheet_) return;
 
-        if (&target_ && animationSheet_) {
-            pCurrentAnimation_->update(dt);
-            target_.setTextureRect(getCurrentFrame());
-        }
+        if (selectAnimationStrategy_) selectAnimationStrategy_();
+
+        pCurrentAnimation_->play(dt);
+        target_.setTextureRect(getCurrentFrame());
     }
 };
 #endif //BONK_GAME_ANIMATION_ENGINE_HPP

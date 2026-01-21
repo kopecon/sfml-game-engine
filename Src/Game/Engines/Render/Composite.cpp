@@ -40,8 +40,12 @@ void Composite::add(std::unique_ptr<sf::Sprite> sprite, std::string name) {
     }
 }
 
-bool Composite::play(const float &dt) {
-    if (auto *animated = dynamic_cast<Animatable*>(this)) {
+Animatable * Composite::asAnimatable() {
+    return nullptr;
+}
+
+bool Composite::play(float dt) {
+    if (const auto animated = asAnimatable()) {
         animated->animate(dt);
         return true;
     }

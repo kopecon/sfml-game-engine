@@ -14,6 +14,8 @@
 #include "SFML/Graphics/Sprite.hpp"
 
 
+class Animatable;
+
 class Composite : public sf::Drawable, public sf::Transformable {
 protected:
     std::string name_{"composite"};
@@ -35,7 +37,9 @@ public:
 
     void add(std::unique_ptr<sf::Sprite> sprite, std::string name = "sprite");
 
-    bool play(const float &dt);
+    virtual Animatable* asAnimatable();
+
+    bool play(float dt);
 
     void setSprite(std::unique_ptr<sf::Sprite> sprite);
 

@@ -14,7 +14,9 @@ namespace player {
 
     class PlayerSprite final : public AnimatedComposite<StateSet>{
         Player &player;
-        void selectAnimation() override;
+        void selectAnimation();
+        void updateFPS() const;
+        void update() override;
 
     public:
         PlayerSprite(Player &player, std::unique_ptr<AnimationSheet> animationSheet);

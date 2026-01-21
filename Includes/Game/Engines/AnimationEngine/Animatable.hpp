@@ -9,7 +9,7 @@
 class Animatable {
 public:
     virtual ~Animatable() = default;
-    virtual void animate(const float &dt) = 0;
+    virtual void animate(float dt) = 0;
 };
 
 

@@ -1,7 +1,6 @@
 #include "../../../../Includes/Game/Engines/Render/Render.hpp"
 #include "../../../../Includes/Game/Game.hpp"
 #include "../../../../Includes/Entity/Entity.hpp"
-#include "../../../../Includes/Entity/Player/States/StateSet.hpp"
 
 
 Render::Render(entity::Entity &entity) :
@@ -17,6 +16,7 @@ void Render::setRoot(std::unique_ptr<Composite> composite) {
 }
 
 Composite & Render::getRoot() const {
+    assert(root_);
     return *root_;
 }
 
@@ -48,6 +48,7 @@ void Render::playAnimations(const float &dt) const {
 }
 
 void Render::update() const {
+    assert(root_);
     playAnimations(entity_.game.time.get());
     root_->setPosition(entity_.position);
 }

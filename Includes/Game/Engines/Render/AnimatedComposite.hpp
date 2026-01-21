@@ -10,15 +10,25 @@
 
 
 template<EnumSetConcept AnimationSet>
-class AnimatedComposite : public Composite, public AnimationEngine<AnimationSet>, public Animatable {
+class AnimatedComposite : public Composite, public Animatable {
+protected:
+    virtual void update() {}
+
 public:
     explicit AnimatedComposite(std::unique_ptr<AnimationSheet> animationSheet) :
     Composite("animated", std::make_unique<sf::Sprite>(animationSheet->texture)),
-    AnimationEngine<AnimationSet>(*sprite_, std::move(animationSheet)) {
+    animator(*sprite_, std::move(animationSheet)) {
     }
 
-    void animate(const float &dt) override {
-        AnimationEngine<AnimationSet>::update(dt);
+    AnimationEngine<AnimationSet> animator;
+
+    Animatable* asAnimatable() override {
+        return this;
+    }
+
+    void animate(float dt) override {
+        update();
+        animator.animate(dt);
     }
 };
 
