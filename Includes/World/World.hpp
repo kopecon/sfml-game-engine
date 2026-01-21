@@ -54,7 +54,7 @@ public:
 
     // Create Entity at [x,y]
     template<typename T, typename ... Args>
-    T& createEntity(sf::Vector2f position, Args&&... args)
+    T& createEntityAt(sf::Vector2f position, Args&&... args)
     requires (std::is_base_of_v<entity::Entity, T>) {
         // Create the entity
         auto pEntity = &createEntity<T>(args...);

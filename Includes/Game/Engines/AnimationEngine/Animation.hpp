@@ -9,11 +9,11 @@
 #include "../../../../Utils/EnumSet.hpp"
 #include "SFML/Graphics/Rect.hpp"
 
-using animation_id = unsigned;
 
+template<EnumSetConcept AnimationSet>
 class Animation {
-    animation_id id_{0};  // Represents row index starting from 0;
-    unsigned index_ = 0;
+    typename AnimationSet::ID id_{0};
+    sf::Vector2u frameIndex_{0, static_cast<unsigned>(id_)};
     float timer_{0.0f};  // tracks elapsed time
     unsigned fpr_{};  // frames per row
     float    fps_{};  // frames per second  (by default is equal to fpr: "it takes one second to play every frame")
@@ -27,7 +27,7 @@ public:
 #pragma region constructors
     Animation() = default;
 
-    Animation(const animation_id &id, const int &fpr, const bool &looping=true) :
+    Animation(const typename AnimationSet::ID &id, const int &fpr, const bool &looping=true) :
         id_(id),
         fpr_(fpr),
         fps_(static_cast<float>(fpr)),
@@ -47,7 +47,7 @@ public:
 
     struct Hash {
         size_t operator()(const Animation& anim) const noexcept {
-            return std::hash<animation_id>()(anim.id_);
+            return std::hash<typename AnimationSet::ID>()(anim.id_);
         }
     };
 #pragma endregion
@@ -67,7 +67,11 @@ public:
         fps_ = 1 / spf_;
     }
 
-    [[nodiscard]] animation_id getID() const {
+    [[nodiscard]] const sf::Vector2u& getFrame() const {
+        return frameIndex_;
+    }
+
+    [[nodiscard]] typename  AnimationSet::ID getID() const {
         return id_;
     }
 
@@ -83,13 +87,9 @@ public:
         return spf_;
     }
 
-    [[nodiscard]] sf::Vector2u getFrameIndex() {
-        return {index_, id_};
-    }
-
     void reset() {
         status = Status::READY;
-        index_ = 0;
+        frameIndex_.x = 0;
     }
 
     void update(const float &dt) {
@@ -101,17 +101,17 @@ public:
         timer_ += dt;
         // When it is the time to move to the next frame
         if (timer_ >= spf_) {
-            index_ += 1;
+            frameIndex_.x += 1;
             timer_ = 0.f;  // Reset timer
         }
         // Evaluate the end of animationManager
-        if (index_+1 > fpr_) {
+        if (frameIndex_.x+1 > fpr_) {
             // LOOP
-            if (looping) index_ = 0;
+            if (looping) frameIndex_.x = 0;
             // DONT LOOP
             else {
                 status = Status::END;
-                index_ = fpr_-1;
+                frameIndex_.x = fpr_-1;
             }
         }
     }

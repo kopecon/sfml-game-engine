@@ -14,21 +14,9 @@ public:
     const unsigned rows{};
     const unsigned columns{};
 
-    explicit AnimationSheet(const sf::Texture &texture, const sf::Vector2u &frameSize) :
-        texture(texture),
-        frameSize(frameSize),
-        rows(texture.getSize().y/frameSize.y),
-        columns(texture.getSize().x/frameSize.x)
-    {}
-    explicit AnimationSheet(const sf::Texture &texture, const unsigned &rows, const unsigned &columns) :
-        texture(texture),
-        frameSize(sf::Vector2u(
-            texture.getSize().x / columns,
-            texture.getSize().y / rows
-        )),
-        rows(rows),
-        columns(columns)
-    {}
+    explicit AnimationSheet(const sf::Texture &texture, const sf::Vector2u &frameSize);
+
+    explicit AnimationSheet(const sf::Texture &texture, const unsigned &rows, const unsigned &columns);
 };
 
 

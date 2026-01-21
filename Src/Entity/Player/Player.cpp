@@ -30,7 +30,7 @@ namespace player {
 
     sf::Sprite & Player::getSprite() const {
         //TODO: implement propper shape accessing
-        return *render.getSprite();
+        return *render.getRoot().getSprite();
     }
 
     void Player::update() {
@@ -38,6 +38,5 @@ namespace player {
         // physics.verbose = true;
         physics.update();
         stateManager.update();
-        animationManager.update();
     }
 }

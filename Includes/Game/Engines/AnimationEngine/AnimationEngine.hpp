@@ -8,38 +8,82 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include "Animation.hpp"
+#include "AnimationSheet.hpp"
+#include "../../../../Utils/utils.hpp"
 
 
-class Composite;
-class AnimationSheet;
-
-
+template<EnumSetConcept AnimationSet>
 class AnimationEngine {
-    sf::Sprite *pTarget_;
-    std::unique_ptr<AnimationSheet> animationSheet_;
-    std::unordered_map<animation_id, std::unique_ptr<Animation>> animations_;
-    Animation *pCurrentAnimation_{nullptr};
+    sf::Sprite &target_;
+    std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animations_;
+    Animation<AnimationSet> *pCurrentAnimation_{nullptr};
+    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
+    std::function<void()> selectAnimation_{[this](){selectAnimation();}};
 
 public:
 #pragma region constructors
-    explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet);
-    explicit AnimationEngine(const Composite &composite);
-    explicit AnimationEngine(const Composite &composite, std::unique_ptr<AnimationSheet> animationSheet);
+    virtual ~AnimationEngine() = default;
+    explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet) :
+        target_(target),
+        animationSheet_(std::move(animationSheet))
+        {target.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(animationSheet_->frameSize)));}
 #pragma endregion
 
+    void addAnimation(std::unique_ptr<Animation<AnimationSet>> animation) {
+        typename AnimationSet::ID id = animation->getID();
 
-    void add(std::unique_ptr<Animation> animation);
+        animations_.emplace(id, std::move(animation));
+        if (pCurrentAnimation_ == nullptr) {
+            setAnimation(id);
+        }
+    }
 
-    void set(const animation_id &id);
+    void setAnimation(const typename AnimationSet::ID &id) {
+        auto *pNewAnimation = animations_[id].get();
+        if (pCurrentAnimation_ == nullptr) {
+            pCurrentAnimation_ = pNewAnimation;
+        }
+        else if (pCurrentAnimation_ != pNewAnimation) {
+            // Load desired animation
+            pCurrentAnimation_ = pNewAnimation;
+            // Reset the animation
+            pCurrentAnimation_->reset();
+        }
+    }
 
-    void setAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet);
+    virtual void selectAnimation(){}
 
-    void setTarget(sf::Sprite &sprite);
+    void setSelectionStrategy(std::function<void()> strategy) {
+        selectAnimation_ = std::move(strategy);
+    }
 
-    [[nodiscard]] sf::IntRect getCurrentFrame() const;
+    void changeAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet) {
+        target_.setTexture(animationSheet->texture);
+        animationSheet_ = std::move(animationSheet);
+    }
 
-    [[nodiscard]] Animation* getCurrentAnimation() const;
+    [[nodiscard]] Animation<AnimationSet>* getCurrentAnimation() const {
+        return pCurrentAnimation_;
+    }
 
-    void update(const float &dt) const;
+    [[nodiscard]] sf::IntRect getCurrentFrame() const {
+        auto framePosition = sf::Vector2i(hd::multiply(
+                pCurrentAnimation_->getFrame(),
+                animationSheet_->frameSize)
+                );
+
+        auto frameSize = static_cast<sf::Vector2i>(animationSheet_->frameSize);
+
+        return {framePosition, frameSize};
+    }
+
+    void update(const float &dt) const {
+        selectAnimation_();
+
+        if (&target_ && animationSheet_) {
+            pCurrentAnimation_->update(dt);
+            target_.setTextureRect(getCurrentFrame());
+        }
+    }
 };
 #endif //BONK_GAME_ANIMATION_ENGINE_HPP

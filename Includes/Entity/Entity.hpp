@@ -45,13 +45,13 @@ namespace entity {
         // FLAGS
         bool removalFlag = false;
 
-        void setName(std::string entityName);
+        void rename(std::string entityName);
 
         std::string_view getName();
 
-        [[nodiscard]] static std::string getClassName();
-
         [[nodiscard]] entityID getID() const;
+
+        [[nodiscard]] static std::string getClassName();
 
         virtual void update() = 0;
     };

@@ -8,7 +8,6 @@
 #include <SFML/Graphics.hpp>
 #include "../Entity.hpp"
 #include "States/StateSet.hpp"
-#include "AnimationManager.hpp"
 #include "PhysicsComponent.hpp"
 #include "InputComponent.hpp"
 #include "MovementComponent.hpp"
@@ -41,9 +40,8 @@ namespace player {
         MovementComponent movement{*this};
         CombatComponent combat{*this};
         // MANAGERS
-        RenderManager renderManager{*this};
-        AnimationManager animationManager{*this};
         StateManager stateManager{*this};
+        RenderManager renderManager{*this};
         // GETTERS
         [[nodiscard]] static std::string getClassName();
         [[nodiscard]] sf::Vector2f getCharacterSize() const;

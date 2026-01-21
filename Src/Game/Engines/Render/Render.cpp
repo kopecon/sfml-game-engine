@@ -1,11 +1,23 @@
 #include "../../../../Includes/Game/Engines/Render/Render.hpp"
 #include "../../../../Includes/Game/Game.hpp"
 #include "../../../../Includes/Entity/Entity.hpp"
+#include "../../../../Includes/Entity/Player/States/StateSet.hpp"
 
 
 Render::Render(entity::Entity &entity) :
-    Composite(static_cast<std::string>(entity.getName()) + "_render"),
-    entity_(entity) {
+    entity_(entity),
+    root_(
+        std::make_unique<Composite>(
+            static_cast<std::string>(entity_.getName()) + "render_root")
+        )
+    {}
+
+void Render::setRoot(std::unique_ptr<Composite> composite) {
+    root_ = std::move(composite);
+}
+
+Composite & Render::getRoot() const {
+    return *root_;
 }
 
 void Render::loop() const {
@@ -18,8 +30,8 @@ void Render::loop() const {
     const auto cameraRBorder = cameraCenter.x + cameraWidth / 2.f;
     const auto cameraLBorder = cameraCenter.x - cameraWidth / 2.f;
 
-    const auto renderRBorder = entity_.position.x + entity_.render.getGlobalBounds().size.x / 2.f;
-    const auto renderLBorder = entity_.position.x - entity_.render.getGlobalBounds().size.x / 2.f;
+    const auto renderRBorder = entity_.position.x + entity_.render.getRoot().getGlobalBounds().size.x / 2.f;
+    const auto renderLBorder = entity_.position.x - entity_.render.getRoot().getGlobalBounds().size.x / 2.f;
 
     if (cameraRBorder > renderRBorder || cameraLBorder < renderLBorder) {
         entity_.position = {
@@ -28,7 +40,14 @@ void Render::loop() const {
     }
 }
 
-void Render::update() {
-    animate(entity_.game.time.get());
-    setPosition(entity_.position);
+void Render::playAnimations(const float &dt) const {
+    getRoot().play(dt);
+    for (const auto &pComposite : getRoot().children) {
+        pComposite->play(dt);
+    }
+}
+
+void Render::update() const {
+    playAnimations(entity_.game.time.get());
+    root_->setPosition(entity_.position);
 }

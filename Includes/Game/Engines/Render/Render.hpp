@@ -12,16 +12,23 @@ namespace entity {
 }
 
 
-class Render final: public Composite {
+class Render {
 protected:
     entity::Entity &entity_;
+    std::unique_ptr<Composite> root_{nullptr};
 
 public:
     explicit Render(entity::Entity &entity);
 
+    void setRoot(std::unique_ptr<Composite> composite);
+
+    Composite& getRoot() const;
+
     void loop() const;
 
-    void update();
+    void playAnimations(const float &dt) const;
+
+    void update() const;
 };
 
 

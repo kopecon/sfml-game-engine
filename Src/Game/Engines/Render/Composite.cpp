@@ -2,10 +2,11 @@
 // Created by Andrew on 05/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/Render/Composite.hpp"
 #include "../../../../Utils/utils.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "../../../../Includes/Game/Engines/Render/Composite.hpp"
+#include "../../../../Includes/Game/Engines/AnimationEngine/Animatable.hpp"
 
 
 #pragma region constructors
@@ -15,32 +16,36 @@ Composite::Composite(std::string name):
     name_(std::move(name))
     {}
 
-Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite):
+Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite) :
     name_(std::move(name)),
     sprite_(std::move(sprite))
     {}
-
-Composite::Composite(std::string name, std::unique_ptr<AnimationSheet> animationSheet) :
-    name_(std::move(name)),
-    animator(*this, std::move(animationSheet))
-    {}
 #pragma endregion
-
-
-void Composite::animate(const float &dt) const {
-    animator.update(dt);
-}
 
 void Composite::add(std::unique_ptr<Composite> composite) {
     composite->setOrigin({0.f, 0.f});
-    composites.push_back(std::move(composite));
+    children.push_back(std::move(composite));
 }
 
 void Composite::add(std::unique_ptr<sf::Sprite> sprite, std::string name) {
-    sprite->setOrigin({0.f, 0.f});
-    std::string compositeName = name_ + "_" + std::move(name);
-    auto composite = std::make_unique<Composite>(std::move(compositeName), std::move(sprite));
-    add(std::move(composite));
+    if (!sprite_) {
+        setSprite(std::move(sprite));
+    }
+    else {
+        sprite->setOrigin({0.f, 0.f});
+        std::string compositeName = name_ + "_" + std::move(name);
+        auto composite = std::make_unique<Composite>(std::move(compositeName));
+        composite->setSprite(std::move(sprite));
+        add(std::move(composite));
+    }
+}
+
+bool Composite::play(const float &dt) {
+    if (auto *animated = dynamic_cast<Animatable*>(this)) {
+        animated->animate(dt);
+        return true;
+    }
+    return false;
 }
 
 void Composite::setSprite(std::unique_ptr<sf::Sprite> sprite) {
@@ -88,7 +93,6 @@ sf::FloatRect Composite::getGlobalBounds() const {
     return getTransform().transformRect(getLocalBounds());
 }
 
-
 sf::Vector2f Composite::getCenter() const {
     const auto localBounds = getLocalBounds();
     const auto x = localBounds.position.x + localBounds.size.x / 2.f;
@@ -109,7 +113,7 @@ std::vector<sf::Sprite*> Composite::getAllSprites() const {
     if (sprite_) {
         sprites.push_back(sprite_.get());
     }
-    for (const auto &pComposite : composites) {
+    for (const auto &pComposite : children) {
         std::vector<sf::Sprite*> subSprites = pComposite->getAllSprites();
         sprites.insert(sprites.begin(), subSprites.begin(), subSprites.end());
     }
@@ -126,7 +130,7 @@ void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         target.draw(*sprite_, states);
     }
     // DRAW OTHER COMPOSITES
-    for (const auto &pComposite : composites) {
+    for (const auto &pComposite : children) {
         pComposite->draw(target, states);
     }
 
