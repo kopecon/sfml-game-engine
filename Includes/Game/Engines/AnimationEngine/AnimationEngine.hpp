@@ -15,14 +15,13 @@
 template<EnumSetConcept AnimationSet>
 class AnimationEngine final {
     sf::Sprite &target_;
+    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};  // Can't be null
     std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animations_;
     Animation<AnimationSet> *pCurrentAnimation_{nullptr};  // Can be null
-    std::unique_ptr<AnimationSheet> animationSheet_{nullptr};  // Can't be null
     std::function<void()> selectAnimationStrategy_{};
 
 public:
 #pragma region constructors
-    virtual ~AnimationEngine() = default;
     explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet) :
         target_(target),
         animationSheet_(std::move(animationSheet))
@@ -61,9 +60,9 @@ public:
         animationSheet_ = std::move(animationSheet);
     }
 
-    [[nodiscard]] Animation<AnimationSet>* getCurrentAnimation() const {
+    [[nodiscard]] Animation<AnimationSet>& getCurrentAnimation() const {
         assert(pCurrentAnimation_);
-        return pCurrentAnimation_;
+        return *pCurrentAnimation_;
     }
 
     [[nodiscard]] sf::IntRect getCurrentFrame() const {

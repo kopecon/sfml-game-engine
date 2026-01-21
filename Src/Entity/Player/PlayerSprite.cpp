@@ -44,7 +44,7 @@ namespace player {
     void PlayerSprite::updateFPS() const {
         using enum StateSet::ID;
 
-        auto &currentAnimation = *animator.getCurrentAnimation();
+        auto &currentAnimation = animator.getCurrentAnimation();
 
         const auto speedRatio = hd::abs(hd::divide(player.velocity, player.movement.getSpeed()));
 
