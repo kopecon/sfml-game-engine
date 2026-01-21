@@ -5,6 +5,7 @@
 #ifndef BONK_GAME_ANIMATION_ENGINE_HPP
 #define BONK_GAME_ANIMATION_ENGINE_HPP
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include "Animation.hpp"
@@ -18,24 +19,26 @@ class AnimationEngine {
     std::unordered_map<typename AnimationSet::ID, std::unique_ptr<Animation<AnimationSet>>> animations_;
     Animation<AnimationSet> *pCurrentAnimation_{nullptr};
     std::unique_ptr<AnimationSheet> animationSheet_{nullptr};
+    std::function<void()> selectAnimation_{[](){}};
 
 public:
 #pragma region constructors
-    explicit AnimationEngine(sf::Sprite &target) :
-        target_(target)
-        {}
+    explicit AnimationEngine(sf::Sprite &target, std::unique_ptr<AnimationSheet> animationSheet) :
+        target_(target),
+        animationSheet_(std::move(animationSheet))
+        {target.setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(animationSheet_->frameSize)));}
 #pragma endregion
 
-    void add(std::unique_ptr<Animation<AnimationSet>> animation) {
+    void addAnimation(std::unique_ptr<Animation<AnimationSet>> animation) {
         typename AnimationSet::ID id = animation->getID();
 
         animations_.emplace(id, std::move(animation));
         if (pCurrentAnimation_ == nullptr) {
-            set(id);
+            setAnimation(id);
         }
     }
 
-    void set(const typename AnimationSet::ID &id) {
+    void setAnimation(const typename AnimationSet::ID &id) {
         auto *pNewAnimation = animations_[id].get();
         if (pCurrentAnimation_ == nullptr) {
             pCurrentAnimation_ = pNewAnimation;
@@ -48,8 +51,12 @@ public:
         }
     }
 
-    void setAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet) {
-        // target_.setTexture(animationSheet->texture);
+    void setSelectionStrategy(std::function<void()> strategy) {
+        selectAnimation_ = std::move(strategy);
+    }
+
+    void changeAnimationSheet(std::unique_ptr<AnimationSheet> animationSheet) {
+        target_.setTexture(animationSheet->texture);
         animationSheet_ = std::move(animationSheet);
     }
 
@@ -69,6 +76,8 @@ public:
     }
 
     void update(const float &dt) const {
+        selectAnimation_();
+
         if (&target_ && animationSheet_) {
             pCurrentAnimation_->update(dt);
             target_.setTextureRect(getCurrentFrame());

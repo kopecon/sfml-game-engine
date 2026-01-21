@@ -42,9 +42,8 @@ void Render::loop() const {
 }
 
 void Render::update() const {
-    if (auto* anim = dynamic_cast<Animatable*>(root_.get())) {
-        std::any_cast<std::reference_wrapper<AnimationEngine<player::StateSet>>>(
-            anim->animator()).get().update(entity_.game.time.get());
+    if (auto* anim = dynamic_cast<AnimationEngine<player::StateSet>*>(root_.get())) {
+        anim->update(entity_.game.time.get());
     }
     root_->setPosition(entity_.position);
 }

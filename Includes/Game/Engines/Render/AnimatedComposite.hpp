@@ -5,22 +5,15 @@
 #ifndef BONK_GAME_ANIMATED_COMPOSITE_HPP
 #define BONK_GAME_ANIMATED_COMPOSITE_HPP
 #include "Composite.hpp"
-#include "../AnimationEngine/Animatable.hpp"
+#include "../../../Game/Engines/AnimationEngine/AnimationEngine.hpp"
 
 
 template<EnumSetConcept AnimationSet>
-class AnimatedComposite final: public Composite, public Animatable {
-    std::unique_ptr<AnimationEngine<AnimationSet>> animator_{nullptr};
+class AnimatedComposite final: public Composite, public AnimationEngine<AnimationSet> {
 public:
-    explicit AnimatedComposite(std::unique_ptr<AnimationSheet> animationSheet) {
-        sprite_ = std::make_unique<sf::Sprite>(animationSheet->texture);
-        sprite_->setTextureRect(sf::IntRect({0, 0}, static_cast<sf::Vector2i>(animationSheet->frameSize)));
-        animator_ = std::make_unique<AnimationEngine<AnimationSet>>(*sprite_.get());
-        animator_->setAnimationSheet(std::move(animationSheet));
-    }
-
-    std::any animator() override {
-        return std::ref(*animator_.get());
+    explicit AnimatedComposite(std::unique_ptr<AnimationSheet> animationSheet) :
+    Composite("animated", std::make_unique<sf::Sprite>(animationSheet->texture)),
+    AnimationEngine<AnimationSet>(*sprite_, std::move(animationSheet)) {
     }
 };
 

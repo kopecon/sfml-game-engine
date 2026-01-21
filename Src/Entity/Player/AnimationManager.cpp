@@ -14,58 +14,54 @@
 
 
 player::AnimationManager::AnimationManager(Player &player) :
-    player_(player),
-    artist_(
-        //TODO: No typecheck... Only temporary for debugging
-        std::any_cast<std::reference_wrapper<AnimationEngine<StateSet>>>(
-            dynamic_cast<Animatable*>(&player.render.getRoot())->animator()).get()
-        )
+    player_(player)
+    // artist_(player.render.getRoot())
     {
     using enum StateSet::ID;
-    artist_.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
-    artist_.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
-    artist_.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
-    artist_.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
-    artist_.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
-    artist_.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
-    artist_.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
-    artist_.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
-    artist_.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
+    // artist_.add(std::make_unique<Animation<StateSet>>(IDLE,         2, true ));
+    // artist_.add(std::make_unique<Animation<StateSet>>(WINKING,      2, true ));
+    // artist_.add(std::make_unique<Animation<StateSet>>(WALKING,      4, true ));
+    // artist_.add(std::make_unique<Animation<StateSet>>(RUNNING,      8, true ));
+    // artist_.add(std::make_unique<Animation<StateSet>>(CROUCHING,    6, true ));
+    // artist_.add(std::make_unique<Animation<StateSet>>(JUMPING,      8, false));
+    // artist_.add(std::make_unique<Animation<StateSet>>(DYING,        8, false));
+    // artist_.add(std::make_unique<Animation<StateSet>>(DISAPPEARING, 4, false));
+    // artist_.add(std::make_unique<Animation<StateSet>>(ATTACKING,    8, false));
 }
 
 void player::AnimationManager::selectAnimation_() const {
-    artist_.set(player_.getState().getID());
+    // artist_.setAnimation(player_.getState().getID());
 }
 
 void player::AnimationManager::updateFPS_() const {
-    using enum StateSet::ID;
-    if (const auto pCurrentAnim = artist_.getCurrentAnimation()) {
-        switch (pCurrentAnim->getID()) {
-            case WALKING:{
-                const float speedFactor = std::fabs(
-                player_.movement.getSpeed().x / player_.velocity.x
-                );
-                pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor);
-                break;
-            }
-            case RUNNING:{
-                const float speedFactor = std::fabs(
-                player_.movement.getSpeed().x / player_.velocity.x
-                );
-                pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor * 0.7f);
-                break;
-            }
-            case JUMPING:{
-                const float speedFactor = std::fabs(
-                player_.movement.getSpeed().y / player_.velocity.y
-                );
-                pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor * 0.5f);
-                break;
-            }
-            default:
-                break;
-        }
-    }
+    // using enum StateSet::ID;
+    // if (const auto pCurrentAnim = artist_.getCurrentAnimation()) {
+    //     switch (pCurrentAnim->getID()) {
+    //         case WALKING:{
+    //             const float speedFactor = std::fabs(
+    //             player_.movement.getSpeed().x / player_.velocity.x
+    //             );
+    //             pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor);
+    //             break;
+    //         }
+    //         case RUNNING:{
+    //             const float speedFactor = std::fabs(
+    //             player_.movement.getSpeed().x / player_.velocity.x
+    //             );
+    //             pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor * 0.7f);
+    //             break;
+    //         }
+    //         case JUMPING:{
+    //             const float speedFactor = std::fabs(
+    //             player_.movement.getSpeed().y / player_.velocity.y
+    //             );
+    //             pCurrentAnim->setSPF(1.f/static_cast<float>(pCurrentAnim->getFPR()) * speedFactor * 0.5f);
+    //             break;
+    //         }
+    //         default:
+    //             break;
+    //     }
+    // }
 }
 
 void player::AnimationManager::update() const {

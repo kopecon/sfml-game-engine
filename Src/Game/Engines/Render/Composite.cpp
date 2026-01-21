@@ -14,6 +14,11 @@ Composite::Composite() = default;
 Composite::Composite(std::string name):
     name_(std::move(name))
     {}
+
+Composite::Composite(std::string name, std::unique_ptr<sf::Sprite> sprite) :
+    name_(std::move(name)),
+    sprite_(std::move(sprite))
+    {}
 #pragma endregion
 
 void Composite::add(std::unique_ptr<Composite> composite) {

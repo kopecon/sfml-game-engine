@@ -41,9 +41,9 @@ namespace player {
         MovementComponent movement{*this};
         CombatComponent combat{*this};
         // MANAGERS
+        StateManager stateManager{*this};
         RenderManager renderManager{*this};
         AnimationManager animationManager{*this};
-        StateManager stateManager{*this};
         // GETTERS
         [[nodiscard]] static std::string getClassName();
         [[nodiscard]] sf::Vector2f getCharacterSize() const;

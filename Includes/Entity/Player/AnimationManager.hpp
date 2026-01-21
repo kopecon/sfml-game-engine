@@ -16,7 +16,7 @@ namespace player {
         // REFERENCES
         Player &player_;
         // CHARACTERISTICS
-        AnimationEngine<StateSet> &artist_;
+        // AnimationEngine<StateSet> &artist_;
 
         void selectAnimation_() const;
 

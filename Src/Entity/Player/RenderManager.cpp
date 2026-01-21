@@ -16,8 +16,22 @@ namespace player {
 
         auto aComposite = std::make_unique<AnimatedComposite<StateSet>>(std::move(animationSheet));
 
-        aComposite->getSprite()->setScale(hd::divide(player.getCharacterSize(), aComposite->getGlobalBounds().size));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::IDLE,         2, true ));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::WINKING,      2, true ));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::WALKING,      4, true ));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::RUNNING,      8, true ));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::CROUCHING,    6, true ));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::JUMPING,      8, false));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::DYING,        8, false));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::DISAPPEARING, 4, false));
+        aComposite->addAnimation(std::make_unique<Animation<StateSet>>(StateSet::ID::ATTACKING,    8, false));
 
+        auto *c = aComposite.get();
+        aComposite->setSelectionStrategy([c, &player] {
+            c->setAnimation(player.getState().getID());
+        });
+        aComposite->getSprite()->setScale(hd::divide(player.getCharacterSize(), aComposite->getGlobalBounds().size));
+        
         player.render.setRoot(std::move(aComposite));
         player.render.getRoot().setOrigin(player.render.getRoot().getCenter());
         player.render.getRoot().showOutline(sf::Color::Blue);
