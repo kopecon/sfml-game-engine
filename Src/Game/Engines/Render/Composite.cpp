@@ -87,28 +87,42 @@ void Composite::showOutline(const sf::Color color) {
 }
 
 sf::FloatRect Composite::getLocalBounds() const {
-    sf::Vector2f minPosition{};
-    sf::Vector2f maxSize{};
-    sf::FloatRect mainSpriteBounds{};
+    //CHATGPT SOLUTION
+    bool initialized = false;
+
+    sf::Vector2f minPos;
+    sf::Vector2f maxPos;
+
+    auto absorb = [&](const sf::FloatRect& r) {
+        sf::Vector2f rMin = r.position;
+        sf::Vector2f rMax = r.position + r.size;
+
+        if (!initialized) {
+            minPos = rMin;
+            maxPos = rMax;
+            initialized = true;
+        } else {
+            minPos.x = std::min(minPos.x, rMin.x);
+            minPos.y = std::min(minPos.y, rMin.y);
+            maxPos.x = std::max(maxPos.x, rMax.x);
+            maxPos.y = std::max(maxPos.y, rMax.y);
+        }
+    };
 
     if (sprite_) {
-        mainSpriteBounds = sprite_->getGlobalBounds();
-        minPosition = mainSpriteBounds.position;
-        maxSize = mainSpriteBounds.size;
+        absorb(sprite_->getGlobalBounds());
     }
-    // SCAN COMPOSITES
-    for (const auto &pComposite : children) {
-        sf::FloatRect thisComposite = pComposite->getGlobalBounds();
-        minPosition.x = std::min(minPosition.x, thisComposite.position.x);
-        minPosition.y = std::min(minPosition.y, thisComposite.position.y);
-        maxSize.x = std::max(maxSize.x, std::abs(thisComposite.position.x - minPosition.x) + thisComposite.size.x);
-        maxSize.y = std::max(maxSize.y, std::abs(thisComposite.position.y - minPosition.y) + thisComposite.size.y);
+
+    for (const auto& child : children) {
+        absorb(child->getGlobalBounds());
     }
-    // maxSize.x = std::max(maxSize.x, std::abs(mainSpriteBounds.position.x - minPosition.x) + mainSpriteBounds.size.x);
-    // maxSize.y = std::max(maxSize.y, std::abs(mainSpriteBounds.position.y - minPosition.y) + mainSpriteBounds.size.y);
-    const auto result = sf::FloatRect(minPosition, maxSize);
-    return result;
+
+    if (!initialized)
+        return {};
+
+    return { minPos, maxPos - minPos };
 }
+
 
 sf::FloatRect Composite::getGlobalBounds() const {
     return getTransform().transformRect(getLocalBounds());

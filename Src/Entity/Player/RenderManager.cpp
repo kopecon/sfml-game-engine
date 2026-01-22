@@ -55,9 +55,9 @@ namespace player {
         testRoot->showOutline();
         // RENDER
         auto &root = player.render.getRoot();
-        root.add(std::move(testRoot));
         root.add(std::move(test5));
         root.add(std::move(playerSprite));
+        root.add(std::move(testRoot));
         root.setOrigin(root.getCenter());
         root.showOutline(sf::Color::Blue);
     }
