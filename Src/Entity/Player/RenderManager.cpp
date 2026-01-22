@@ -52,12 +52,12 @@ namespace player {
         testRoot->add(std::move(test2));
         testRoot->add(std::move(test3));
         testRoot->add(std::move(test4));
-        testRoot->add(std::move(test5));
-        testRoot->add(std::move(playerSprite));
         testRoot->showOutline();
         // RENDER
-        player.render.changeRoot(std::move(testRoot));
         auto &root = player.render.getRoot();
+        root.add(std::move(testRoot));
+        root.add(std::move(test5));
+        root.add(std::move(playerSprite));
         root.setOrigin(root.getCenter());
         root.showOutline(sf::Color::Blue);
     }
