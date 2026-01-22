@@ -61,6 +61,10 @@ namespace player {
                 currentAnimation.setSPF(1.f/static_cast<float>(currentAnimation.getFPR()) * speedRatio.y * 0.6f);
                 break;
             }
+            case ATTACKING : {
+                currentAnimation.setSPF(0.05f);
+                break;
+            }
             default:
                 break;
         }
