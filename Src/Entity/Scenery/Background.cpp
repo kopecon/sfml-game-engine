@@ -26,7 +26,7 @@ namespace scenery {
         texture.setRepeated(true);
 
         auto sprite = std::make_unique<Sprite>(texture);
-        sprite->rename("test");
+        sprite->rename("background");
         const auto spriteSize = sprite->getGlobalBounds().size;
         // Fit sprite to window
         sprite->setScale(

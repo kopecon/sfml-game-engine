@@ -61,8 +61,10 @@ protected:
     [[nodiscard]] sf::FloatRect getChildrenGlobalBounds() const;
 
 private:
-
     virtual void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const = 0;
+
+    virtual void drawChildren(sf::RenderTarget &target, sf::RenderStates states) const;
+
 };
 
 

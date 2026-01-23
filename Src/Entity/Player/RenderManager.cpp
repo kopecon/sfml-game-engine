@@ -15,14 +15,22 @@ namespace player {
         // PLAYER SPRITE
         auto &texture = player.game.textures.player;
         auto animationSheet = std::make_unique<AnimationSheet>(texture, sf::Vector2u(32, 32));
+        auto animationSheet1 = std::make_unique<AnimationSheet>(texture, sf::Vector2u(32, 32));
 
         auto playerSprite = std::make_unique<PlayerSprite>(player, std::move(animationSheet));
 
         playerSprite->setScale(hd::divide(player.getCharacterSize(), playerSprite->getGlobalBounds().size));
         playerSprite->rename("PlayerSprite");
+        // TEST
+        auto testSprite1 = std::make_unique<PlayerSprite>(player, std::move(animationSheet1));
+        testSprite1->rename("testSprite1");
+        testSprite1->move({20.f, 0.f});
+        playerSprite->add(std::move(testSprite1));
         // RENDER
         auto &render = player.render;
         render.add(std::move(playerSprite));
+        // render.add(std::move(testSprite1));
         render.setOrigin({render.getCenter().x, render.getGlobalBounds().size.y});
+        render.showOutline(sf::Color::Blue);
     }
 } // player

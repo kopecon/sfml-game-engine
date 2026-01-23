@@ -19,7 +19,7 @@ public:
     explicit AnimatedSprite(std::unique_ptr<AnimationSheet> animationSheet) :
     Sprite(animationSheet->texture),
     animator(*sprite_, std::move(animationSheet)) {
-        rename("animated");
+        rename("animated sprite");
     }
 
     AnimationEngine<AnimationSet> animator;

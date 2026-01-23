@@ -9,6 +9,7 @@ Render::Render(entity::Entity &entity) :
     {rename(static_cast<std::string>(entity.getName()) + " render");}
 
 sf::FloatRect Render::getLocalBounds() const {
+    // If children are modified, need to call getChildrenGlobalBounds
     // const auto childrenBounds = getChildrenLocalBounds();  // Debug: Information about children transformation gets lost
     const auto childrenBounds = getChildrenGlobalBounds();  // Debug: Works properly
     return childrenBounds;

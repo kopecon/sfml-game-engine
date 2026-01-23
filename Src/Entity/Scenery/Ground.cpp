@@ -30,8 +30,9 @@ namespace scenery {
         bottomTex.setRepeated(true);
 
         auto top = std::make_unique<Sprite>(topTex);
+        top->rename("top");
         auto bottom = std::make_unique<Sprite>(bottomTex);
-
+        bottom->rename("bottom");
         // Stretch to window size * 3 and repeat texture.
         top->getSprite().setTextureRect(
             sf::IntRect({0, 0},

@@ -84,15 +84,9 @@ bool Composite::play(const float dt) {
 }
 
 void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.transform *= getTransform(); // getTransform() is defined by sf::Transformable
-
-    // DRAW SELF
+    states.transform *= getTransform(); // PROPAGATE TRANSFORM
     drawSelf(target, states);
-
-    // DRAW CHILDREN
-    for (const auto &child : children_) {
-        target.draw(*child, states);
-    }
+    drawChildren(target, states);
     // DRAW OUTLINE
     if (outline_) {
         target.draw(*outline_, states);
@@ -137,21 +131,21 @@ sf::FloatRect Composite::getChildrenGlobalBounds() const {
     bool initialized = false;
 
     sf::Vector2f minPos;
-    sf::Vector2f maxPos;
+    sf::Vector2f maxSize;
 
-    auto absorb = [&](const sf::FloatRect& r) {
-        const sf::Vector2f rMin = r.position;
-        const sf::Vector2f rMax = r.position + r.size;
+    auto absorb = [&](const sf::FloatRect& childBounds) {
+        const sf::Vector2f childMinPos = childBounds.position;
+        const sf::Vector2f childMaxSize = childBounds.position + childBounds.size;
 
         if (!initialized) {
-            minPos = rMin;
-            maxPos = rMax;
+            minPos = childMinPos;
+            maxSize = childMaxSize;
             initialized = true;
         } else {
-            minPos.x = std::min(minPos.x, rMin.x);
-            minPos.y = std::min(minPos.y, rMin.y);
-            maxPos.x = std::max(maxPos.x, rMax.x);
-            maxPos.y = std::max(maxPos.y, rMax.y);
+            minPos.x = std::min(minPos.x, childMinPos.x);
+            minPos.y = std::min(minPos.y, childMinPos.y);
+            maxSize.x = std::max(maxSize.x, childMaxSize.x);
+            maxSize.y = std::max(maxSize.y, childMaxSize.y);
         }
     };
 
@@ -162,5 +156,11 @@ sf::FloatRect Composite::getChildrenGlobalBounds() const {
     if (!initialized)
         return {};
 
-    return {minPos, maxPos - minPos};
+    return {minPos, maxSize - minPos};
+}
+
+void Composite::drawChildren(sf::RenderTarget &target, const sf::RenderStates states) const {
+    for (const auto &child : children_) {
+        target.draw(*child, states);
+    }
 }

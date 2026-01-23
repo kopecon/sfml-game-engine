@@ -17,8 +17,8 @@ int main() {
     #pragma endregion
 
     #pragma region background
-    (void) worldForest.createEntity<scenery::Background>();
-    (void) worldForest.createEntityAt<scenery::Ground>({0.f, worldForest.groundLevel});
+    // (void) worldForest.createEntity<scenery::Background>();
+    // (void) worldForest.createEntityAt<scenery::Ground>({0.f, worldForest.groundLevel});
     #pragma endregion
 
     #pragma region player
