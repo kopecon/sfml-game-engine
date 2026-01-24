@@ -9,48 +9,76 @@
 
 using enum player::StateSet::ID;
 
-player::MovementComponent::MovementComponent(Player &player): player(player) {}
+player::MovementComponent::MovementComponent(Player &player): player_(player) {}
 
 void player::MovementComponent::turn() const {
     brake();
-    if (areClose(player.velocity.x, 0.f, 10.f)) {
-        player.render.setScale({-player.render.getScale().x, player.render.getScale().y});
-        player.setFacingRight(!player.isFacingRight());
+    if (areClose(player_.velocity.x, 0.f, 10.f)) {
+        player_.render.setScale({-player_.render.getScale().x, player_.render.getScale().y});
+        player_.setFacingRight(!player_.isFacingRight());
     }
+}
+
+void player::MovementComponent::walk() const {
+    walk_();
 }
 
 void player::MovementComponent::walkLeft() const {
-    if (player.isFacingRight()) turn();
-    else player.getPhysics().accelerate(-player.getMovementSpeed());
+    if (player_.isFacingRight()) turn();
+    else player_.getPhysics().accelerate(-player_.getMovement().getSpeed());
 }
 
 void player::MovementComponent::walkRight() const {
-    if (!player.isFacingRight()) turn();
-    else player.getPhysics().accelerate(player.getMovementSpeed());
+    if (!player_.isFacingRight()) turn();
+    else player_.getPhysics().accelerate(player_.getMovement().getSpeed());
 }
 
 void player::MovementComponent::brake() const {
-    if (player.getPhysics().isGrounded())
-        player.getPhysics().accelerate({0.f, player.velocity.y});
+    if (player_.getPhysics().isGrounded())
+        player_.getPhysics().accelerate({0.f, player_.velocity.y});
 }
 
 void player::MovementComponent::jump() const {
-    if (player.getPhysics().isGrounded()) {
-        player.velocity.y = -player.world.gravity*player.getMovementSpeed().y/2500.f;  // Magic number is tweaked experimentally
+    if (player_.getPhysics().isGrounded()) {
+        player_.velocity.y = -player_.world.gravity*player_.getMovement().getSpeed().y/2500.f;  // Magic number is tweaked experimentally
     }
+}
+
+void player::MovementComponent::setWalkingSpeed(const sf::Vector2f speed) {
+    walkingSpeed_ = speed;
+}
+
+void player::MovementComponent::setRunningSpeed(const sf::Vector2f speed) {
+    runningSpeed_ = speed;
+}
+
+void player::MovementComponent::setSnap(sf::Vector2f snap) {
+    snap_ = snap;
+}
+
+void player::MovementComponent::setLeftWalkingDirection() {
+    walk_ = [&]{walkLeft();};
+}
+
+void player::MovementComponent::setRightWalkingDirection() {
+    walk_ = [&]{walkRight();};
 }
 
 sf::Vector2f player::MovementComponent::getSpeed() {
     update();
-    return _speed;
+    return speed_;
+}
+
+sf::Vector2f player::MovementComponent::getSnap() const {
+    return snap_;
 }
 
 void player::MovementComponent::update() {
-    if (player.getCurrentState().getID() == RUNNING
-        || player.getCurrentState().getID() == JUMPING
-        && player.getPreviousState().getID() == RUNNING)
-        _speed = hd::multiply(player.getCharacterSize(), runningSpeed);
+    if (player_.getCurrentState().getID() == RUNNING
+        || player_.getCurrentState().getID() == JUMPING
+        && player_.getPreviousState().getID() == RUNNING)
+        speed_ = hd::multiply(player_.getCharacterSize(), runningSpeed_);
     else {
-        _speed = hd::multiply(player.getCharacterSize(), walkingSpeed);
+        speed_ = hd::multiply(player_.getCharacterSize(), walkingSpeed_);
     }
 }

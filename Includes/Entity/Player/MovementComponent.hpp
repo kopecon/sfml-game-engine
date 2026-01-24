@@ -13,27 +13,36 @@ namespace player {
     class Player;
 
     class MovementComponent {
-    protected:
-        sf::Vector2f _speed{};
     public:
         explicit MovementComponent(Player &player);
-        // REFERENCES
-        Player &player;
-        // CHARACTERISTICS
-        sf::Vector2f walkingSpeed{3.f, 2.f};
-        sf::Vector2f runningSpeed{6.f, 2.25f};
-        sf::Vector2f snap{0.05f, 0.05f};  // How aggressively player changes speed
-
+        // COMMANDS
         void turn() const;
-        std::function<void()> walk{[this](){brake();}};  // If walk direction not decided, break.
+        void walk() const;
         void walkLeft() const;
         void walkRight() const;
         void brake() const;
         void jump() const;
+        // SETTERS
+        void setWalkingSpeed(sf::Vector2f speed);
+        void setRunningSpeed(sf::Vector2f speed);
+        void setSnap(sf::Vector2f snap);
+        void setLeftWalkingDirection();
+        void setRightWalkingDirection();
         // GETTERS
         [[nodiscard]] sf::Vector2f getSpeed();
+        [[nodiscard]] sf::Vector2f getSnap() const;
         // UPDATE
         void update();
+
+    private:
+        // REFERENCES
+        Player &player_;
+        // CHARACTERISTICS
+        sf::Vector2f walkingSpeed_{3.f, 2.f};
+        sf::Vector2f runningSpeed_{6.f, 2.25f};
+        sf::Vector2f snap_{0.05f, 0.05f};  // How aggressively player changes speed
+        sf::Vector2f speed_{};
+        std::function<void()> walk_{[this](){brake();}};  // If walk direction not decided, break.
     };
 }
 

@@ -25,14 +25,8 @@ namespace player {
         explicit Player(World &world, entityID ID, std::string name);
         explicit Player(World &world, entityID ID, std::string name, const Controls &controls);
 #pragma endregion
-        // COMMANDS
-        void walk() const;
-        void brake() const;
-        void jump() const;
         // SETTERS
         void setDesiredState(typename StateSet::ID state);
-        void setLeftWalkingDirection();
-        void setRightWalkingDirection();
         void setFacingRight(bool value);
         void setEyeDryness(float value);
         // GETTERS
@@ -40,11 +34,10 @@ namespace player {
         [[nodiscard]] sf::Vector2f getCharacterSize() const;
         [[nodiscard]] const State<StateSet>& getCurrentState() const;
         [[nodiscard]] const State<StateSet>& getPreviousState() const;
-        [[nodiscard]] sf::Vector2f getMovementSpeed();
-        [[nodiscard]] sf::Vector2f getMovementSnap() const;
         [[nodiscard]] bool isFacingRight() const;
-        [[nodiscard]] PhysicsComponent& getPhysics();
         [[nodiscard]] float getEyeDryness() const;
+        [[nodiscard]] PhysicsComponent& getPhysics();
+        [[nodiscard]] MovementComponent& getMovement();
         // UPDATE
         void update() override;
 

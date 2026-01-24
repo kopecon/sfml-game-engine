@@ -46,7 +46,7 @@ namespace player {
 
         auto &currentAnimation = animator.getCurrentAnimation();
 
-        const auto speedRatio = hd::abs(hd::divide(player.velocity, player.getMovementSpeed()));
+        const auto speedRatio = hd::abs(hd::divide(player.velocity, player.getMovement().getSpeed()));
 
         switch (currentAnimation.getID()) {
             case WALKING : {

@@ -15,28 +15,8 @@ namespace player {
         input_(*this, controls)
         {}
 
-    void Player::walk() const {
-        movement_.walk();
-    }
-
-    void Player::brake() const {
-        movement_.brake();
-    }
-
-    void Player::jump() const {
-        movement_.jump();
-    }
-
     void Player::setDesiredState(const StateSet::ID state) {
         stateManager_.stateMachine.desiredStateID = state;
-    }
-
-    void Player::setLeftWalkingDirection() {
-        movement_.walk = [&]{movement_.walkLeft();};
-    }
-
-    void Player::setRightWalkingDirection() {
-        movement_.walk = [&]{movement_.walkRight();};
     }
 
     void Player::setFacingRight(const bool value) {
@@ -67,20 +47,16 @@ namespace player {
         return *stateManager_.stateMachine.pPreviousState;
     }
 
-    sf::Vector2f Player::getMovementSpeed() {
-        return movement_.getSpeed();
-    }
-
-    sf::Vector2f Player::getMovementSnap() const {
-        return movement_.snap;
-    }
-
     bool Player::isFacingRight() const {
         return facingRight_;
     }
 
     PhysicsComponent & Player::getPhysics() {
         return physics_;
+    }
+
+    MovementComponent & Player::getMovement() {
+        return movement_;
     }
 
     float Player::getEyeDryness() const {

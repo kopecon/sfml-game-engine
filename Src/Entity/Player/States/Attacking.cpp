@@ -13,5 +13,5 @@ player::Attacking::Attacking(Player &player): PlayerState(player, StateSet::ID::
     addEdge(std::make_unique<Edge>(JUMPING));
     addEdge(std::make_unique<Edge>(STOPPING));
     addEnterAction([]{std::cout << "Swush!\n";});
-    addAction([&player]{player.brake();});
+    addAction([&player]{player.getMovement().brake();});
 }

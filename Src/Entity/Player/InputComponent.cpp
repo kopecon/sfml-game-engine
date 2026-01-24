@@ -31,12 +31,12 @@ controls(controls)
     else if (attack) player.setDesiredState(ATTACKING);
     else if (left && right) player.setDesiredState(STOPPING);
     else if (left) {
-        player.setLeftWalkingDirection();
+        player.getMovement().setLeftWalkingDirection();
         if (run) player.setDesiredState(RUNNING);
         else player.setDesiredState(WALKING);
         }
     else if (right) {
-        player.setRightWalkingDirection();
+        player.getMovement().setRightWalkingDirection();
         if (run) player.setDesiredState(RUNNING);
         else player.setDesiredState(WALKING);
         }

@@ -9,5 +9,5 @@ player::Stopping::Stopping(Player &player): PlayerState(player, StateSet::ID::ST
     addEdge(std::make_unique<Edge>(JUMPING));
     addEdge(std::make_unique<Edge>(RUNNING));
     addEdge(std::make_unique<Edge>(ATTACKING));
-    addAction([&player]{player.brake();});
+    addAction([&player]{player.getMovement().brake();});
 }

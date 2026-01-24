@@ -13,6 +13,6 @@ player::Idle::Idle(Player &player): PlayerState(player, StateSet::ID::IDLE) {
     addEdge(std::make_unique<Edge>(dryEyes, StateSet::ID::WINKING));
     addAction([&player] {
     player.setEyeDryness(player.getEyeDryness() + 0.1f);
-    player.brake();
+    player.getMovement().brake();
     });
 }

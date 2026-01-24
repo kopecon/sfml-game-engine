@@ -20,5 +20,5 @@ player::Jumping::Jumping(Player &player): PlayerState(player, StateSet::ID::JUMP
     addEdge(std::make_unique<Edge>(grounded, IDLE));
     addEdge(std::make_unique<Edge>(ATTACKING));
     // Actions
-    addEnterAction([&player]{player.jump();});
+    addEnterAction([&player]{player.getMovement().jump();});
 }
