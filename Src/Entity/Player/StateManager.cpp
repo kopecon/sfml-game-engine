@@ -13,16 +13,25 @@
 
 
 player::StateManager::StateManager(Player &player) {
-    stateMachine.createState<Idle>(player);
-    stateMachine.createState<Jumping>(player);
-    stateMachine.createState<Running>(player);
-    stateMachine.createState<Walking>(player);
-    stateMachine.createState<Stopping>(player);
-    stateMachine.createState<Winking>(player);
-    stateMachine.createState<Attacking>(player);
-    stateMachine.setVerbose();
+    stateMachine_.createState<Idle>(player);
+    stateMachine_.createState<Jumping>(player);
+    stateMachine_.createState<Running>(player);
+    stateMachine_.createState<Walking>(player);
+    stateMachine_.createState<Stopping>(player);
+    stateMachine_.createState<Winking>(player);
+    stateMachine_.createState<Attacking>(player);
+    stateMachine_.setVerbose();
+}
+
+StateMachine<player::StateSet> & player::StateManager::getEngine() {
+    return stateMachine_;
+}
+
+const StateMachine<player::StateSet> & player::StateManager::getEngine() const {
+    // Read only return.
+    return stateMachine_;
 }
 
 void player::StateManager::update() {
-    stateMachine.update();
+    stateMachine_.update();
 }

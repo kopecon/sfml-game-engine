@@ -8,7 +8,7 @@
 namespace player {
     void PlayerSprite::selectAnimation() {
         using enum StateSet::ID;
-        switch (player.getState().getID()) {
+        switch (player.getCurrentState().getID()) {
             case IDLE:
                 animator.setAnimation(IDLE);
                 break;
@@ -46,7 +46,7 @@ namespace player {
 
         auto &currentAnimation = animator.getCurrentAnimation();
 
-        const auto speedRatio = hd::abs(hd::divide(player.velocity, player.movement.getSpeed()));
+        const auto speedRatio = hd::abs(hd::divide(player.velocity, player.getMovement().getSpeed()));
 
         switch (currentAnimation.getID()) {
             case WALKING : {

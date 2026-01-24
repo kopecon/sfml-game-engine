@@ -14,10 +14,15 @@ namespace player {
     class StateManager {
     public:
         explicit StateManager(Player &player);
-
-        StateMachine<StateSet> stateMachine{};
-
+        // GETTERS
+        [[nodiscard]] StateMachine<StateSet>& getEngine();
+        [[nodiscard]] const StateMachine<StateSet>& getEngine() const;
+        // UPDATE
         void update();
+
+    private:
+        // ENGINES
+        StateMachine<StateSet> stateMachine_{};
     };
 }
 

@@ -6,11 +6,12 @@
 #include "../../../../Includes/Entity/Player/Player.hpp"
 
 player::Attacking::Attacking(Player &player): PlayerState(player, StateSet::ID::ATTACKING) {
-    addEdge(std::make_unique<Edge>(StateSet::ID::IDLE));
-    addEdge(std::make_unique<Edge>(StateSet::ID::RUNNING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::WALKING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::JUMPING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::STOPPING));
+    using enum StateSet::ID;
+    addEdge(std::make_unique<Edge>(IDLE));
+    addEdge(std::make_unique<Edge>(RUNNING));
+    addEdge(std::make_unique<Edge>(WALKING));
+    addEdge(std::make_unique<Edge>(JUMPING));
+    addEdge(std::make_unique<Edge>(STOPPING));
     addEnterAction([]{std::cout << "Swush!\n";});
-    addAction([&player]{player.movement.brake();});
+    addAction([&player]{player.getMovement().brake();});
 }

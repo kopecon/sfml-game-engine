@@ -25,12 +25,13 @@ namespace player {
     public:
         explicit InputComponent(Player &player);
         explicit InputComponent(Player &player, const Controls &controls);
+        void update() const;
+
+    private:
         // REFERENCES
         Player &player;
         // CHARACTERISTICS
         Controls controls{};
-
-        void update() const;
     };
 }
 

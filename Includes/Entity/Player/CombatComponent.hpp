@@ -15,12 +15,20 @@ namespace player {
     public:
         explicit CombatComponent(Player &player);;
 
-        Player &player;
-
-        float attackRange{};
+        // ACTIONS
         void attack() const;
-        void takeDamage(const float &damage) const;
+        void takeDamage(const float &damage);
+
+    private:
+        // REFERENCES
+        Player &player_;
+        // CHARACTERISTICS
+        float health_{100.f};
+        float attackRange_{};
+        float attackDamage_{20.f};
+        // ACTIONS
         void die() const;
+
     };
 }
 
