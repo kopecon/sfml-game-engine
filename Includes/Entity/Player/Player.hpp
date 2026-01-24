@@ -27,7 +27,7 @@ namespace player {
 #pragma endregion
         // ACTIONS
         // SETTERS
-        void setDesiredState(typename StateSet::ID state);
+        void setDesiredState(typename StateSet::ID id);
         void setFacingRight(bool value);
         void setEyeDryness(float value);
         // GETTERS
