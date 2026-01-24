@@ -17,44 +17,46 @@ public:
     #pragma region constructors
     StateMachine() = default;
     #pragma endregion
+
     // SETTERS
     void setDesiredState(const typename StateSet::ID id) {
         desiredStateID_ = id;
     }
+
+    void setVerbose(bool value) {
+        verbose_ = value;
+        for (const auto &it : states_) {
+            it.second.get()->verbose = value;
+        }
+    }
+
     // GETTERS
     [[nodiscard]] State<StateSet>& getCurrentState() {
         assert(pCurrentState_);
         return *pCurrentState_;
     }
+
     [[nodiscard]] const State<StateSet>& getCurrentState() const {
         // Read only return.
         assert(pCurrentState_);
         return *pCurrentState_;
     }
+
     [[nodiscard]] State<StateSet>& getPreviousState() {
-        assert(pPreviousState_);
-        return *pCurrentState_;
-    }
-    [[nodiscard]] const State<StateSet>& getPreviousState() const {
-        // Read only return.
-        assert(pPreviousState_);
+        if (!pPreviousState_) return *pCurrentState_;
         return *pPreviousState_;
     }
 
-    // LIST OF AVAILABLE STATES
-    std::unordered_map<typename StateSet::ID, std::unique_ptr<State<StateSet>>> states{};
-    // DEBUG SETTINGS
-
-    void setVerbose(bool value) {
-        verbose_ = value;
-        for (const auto &it : states) {
-            it.second.get()->verbose = value;
-        }
+    [[nodiscard]] const State<StateSet>& getPreviousState() const {
+        // Read only return.
+        if (!pPreviousState_) return *pCurrentState_;
+        return *pPreviousState_;
     }
 
+
     State<StateSet>& getState(typename StateSet::ID stateID) {
-        auto it = states.find(stateID);
-        if (it == states.end()) {
+        auto it = states_.find(stateID);
+        if (it == states_.end()) {
             if (verbose_) std::cout << "Desired state " << StateSet::name(stateID) << " is not implemented!\n";
             return *pCurrentState_;
         }
@@ -65,15 +67,13 @@ public:
     void addState(std::unique_ptr<T> pState)
     requires std::is_base_of_v<State<StateSet>, T> {
 
-        auto [it, inserted] = states.try_emplace(pState->ID, std::move(pState));
+        auto [it, inserted] = states_.try_emplace(pState->ID, std::move(pState));
+
+        State<StateSet>* addedState = it->second.get();
 
         // Prevent mandatory null-checks
         if (!pCurrentState_ && inserted) {
-            pCurrentState_ = it->second.get();
-        }
-        // Prevent mandatory null-checks
-        if (!pPreviousState_ && inserted) {
-            pPreviousState_ = it->second.get();
+            pCurrentState_ = addedState;
         }
     }
 
@@ -81,24 +81,14 @@ public:
     State<StateSet>* createState(Args&&... args)
     requires std::is_base_of_v<State<StateSet>, T> {
         auto newState = std::make_unique<T>(std::forward<Args>(args)...);
-        auto [it, inserted] = states.try_emplace(newState->getID(), std::move(newState));
+        auto [it, inserted] = states_.try_emplace(newState->getID(), std::move(newState));
         if (!pCurrentState_ && inserted) {
             pCurrentState_ = it->second.get();
         }
         return it->second.get();
     }
 
-    void transition() {
-        auto newStateID = pCurrentState_->next(desiredStateID_);
-        if (newStateID != pCurrentState_->getID()) {
-            getState(newStateID); // No error
-            auto &newState = getState(newStateID); //error
-            if (!newState.hasEdges()) generateFallBackEdge(newState);
-            exit(*pCurrentState_);
-            enter(newState);
-        }
-    }
-
+    // UPDATE
     void update() {
         // 1. Check if we are in a state
         assert(pCurrentState_);
@@ -109,21 +99,36 @@ public:
     }
 private:
     // MEMBERS
-    typename StateSet::ID desiredStateID_{};
+    std::unordered_map<typename StateSet::ID, std::unique_ptr<State<StateSet>>> states_{};
     State<StateSet> *pCurrentState_{nullptr};
     State<StateSet> *pPreviousState_{nullptr};
+    typename StateSet::ID desiredStateID_{};
+    // DEBUG SETTINGS
     bool verbose_{false};
-
+    // ACTIONS
     void enter(State<StateSet> &state) {
-        pCurrentState_ = &state;
-        pCurrentState_->onEnter();
+        setCurrentState(state);
+        getCurrentState().onEnter();
     }
+
     void exit(State<StateSet> &state) {
-        pCurrentState_->onExit();
-        pPreviousState_ = &state;
+        getPreviousState().onExit();
+        setPreviousState(state);
     }
+
+    void transition() {
+        auto newStateID = getCurrentState().next(desiredStateID_);
+        if (newStateID != getCurrentState().getID()) {
+            auto &newState = getState(newStateID);
+            if (!newState.hasEdges()) generateFallBackEdge(newState);
+            exit(*pCurrentState_);
+            enter(newState);
+        }
+    }
+
     void generateFallBackEdge(State<StateSet> &state) {
-        state.addEdge(std::make_unique<typename State<StateSet>::Edge>(pCurrentState_->getID()));
+        // Intended as a last resort to prevent stuck states
+        state.addEdge(std::make_unique<typename State<StateSet>::Edge>(getCurrentState().getID()));
 #ifndef NDEBUG
         std::cerr << "\nWarning: State "
                   << StateSet::name(state.getID())
@@ -131,6 +136,26 @@ private:
                   << StateSet::name(pCurrentState_->getID())
                   << '\n';
 #endif
+    }
+    // SETTERS
+    void setCurrentState(State<StateSet> &state) {
+        if (states_.contains(state.getID())) {
+            pCurrentState_ = &state;
+        }
+        else {
+            std::cout << "Attempted to set nonexisting current state: "
+            << StateSet::name(state.getID()) << "\n";
+        }
+    }
+
+    void setPreviousState(State<StateSet> &state) {
+        if (states_.contains(state.getID())) {
+            pPreviousState_ = &state;
+        }
+        else {
+            std::cout << "Attempted to set nonexisting previous state: "
+            << StateSet::name(state.getID()) << "\n";
+        }
     }
 };
 
