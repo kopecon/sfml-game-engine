@@ -9,10 +9,10 @@ player::Idle::Idle(Player &player): PlayerState(player, StateSet::ID::IDLE) {
     addEdge(std::make_unique<Edge>(StateSet::ID::STOPPING));
     addEdge(std::make_unique<Edge>(StateSet::ID::JUMPING));
     addEdge(std::make_unique<Edge>(StateSet::ID::ATTACKING));
-    auto dryEyes = [&player] {return player.eyeDryness >= 100;};
+    auto dryEyes = [&player] {return player.getEyeDryness() >= 100;};
     addEdge(std::make_unique<Edge>(dryEyes, StateSet::ID::WINKING));
     addAction([&player] {
-    player.eyeDryness += 0.1;
-    player.movement.brake();
+    player.setEyeDryness(player.getEyeDryness() + 0.1f);
+    player.brake();
     });
 }

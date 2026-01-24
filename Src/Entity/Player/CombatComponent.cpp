@@ -10,18 +10,18 @@
 
 using enum player::StateSet::ID;
 
-player::CombatComponent::CombatComponent(Player &player): player(player) {}
+player::CombatComponent::CombatComponent(Player &player): player_(player) {}
 
 void player::CombatComponent::attack() const {
-    auto pPlayers = player.world.getEntities<Player>();
-    std::erase(pPlayers, &player);
+    auto pPlayers = player_.world.getEntities<Player>();
+    std::erase(pPlayers, &player_);
     for (Player *opponent : pPlayers) {
         // TODO: Implement
     }
 }
 
-void player::CombatComponent::takeDamage(const float &damage) const {
-    player.health -= damage;
+void player::CombatComponent::takeDamage(const float &damage) {
+    health_ -= damage;
 }
 
 void player::CombatComponent::die() const {

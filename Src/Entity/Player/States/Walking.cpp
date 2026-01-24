@@ -3,10 +3,11 @@
 
 
 player::Walking::Walking(Player &player): PlayerState(player, StateSet::ID::WALKING) {
-    addEdge(std::make_unique<Edge>(StateSet::ID::IDLE));
-    addEdge(std::make_unique<Edge>(StateSet::ID::RUNNING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::JUMPING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::STOPPING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::ATTACKING));
-    addAction([&player]{player.movement.walk();});
+    using enum StateSet::ID;
+    addEdge(std::make_unique<Edge>(IDLE));
+    addEdge(std::make_unique<Edge>(RUNNING));
+    addEdge(std::make_unique<Edge>(JUMPING));
+    addEdge(std::make_unique<Edge>(STOPPING));
+    addEdge(std::make_unique<Edge>(ATTACKING));
+    addAction([&player]{player.walk();});
 }

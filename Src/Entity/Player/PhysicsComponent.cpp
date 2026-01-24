@@ -36,7 +36,7 @@ void player::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity) co
 
     const sf::Vector2f velDiff = targetVelocity - player.velocity;
     const sf::Vector2f environment{groundFriction, airFriction};
-    player.acceleration = hd::multiply(player.movement.getSpeed(), player.movement.snap, velDiff, environment);
+    player.acceleration = hd::multiply(player.getMovementSpeed(), player.getMovementSnap(), velDiff, environment);
 }
 
 void player::PhysicsComponent::printPhysics() const {

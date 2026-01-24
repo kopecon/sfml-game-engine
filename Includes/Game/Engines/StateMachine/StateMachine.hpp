@@ -79,8 +79,13 @@ public:
 
         auto [it, inserted] = states.try_emplace(pState->ID, std::move(pState));
 
+        // Prevent mandatory null-checks
         if (!pCurrentState && inserted) {
             pCurrentState = it->second.get();
+        }
+        // Prevent mandatory null-checks
+        if (!pPreviousState && inserted) {
+            pPreviousState = it->second.get();
         }
     }
 
@@ -108,7 +113,7 @@ public:
 
     void update() {
         // 1. Check if we are in a state
-        assert(pCurrentState != nullptr);
+        assert(pCurrentState);
         // // 2. Do state action
         pCurrentState->update();
         // // 3. Transition to the new state

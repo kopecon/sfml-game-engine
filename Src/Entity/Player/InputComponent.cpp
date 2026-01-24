@@ -27,19 +27,19 @@ controls(controls)
     using enum StateSet::ID;
 
     // ACTIONS NEED TO BE SORTED BY PRIORITY
-    if (jump) player.stateManager.stateMachine.desiredStateID = JUMPING;
-    else if (attack) player.stateManager.stateMachine.desiredStateID = ATTACKING;
-    else if (left && right) player.stateManager.stateMachine.desiredStateID = STOPPING;
+    if (jump) player.setDesiredState(JUMPING);
+    else if (attack) player.setDesiredState(ATTACKING);
+    else if (left && right) player.setDesiredState(STOPPING);
     else if (left) {
-        player.movement.walk = [&]{player.movement.walkLeft();};
-        if (run) player.stateManager.stateMachine.desiredStateID = RUNNING;
-        else player.stateManager.stateMachine.desiredStateID = WALKING;
+        player.setLeftWalkingDirection();
+        if (run) player.setDesiredState(RUNNING);
+        else player.setDesiredState(WALKING);
         }
     else if (right) {
-        player.movement.walk = [&]{player.movement.walkRight();};
-        if (run) player.stateManager.stateMachine.desiredStateID = RUNNING;
-        else player.stateManager.stateMachine.desiredStateID = WALKING;
+        player.setRightWalkingDirection();
+        if (run) player.setDesiredState(RUNNING);
+        else player.setDesiredState(WALKING);
         }
     else
-    player.stateManager.stateMachine.desiredStateID = IDLE;
+    player.setDesiredState(IDLE);
 }

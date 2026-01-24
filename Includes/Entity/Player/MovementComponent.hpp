@@ -30,7 +30,8 @@ namespace player {
         void walkRight() const;
         void brake() const;
         void jump() const;
-        sf::Vector2f getSpeed();
+        // GETTERS
+        [[nodiscard]] sf::Vector2f getSpeed();
         // UPDATE
         void update();
     };

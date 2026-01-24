@@ -15,28 +15,28 @@ void player::MovementComponent::turn() const {
     brake();
     if (areClose(player.velocity.x, 0.f, 10.f)) {
         player.render.setScale({-player.render.getScale().x, player.render.getScale().y});
-        player.facingRight = !player.facingRight;
+        player.setFacingRight(!player.isFacingRight());
     }
 }
 
 void player::MovementComponent::walkLeft() const {
-    if (player.facingRight) turn();
-    else player.physics.accelerate(-player.movement._speed);
+    if (player.isFacingRight()) turn();
+    else player.getPhysics().accelerate(-player.getMovementSpeed());
 }
 
 void player::MovementComponent::walkRight() const {
-    if (!player.facingRight) turn();
-    else player.physics.accelerate(player.movement._speed);
+    if (!player.isFacingRight()) turn();
+    else player.getPhysics().accelerate(player.getMovementSpeed());
 }
 
 void player::MovementComponent::brake() const {
-    if (player.physics.isGrounded())
-        player.physics.accelerate({0.f, player.velocity.y});
+    if (player.getPhysics().isGrounded())
+        player.getPhysics().accelerate({0.f, player.velocity.y});
 }
 
 void player::MovementComponent::jump() const {
-    if (player.physics.isGrounded()) {
-        player.velocity.y = -player.world.gravity*player.movement._speed.y/2500.f;  // Magic number is tweaked experimentally
+    if (player.getPhysics().isGrounded()) {
+        player.velocity.y = -player.world.gravity*player.getMovementSpeed().y/2500.f;  // Magic number is tweaked experimentally
     }
 }
 
@@ -46,9 +46,9 @@ sf::Vector2f player::MovementComponent::getSpeed() {
 }
 
 void player::MovementComponent::update() {
-    if (player.getState().getID() == RUNNING
-        || player.getState().getID() == JUMPING
-        && player.stateManager.stateMachine.pPreviousState->getID() == RUNNING)
+    if (player.getCurrentState().getID() == RUNNING
+        || player.getCurrentState().getID() == JUMPING
+        && player.getPreviousState().getID() == RUNNING)
         _speed = hd::multiply(player.getCharacterSize(), runningSpeed);
     else {
         _speed = hd::multiply(player.getCharacterSize(), walkingSpeed);

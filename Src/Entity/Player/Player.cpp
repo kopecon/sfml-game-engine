@@ -12,26 +12,85 @@ namespace player {
 
     Player::Player(World &world, const entityID ID, std::string name, const Controls &controls) :
         Entity(world, ID, std::move(name)),
-        input(*this, controls)
+        input_(*this, controls)
         {}
-    #pragma endregion
+
+    void Player::walk() const {
+        movement_.walk();
+    }
+
+    void Player::brake() const {
+        movement_.brake();
+    }
+
+    void Player::jump() const {
+        movement_.jump();
+    }
+
+    void Player::setDesiredState(const StateSet::ID state) {
+        stateManager_.stateMachine.desiredStateID = state;
+    }
+
+    void Player::setLeftWalkingDirection() {
+        movement_.walk = [&]{movement_.walkLeft();};
+    }
+
+    void Player::setRightWalkingDirection() {
+        movement_.walk = [&]{movement_.walkRight();};
+    }
+
+    void Player::setFacingRight(const bool value) {
+        facingRight_ = value;
+    }
+
+    void Player::setEyeDryness(const float value) {
+        eyeDryness_ = value;
+    }
+
+#pragma endregion
 
     std::string Player::getClassName() {
         return "Player";
     }
 
     sf::Vector2f Player::getCharacterSize() const {
-        return {height, width};
+        return {height_, width_};
     }
 
-    const State<StateSet>& Player::getState() const {
-        return *stateManager.stateMachine.pCurrentState;
+    const State<StateSet>& Player::getCurrentState() const {
+        assert(stateManager_.stateMachine.pCurrentState);
+        return *stateManager_.stateMachine.pCurrentState;
+    }
+
+    const State<StateSet>& Player::getPreviousState() const {
+        assert(stateManager_.stateMachine.pPreviousState);
+        return *stateManager_.stateMachine.pPreviousState;
+    }
+
+    sf::Vector2f Player::getMovementSpeed() {
+        return movement_.getSpeed();
+    }
+
+    sf::Vector2f Player::getMovementSnap() const {
+        return movement_.snap;
+    }
+
+    bool Player::isFacingRight() const {
+        return facingRight_;
+    }
+
+    PhysicsComponent & Player::getPhysics() {
+        return physics_;
+    }
+
+    float Player::getEyeDryness() const {
+        return eyeDryness_;
     }
 
     void Player::update() {
-        input.update();
+        input_.update();
         // physics.verbose = true;
-        physics.update();
-        stateManager.update();
+        physics_.update();
+        stateManager_.update();
     }
 }
