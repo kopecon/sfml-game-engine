@@ -43,7 +43,7 @@ public:
     void setVerbose(bool value) {
         verbose_ = value;
         for (const auto &it : states_) {
-            it.second.get()->verbose = value;
+            it.second.get()->setVerbose(value);
         }
     }
 
@@ -99,7 +99,7 @@ private:
 
     void transition() {
         auto &currentState = getCurrentState();
-        typename StateSet::ID nextStateID = currentState.next(desiredStateID_);
+        typename StateSet::ID nextStateID = currentState.getNext(desiredStateID_);
         if (nextStateID != currentState.getID()) {
             State<StateSet> &nextState = getNextState(nextStateID);
             if (!nextState.hasEdges()) generateFallBackEdge(nextState);
