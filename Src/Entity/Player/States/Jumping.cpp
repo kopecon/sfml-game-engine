@@ -6,10 +6,10 @@ player::Jumping::Jumping(Player &player): PlayerState(player, StateSet::ID::JUMP
     using enum StateSet::ID;
     // Helpers
     // ReSharper disable once CppDFAUnreachableFunctionCall
-    auto grounded = [this] {return this->player.getPhysics().isGrounded();};
+    auto grounded = [this] {return this->player_.getPhysics().isGrounded();};
     // ReSharper disable once CppDFAUnreachableFunctionCall
     auto previous = [this] {
-        return this->player.getPreviousState().getID();
+        return this->player_.getPreviousState().getID();
     };
     // Conditions
     auto walking  = [grounded, previous] {return grounded() && previous() == WALKING;};

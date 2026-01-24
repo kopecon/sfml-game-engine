@@ -10,10 +10,12 @@ namespace player {
     class Player;
 
     class RenderManager {
-        Player &player;
-
     public:
         explicit RenderManager(Player &player);
+
+    private:
+        //REFERENCES
+        Player &player_;
     };
 } // player
 

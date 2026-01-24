@@ -11,7 +11,7 @@
 
 
 namespace player {
-    RenderManager::RenderManager(Player &player) : player(player) {
+    RenderManager::RenderManager(Player &player) : player_(player) {
         // PLAYER SPRITE
         auto &texture = player.game.textures.player;
         auto animationSheet = std::make_unique<AnimationSheet>(texture, sf::Vector2u(32, 32));

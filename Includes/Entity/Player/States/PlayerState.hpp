@@ -14,9 +14,11 @@ namespace player {
     public:
         PlayerState(Player &player, const EnumSet<StateSet>::ID &stateID) :
             State(stateID),
-            player(player)
+            player_(player)
             {}
-        Player &player;
+    protected:
+        // REFERENCES
+        Player &player_;
     };
 }
 
