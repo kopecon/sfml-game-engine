@@ -20,9 +20,8 @@ class Animatable;
 class Composite : public sf::Drawable, public sf::Transformable {
 protected:
     std::string name_{"composite"};
-    std::unique_ptr<sf::Sprite> sprite_{nullptr};
-    std::unique_ptr<sf::RectangleShape> outline_{nullptr};
     std::vector<std::unique_ptr<Composite>> children_{};
+    std::unique_ptr<sf::RectangleShape> outline_{nullptr};
 
 public:
 #pragma region constructors
@@ -63,6 +62,7 @@ private:
 
     virtual void drawChildren(sf::RenderTarget &target, sf::RenderStates states) const;
 
+    virtual void drawOutline(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
 

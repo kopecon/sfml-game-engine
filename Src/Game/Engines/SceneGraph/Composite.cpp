@@ -45,8 +45,9 @@ void Composite::setColor(const sf::Color &color) {
 }
 
 void Composite::showOutline(const sf::Color color) {
-    auto bounds = getLocalBounds();
-    auto boundary = std::make_unique<sf::RectangleShape>(bounds.size);
+    const auto bounds = getLocalBounds();
+    auto boundary = std::make_unique<sf::RectangleShape>();
+    boundary->setSize(bounds.size);
     boundary->setPosition(bounds.position);
     boundary->setFillColor(sf::Color::Transparent);
     boundary->setOutlineColor(color);
@@ -94,7 +95,6 @@ sf::FloatRect Composite::getGlobalBounds() const {
     return getTransform().transformRect(getLocalBounds());
 }
 
-
 sf::Vector2f Composite::getCenter() const {
     const auto localBounds = getLocalBounds();
     const auto x = localBounds.position.x + localBounds.size.x / 2.f;
@@ -125,10 +125,7 @@ void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform(); // PROPAGATE TRANSFORM
     drawSelf(target, states);
     drawChildren(target, states);
-    // DRAW OUTLINE
-    if (outline_) {
-        target.draw(*outline_, states);
-    }
+    drawOutline(target, states);
 }
 
 std::optional<sf::FloatRect> Composite::getSelfGlobalBounds() const {
@@ -138,5 +135,14 @@ std::optional<sf::FloatRect> Composite::getSelfGlobalBounds() const {
 void Composite::drawChildren(sf::RenderTarget &target, const sf::RenderStates states) const {
     for (const auto &child : children_) {
         target.draw(*child, states);
+    }
+}
+
+void Composite::drawOutline(sf::RenderTarget &target, const sf::RenderStates states) const {
+    if (outline_) {
+        const sf::FloatRect newBounds = states.transform.transformRect(getLocalBounds());
+        outline_->setSize(newBounds.size);
+        outline_->setPosition(newBounds.position);
+        target.draw(*outline_);
     }
 }
