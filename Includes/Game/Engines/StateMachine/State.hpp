@@ -90,7 +90,7 @@ public:
     }
 
     // GETTERS
-    bool hasEdges() const {
+    [[nodiscard]] bool hasEdges() const {
         if (edges_.empty()) return false;
         return true;
     }
