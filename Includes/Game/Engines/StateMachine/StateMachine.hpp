@@ -105,6 +105,7 @@ private:
             if (!nextState.hasEdges()) generateFallBackEdge(nextState);
             exit(currentState);
             enter(nextState);
+            desiredStateID_ = currentState.getID();
         }
     }
 
