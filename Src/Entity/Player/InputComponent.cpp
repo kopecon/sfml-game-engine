@@ -23,6 +23,7 @@ controls(controls)
     const bool jump = sf::Keyboard::isKeyPressed(controls.jump);
     const bool run = sf::Keyboard::isKeyPressed(controls.run);
     const bool attack = sf::Keyboard::isKeyPressed(controls.attack);
+    const bool crouch = sf::Keyboard::isKeyPressed(controls.crouch);
     const bool concentrate = sf::Keyboard::isKeyPressed(controls.concentrate);
 
     using enum StateSet::ID;
@@ -42,7 +43,9 @@ controls(controls)
         else player.setDesiredState(WALKING);
         }
     else if (concentrate) {
-
+    }
+    else if (crouch) {
+        player.setDesiredState(CROUCHING);
     }
     else
     player.setDesiredState(IDLE);

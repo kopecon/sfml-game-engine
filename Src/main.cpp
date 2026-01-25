@@ -23,19 +23,20 @@ int main() {
 
     #pragma region player
     Controls p1controls;
-    p1controls.left   = sf::Keyboard::Scancode::A;
-    p1controls.right  = sf::Keyboard::Scancode::D;
-    p1controls.jump   = sf::Keyboard::Scancode::W;
-    p1controls.run    = sf::Keyboard::Scancode::LShift;
-    p1controls.attack = sf::Keyboard::Scancode::F;
-    p1controls.concentrate = sf::Keyboard::Scancode::C;
+    p1controls.left        = sf::Keyboard::Scancode::A     ;
+    p1controls.right       = sf::Keyboard::Scancode::D     ;
+    p1controls.jump        = sf::Keyboard::Scancode::W     ;
+    p1controls.run         = sf::Keyboard::Scancode::LShift;
+    p1controls.attack      = sf::Keyboard::Scancode::F     ;
+    p1controls.crouch      = sf::Keyboard::Scancode::S     ;
+    p1controls.concentrate = sf::Keyboard::Scancode::C     ;
 
     Controls p2controls;
-    p2controls.left   = sf::Keyboard::Scancode::Left;
-    p2controls.right  = sf::Keyboard::Scancode::Right;
-    p2controls.jump   = sf::Keyboard::Scancode::Up;
-    p2controls.run    = sf::Keyboard::Scancode::RShift;
-    p2controls.attack = sf::Keyboard::Scancode::Numpad0;
+    p2controls.left        = sf::Keyboard::Scancode::Left   ;
+    p2controls.right       = sf::Keyboard::Scancode::Right  ;
+    p2controls.jump        = sf::Keyboard::Scancode::Up     ;
+    p2controls.run         = sf::Keyboard::Scancode::RShift ;
+    p2controls.attack      = sf::Keyboard::Scancode::Numpad0;
 
     auto &player1 = worldForest.createEntityAt<player::Player>({-0.f, 10.f}, p1controls);
     auto &player2 = worldForest.createEntityAt<player::Player>({ 100.f, 10.f}, p2controls);

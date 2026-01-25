@@ -6,6 +6,20 @@
 #include "../../../Includes/Entity/Player/Player.hpp"
 
 namespace player {
+    PlayerSprite::PlayerSprite(Player &player, std::unique_ptr<AnimationSheet> animationSheet):
+        AnimatedSprite(std::move(animationSheet)),
+        player_(player) {
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::IDLE, 2, true));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::WINKING, 2, true));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::WALKING, 4, true));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::RUNNING, 8, true));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::CROUCHING, 6, true));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::JUMPING, 8, false));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::DYING, 8, false));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::DISAPPEARING, 4, false));
+        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::ATTACKING, 8, false));
+    }
+
     void PlayerSprite::selectAnimation() {
         using enum StateSet::ID;
 
@@ -81,7 +95,9 @@ namespace player {
             }
             case ATTACKING : {
                 currentAnimation.setSPF(0.05f);
-                break;
+            }
+            case CROUCHING : {
+                currentAnimation.setSPF(0.05f);
             }
             default:
                 break;
@@ -91,19 +107,5 @@ namespace player {
     void PlayerSprite::update() {
         selectAnimation();
         updateFPS();
-    }
-
-    PlayerSprite::PlayerSprite(Player &player, std::unique_ptr<AnimationSheet> animationSheet):
-        AnimatedSprite(std::move(animationSheet)),
-        player_(player) {
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::IDLE, 2, true));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::WINKING, 2, true));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::WALKING, 4, true));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::RUNNING, 8, true));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::CROUCHING, 6, true));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::JUMPING, 8, false));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::DYING, 8, false));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::DISAPPEARING, 4, false));
-        animator.addAnimation(std::make_unique<Animation<StateSet> >(StateSet::ID::ATTACKING, 8, false));
     }
 } // player

@@ -14,6 +14,7 @@ struct Controls {
     sf::Keyboard::Scancode jump{};
     sf::Keyboard::Scancode run{};
     sf::Keyboard::Scancode attack{};
+    sf::Keyboard::Scancode crouch{};
     sf::Keyboard::Scancode concentrate{};
 };
 #pragma endregion

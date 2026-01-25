@@ -9,6 +9,8 @@
 #include "../../../../Utils/EnumSet.hpp"
 #include "SFML/Graphics/Rect.hpp"
 
+// TODO implement easy statick fps management (constructor init or something).
+// TODO fetching animations.
 
 template<EnumSetConcept AnimationSet>
 class Animation {

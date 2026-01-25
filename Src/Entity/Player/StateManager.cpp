@@ -13,13 +13,16 @@
 
 
 player::StateManager::StateManager(Player &player) {
-    stateMachine_.createState<Idle>(player);
+    auto &idle = stateMachine_.createState<Idle>(player);
     stateMachine_.createState<Jumping>(player);
     stateMachine_.createState<Running>(player);
     stateMachine_.createState<Walking>(player);
     stateMachine_.createState<Stopping>(player);
     stateMachine_.createState<Winking>(player);
     stateMachine_.createState<Attacking>(player);
+    auto &crouching = stateMachine_.createState<State<StateSet>>(StateSet::ID::CROUCHING);
+    idle.connect(crouching);
+    crouching.connect(idle);
     stateMachine_.setVerbose(false);
 }
 
