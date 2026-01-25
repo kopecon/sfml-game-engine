@@ -15,8 +15,8 @@ namespace player {
         input_(*this, controls)
         {}
 
-    void Player::setDesiredState(const StateSet::ID state) {
-        stateManager_.getEngine().desiredStateID = state;
+    void Player::setDesiredState(const StateSet::ID id) {
+        stateManager_.getEngine().setDesiredState(id);
     }
 
     void Player::setFacingRight(const bool value) {
@@ -38,13 +38,11 @@ namespace player {
     }
 
     const State<StateSet>& Player::getCurrentState() const {
-        assert(stateManager_.getEngine().pCurrentState);
-        return *stateManager_.getEngine().pCurrentState;
+        return stateManager_.getEngine().getCurrentState();
     }
 
     const State<StateSet>& Player::getPreviousState() const {
-        assert(stateManager_.getEngine().pPreviousState);
-        return *stateManager_.getEngine().pPreviousState;
+        return stateManager_.getEngine().getPreviousState();
     }
 
     bool Player::isFacingRight() const {

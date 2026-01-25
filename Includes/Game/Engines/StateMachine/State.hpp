@@ -15,16 +15,11 @@
 
 template <EnumSetConcept StateSet>
 class State {
-protected:
-    // STATE IDENTITY
-    typename StateSet::ID id_{};  // Enum value representing the id of the state
-    std::string_view name_{};  // String value representing the name of the state
-
 public:
     struct Edge {
         #pragma region constructors
         Edge() = default;
-        explicit Edge(const typename StateSet::ID &next) : next(next) {}
+        explicit Edge(const typename StateSet::ID &id) : next(id) {}
         Edge(std::function<bool()> condition, const typename StateSet::ID &next) : next(next) {
             this->condition = std::move(condition);
         }
@@ -37,53 +32,76 @@ public:
     #pragma region constructors
     virtual ~State() = default;
 
-    explicit State(const typename StateSet::ID &stateID) :
-        id_(stateID),
-        name_(StateSet::name(stateID))
-        {}
+    explicit State(const typename StateSet::ID &id) :
+        id_(id),
+        name_(StateSet::name(id_))
+            {}
     #pragma endregion
 
-    // DEBUG SETTINGS
-    bool verbose{false};
-
-    bool hasEdges() const {
-        if (edges.empty()) return false;
-        return true;
-    }
-
+    // ACTIONS
     void addEdge(std::unique_ptr<Edge> edge) {
-        edges.push_back(std::move(edge));
-    }
-
-    void connect(const State &state) {
-        auto edge = std::make_unique<Edge>(state.id_);
-        edges.push_back(std::move(edge));
-    }
-
-    void connect(std::function<bool()> condition, const State &state) {
-        auto edge = std::make_unique<Edge>(std::move(condition), state.id_);
-        edges.push_back(std::move(edge));
+        edges_.push_back(std::move(edge));
     }
 
     void addAction(std::function<void()> action) {
         // Actions are called in the order they were added in. FIFO.
-        actions.push_back(std::move(action));
+        actions_.push_back(std::move(action));
     }
+
     void addEnterAction(std::function<void()> action) {
         // Actions are called in the order they were added in. FIFO.
-        enterActions.push_back(std::move(action));
+        enterActions_.push_back(std::move(action));
     }
+
     void addExitAction(std::function<void()> action) {
         // Actions are called in the order they were added in. FIFO.
-        exitActions.push_back(std::move(action));
+        exitActions_.push_back(std::move(action));
     }
-    typename StateSet::ID next(const typename StateSet::ID &nextStateID) {
+
+    void connect(const State &state) {
+        auto edge = std::make_unique<Edge>(state.id_);
+        edges_.push_back(std::move(edge));
+    }
+
+    void connect(std::function<bool()> condition, const State &state) {
+        auto edge = std::make_unique<Edge>(std::move(condition), state.id_);
+        edges_.push_back(std::move(edge));
+    }
+
+    virtual void onEnter() {
+        if (verbose_) std::cout << "Entered state: " << name_ << "\n";
+        if (verbose_ && enterActions_.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
+        for (const auto &action : enterActions_) {
+            action();
+        }
+    }
+
+    virtual void onExit() {
+        if (verbose_) std::cout << "Exited state: " << name_ << "\n";
+        if (verbose_ && exitActions_.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
+        for (const auto &action : exitActions_) {
+            action();
+        }
+    }
+
+    // SETTERS
+    void setVerbose(const bool value) {
+        verbose_ = value;
+    }
+
+    // GETTERS
+    [[nodiscard]] bool hasEdges() const {
+        if (edges_.empty()) return false;
+        return true;
+    }
+
+    typename StateSet::ID getNext(const typename StateSet::ID &nextStateID) {
         // 0. Warn that state has no edges
-        if (edges.empty()) {
-            if (verbose) std::cout << "State: " << name_ << " has no edges!\n";
+        if (edges_.empty()) {
+            if (verbose_) std::cout << "State: " << name_ << " has no edges!\n";
         }
         // 1. Choose edge
-        for (const auto &edge : this->edges) {
+        for (const auto &edge : this->edges_) {
             // 1.a Edge has a specific condition -> resolve defined condition first
             if (edge->condition) {
                 if (edge->condition()) {
@@ -101,37 +119,30 @@ public:
         return this->id_;
     }
 
-    virtual void onEnter() {
-        if (verbose) std::cout << "Entered state: " << name_ << "\n";
-        if (verbose && enterActions.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
-        for (const auto &action : enterActions) {
-            action();
-        }
-    }
-    virtual void onExit() {
-        if (verbose) std::cout << "Exited state: " << name_ << "\n";
-        if (verbose && exitActions.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
-        for (const auto &action : exitActions) {
-            action();
-        }
-    }
-
     [[nodiscard]] typename StateSet::ID getID() const {
         return id_;
     }
 
+    // UPDATE
     virtual void update() {
-        if (verbose && actions.empty()) std::cout << "State: " << name_ << " has no actions!\n";
-        for (auto const &action : actions) {
+        if (verbose_ && actions_.empty()) std::cout << "State: " << name_ << " has no actions!\n";
+        for (auto const &action : actions_) {
             action();
         }
-    };
+    }
 
 private:
-    std::vector<std::unique_ptr<Edge>> edges{};  // Connections to other states
-    std::vector<std::function<void()>> actions{};  // Connections to other states
-    std::vector<std::function<void()>> enterActions{};  // Connections to other states
-    std::vector<std::function<void()>> exitActions{};  // Connections to other states
+    // STATE IDENTITY
+    typename StateSet::ID id_{};  // Enum value representing the id of the state
+    std::string_view name_{};  // String value representing the name of the state
+    // EDGES
+    std::vector<std::unique_ptr<Edge>> edges_{};  // Connections to other states
+    // ACTIONS
+    std::vector<std::function<void()>> actions_{};
+    std::vector<std::function<void()>> enterActions_{};
+    std::vector<std::function<void()>> exitActions_{};
+    // DEBUG SETTINGS
+    bool verbose_{false};
 };
 
 #endif //BONK_GAME_STATE_HPP

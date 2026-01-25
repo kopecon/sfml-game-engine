@@ -20,7 +20,7 @@ player::StateManager::StateManager(Player &player) {
     stateMachine_.createState<Stopping>(player);
     stateMachine_.createState<Winking>(player);
     stateMachine_.createState<Attacking>(player);
-    stateMachine_.setVerbose();
+    stateMachine_.setVerbose(false);
 }
 
 StateMachine<player::StateSet> & player::StateManager::getEngine() {
