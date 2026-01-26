@@ -19,15 +19,16 @@ public:
     Game();
     explicit Game(const std::string &title);
 #pragma endregion
-    World& createWorld(std::string name);
 
-    World* getWorld(std::string name);
+    // SETTERS
+    World& createWorld(std::string name);
     // GETTERS
     AudioComponent& getAudio();
     VideoComponent& getVideo();
     TimeComponent& getTime();
     TextureComponent& getTextures();
     PhysicsEngine& getPhysics();
+    World* getWorld(std::string name);
     // UPDATE
     void update();
 

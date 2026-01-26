@@ -12,39 +12,39 @@ class World;
 
 
 class VideoComponent {
-    // METADATA
-    const std::string windowTitle{};
-    // HARDWARE PARAMETERS
-    const sf::Vector2u screenSize = sf::VideoMode::getDesktopMode().size;
-    // VIDEO SETTINGS
-    sf::ContextSettings settings;
-    unsigned int fps{144};
-    // WINDOW
-    float windowSizeRatio = 2.f;  // Screen size / window size
-    sf::State windowState = sf::State::Windowed;  // Initial state when game starts
-    sf::Vector2u initialWindowSize = static_cast<sf::Vector2u>(scalar::divide(screenSize, windowSizeRatio));
-    sf::RenderWindow window{};
-
 public:
     VideoComponent();
-
     explicit VideoComponent(const std::string &title);
 
-    // COMPONENTS
-    Camera camera{};
-
-protected:
-    void onClose(const sf::Event::Closed&);
-
-    void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
-
-public:
-    static sf::Vector2u getScreenSize();
+    // ACTIONS
+    // SETTERS
+    void recreateWindow();
+    // GETTERS
+    const sf::RenderWindow& getWindow();
     sf::Vector2u getWindowSize() const;
     [[nodiscard]] sf::Vector2f getWindowToScreenRatio() const;
-    const sf::RenderWindow& getWindow();
-    void recreateWindow();
+    static sf::Vector2u getScreenSize();
+    Camera& getCamera();
+    // UPDATE
     void update(World *pWorld);
+
+private:
+    // METADATA
+    const std::string windowTitle_{};
+    // HARDWARE PARAMETERS
+    const sf::Vector2u screenSize_ = sf::VideoMode::getDesktopMode().size;
+    // VIDEO SETTINGS
+    sf::ContextSettings settings_;
+    unsigned int fps_{144};
+    // WINDOW
+    float windowSizeRatio_ = 2.f;  // Screen size / window size
+    sf::State windowState_ = sf::State::Windowed;  // Initial state when game starts
+    sf::Vector2u initialWindowSize_ = static_cast<sf::Vector2u>(scalar::divide(screenSize_, windowSizeRatio_));
+    sf::RenderWindow window_{};
+    Camera camera_{};
+    // ACTIONS
+    void onClose(const sf::Event::Closed&);
+    void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
 };
 
 

@@ -10,7 +10,7 @@ Render::Render(entity::Entity &entity) :
 
 void Render::loop() const {
     // This could be improved, but I don't care anymore... it works well enough now.
-    const Camera &camera = entity_.game.getVideo().camera;
+    const Camera &camera = entity_.game.getVideo().getCamera();
 
     const auto cameraCenter = camera.view.getCenter();
     const auto cameraWidth = camera.view.getSize().x / camera.zoom;
