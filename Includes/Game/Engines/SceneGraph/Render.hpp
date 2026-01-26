@@ -24,6 +24,6 @@ public:
     void update();
 
 private:
-    void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const override {}
+    void drawSelf(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 #endif //BONK_GAME_RENDER_HPP

@@ -33,3 +33,5 @@ void Render::update() {
     play(entity_.game.getTime().get());
     setPosition(entity_.position);
 }
+
+void Render::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const {}
