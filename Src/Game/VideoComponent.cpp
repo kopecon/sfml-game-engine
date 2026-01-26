@@ -55,6 +55,18 @@ void VideoComponent::onKeyPressed(const sf::Event::KeyPressed &keyPressed) {
     }
 }
 
+sf::Vector2u VideoComponent::getScreenSize() {
+    return sf::VideoMode::getDesktopMode().size;
+}
+
+sf::Vector2u VideoComponent::getWindowSize() const {
+    return window.getSize();
+}
+
+sf::Vector2f VideoComponent::getWindowToScreenRatio() const {
+    return hd::divide(getWindowSize(), getScreenSize());
+}
+
 void VideoComponent::update(World *pWorld) {
     window.handleEvents(
         [&](const sf::Event::Closed &event){onClose(event);},

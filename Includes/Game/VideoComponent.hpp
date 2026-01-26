@@ -39,22 +39,11 @@ protected:
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
 
 public:
-    static sf::Vector2u getScreenSize() {
-        return sf::VideoMode::getDesktopMode().size;
-    }
-
-    sf::Vector2u getWindowSize() const {
-        return window.getSize();
-    }
-
-    [[nodiscard]] sf::Vector2f getWindowToScreenRatio() const {
-        return hd::divide(getWindowSize(), getScreenSize());
-    }
-
+    static sf::Vector2u getScreenSize();
+    sf::Vector2u getWindowSize() const;
+    [[nodiscard]] sf::Vector2f getWindowToScreenRatio() const;
     const sf::RenderWindow& getWindow();
-
     void recreateWindow();
-
     void update(World *pWorld);
 };
 
