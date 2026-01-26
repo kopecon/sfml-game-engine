@@ -78,11 +78,13 @@ public:
     }
 
 private:
-    // MEMBERS
+    // LIST OF ADDED STATES
     std::unordered_map<typename StateSet::ID, std::unique_ptr<State<StateSet>>> states_{};
+    // ACCESS
     State<StateSet> *pCurrentState_{nullptr};
     State<StateSet> *pPreviousState_{nullptr};
     typename StateSet::ID desiredStateID_{};
+    // SCAFFOLDING
     constexpr static StateSet::ID NONE{-1};  //TODO: Temporary.
     // DEBUG SETTINGS
     bool verbose_{false};

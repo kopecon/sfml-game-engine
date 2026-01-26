@@ -39,6 +39,23 @@ public:
     #pragma endregion
 
     // ACTIONS
+    virtual void onEnter() {
+        if (verbose_) std::cout << "Entered state: " << name_ << "\n";
+        if (verbose_ && enterActions_.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
+        for (const auto &action : enterActions_) {
+            action();
+        }
+    }
+
+    virtual void onExit() {
+        if (verbose_) std::cout << "Exited state: " << name_ << "\n";
+        if (verbose_ && exitActions_.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
+        for (const auto &action : exitActions_) {
+            action();
+        }
+    }
+
+    // SETTERS
     void addEdge(std::unique_ptr<Edge> edge) {
         edges_.push_back(std::move(edge));
     }
@@ -68,23 +85,6 @@ public:
         edges_.push_back(std::move(edge));
     }
 
-    virtual void onEnter() {
-        if (verbose_) std::cout << "Entered state: " << name_ << "\n";
-        if (verbose_ && enterActions_.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
-        for (const auto &action : enterActions_) {
-            action();
-        }
-    }
-
-    virtual void onExit() {
-        if (verbose_) std::cout << "Exited state: " << name_ << "\n";
-        if (verbose_ && exitActions_.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
-        for (const auto &action : exitActions_) {
-            action();
-        }
-    }
-
-    // SETTERS
     void setVerbose(const bool value) {
         verbose_ = value;
     }
@@ -132,7 +132,7 @@ public:
     }
 
 private:
-    // STATE IDENTITY
+    // IDENTITY
     typename StateSet::ID id_{};  // Enum value representing the id of the state
     std::string_view name_{};  // String value representing the name of the state
     // EDGES

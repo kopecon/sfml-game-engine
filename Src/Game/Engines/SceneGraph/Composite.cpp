@@ -12,12 +12,22 @@
 Composite::Composite() = default;
 #pragma endregion
 
-Animatable * Composite::asAnimatable() {
-    return nullptr;
+void Composite::play(const float dt) {
+    // Own animation
+    if (const auto animated = asAnimatable()) {
+        animated->animate(dt);
+    }
+    // Children animation
+    for (const auto &pChild : children_) {
+        pChild->play(dt);
+    }
 }
 
-Colorable * Composite::asColorable() {
-    return nullptr;
+void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    states.transform *= getTransform(); // PROPAGATE TRANSFORM
+    drawSelf(target, states);
+    drawChildren(target, states);
+    drawOutline(target, states);
 }
 
 void Composite::add(std::unique_ptr<Composite> composite) {
@@ -50,6 +60,14 @@ void Composite::showOutline(const sf::Color color) {
     boundary->setOutlineColor(color);
     boundary->setOutlineThickness(5.f);
     outline_ = std::move(boundary);
+}
+
+Animatable * Composite::asAnimatable() {
+    return nullptr;
+}
+
+Colorable * Composite::asColorable() {
+    return nullptr;
 }
 
 sf::FloatRect Composite::getLocalBounds() const {
@@ -105,24 +123,6 @@ std::string_view Composite::getName() const {
 
 std::vector<std::unique_ptr<Composite>>& Composite::getChildren() {
     return children_;
-}
-
-void Composite::play(const float dt) {
-    // Own animation
-    if (const auto animated = asAnimatable()) {
-        animated->animate(dt);
-    }
-    // Children animation
-    for (const auto &pChild : children_) {
-        pChild->play(dt);
-    }
-}
-
-void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.transform *= getTransform(); // PROPAGATE TRANSFORM
-    drawSelf(target, states);
-    drawChildren(target, states);
-    drawOutline(target, states);
 }
 
 std::optional<sf::FloatRect> Composite::getSelfGlobalBounds() const {
