@@ -10,6 +10,7 @@
 VideoComponent::VideoComponent(Game& game) :
     game(game) {
     window_.setFramerateLimit(fps_);
+    game.getInput().subscribe(handler_);
 }
 
 VideoComponent::VideoComponent(Game& game, const std::string &title) :

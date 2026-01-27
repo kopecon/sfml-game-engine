@@ -7,6 +7,7 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 #include "Camera.hpp"
+#include "../../Utils/customTypes.hpp"
 #include "../../Utils/utils.hpp"
 
 class Game;
@@ -50,7 +51,7 @@ private:
     // EVENTS
     std::vector<sf::Event> frameEvents_;
     // HANDLERS
-    std::function<void(const sf::Event&)> handler_ = [&](const sf::Event& event) {
+    Handler handler_ = [&](const sf::Event& event) {
         if (event.is<sf::Event::Closed>()) {
             handleClosing();
         }

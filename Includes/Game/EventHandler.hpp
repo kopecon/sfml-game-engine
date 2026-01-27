@@ -5,16 +5,14 @@
 #ifndef BONK_GAME_EVENT_HANDLER_HPP
 #define BONK_GAME_EVENT_HANDLER_HPP
 #include <functional>
-#include <optional>
 #include <vector>
 
 #include "SFML/Window/Event.hpp"
+#include "../../Utils/customTypes.hpp"
 
 
 class EventHandler {
 public:
-    using Handler = std::function<void(const sf::Event&)>;
-
     EventHandler() = default;
     // SETTER
     void subscribe(const Handler &handler);

@@ -10,7 +10,7 @@ void EventHandler::subscribe(const Handler &handler) {
 
 void EventHandler::process(const std::vector<sf::Event> &events) const {
     for (const auto &event : events) {
-        for (auto &handler : handlers_) {
+        for (const auto &handler : handlers_) {
             handler(event);
         }
     }

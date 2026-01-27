@@ -104,6 +104,7 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/Engines/SceneGraph/RectangleShape.hpp
         Src/Game/EventHandler.cpp
         Includes/Game/EventHandler.hpp
+        Utils/customTypes.hpp
 )
 
 if (PRODUCTION_BUILD)
