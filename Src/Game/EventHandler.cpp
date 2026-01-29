@@ -4,6 +4,10 @@
 
 #include "../../Includes/Game/EventHandler.hpp"
 
+#include <iostream>
+
+#include "../../Utils/utils.hpp"
+
 HandlerID EventHandler::subscribe(Handler handler) {
     const HandlerID id = lastHandlerID_++;
     subscribers_.push_back({id, std::move(handler)});
@@ -14,13 +18,16 @@ HandlerID EventHandler::subscribe(Subscriber &subscriber) {
     const HandlerID id = lastHandlerID_++;
     subscriber.id = id;
     subscribers_.push_back(std::move(subscriber));
+    printVector(subscribers_);
     return id;
 }
 
 void EventHandler::unsubscribe(HandlerID id) {
-    std::erase_if(subscribers_, [id](const Subscriber& s) {
-        return s.id == id;
-    });
+    if (!subscribers_.empty()) {
+        std::erase_if(subscribers_, [id](const Subscriber& s) {
+            return s.id == id;
+        });
+    }
 }
 
 void EventHandler::unsubscribe(const Subscriber &subscriber) {

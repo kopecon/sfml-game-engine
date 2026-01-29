@@ -7,6 +7,8 @@
 #include <limits>
 #include <string>
 #include <cmath>
+#include <iostream>
+
 #include "SFML/System/Vector2.hpp"
 
 
@@ -103,6 +105,19 @@ float magnitudeRatio(sf::Vector2<T> expected, sf::Vector2<T> current) {
         return 1.f;
 
     return expectedMag / currentMag;
+}
+
+// DEBUGGING
+template<typename T>
+void printVector(std::vector<T> vector) {
+    for (const auto& item : vector) {
+        std::cout << item.id << " ";
+    }
+    std::cout << "\n";
+}
+
+inline void here() {
+    std::cout << "Here\n";
 }
 
 #endif //BONK_GAME_UTILS_HPP

@@ -19,7 +19,6 @@ player::InputComponent::InputComponent(Player &player, const Controls &controls)
 }
 
 player::InputComponent::~InputComponent() {
-    std::cout << eventSubscriber.id << "\n";
     player_.game.getEventHandler().unsubscribe(eventSubscriber);
 }
 #pragma endregion
