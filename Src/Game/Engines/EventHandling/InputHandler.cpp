@@ -6,8 +6,12 @@
 #include <ranges>
 
 InputHandler::InputHandler(EventHandler &manager) :
-    EventSubscriber(manager)
-    {}
+    EventSubscriber(manager) {
+    // Populate keys
+    for (int i = 0; i < sf::Keyboard::KeyCount; ++i) {
+    keys_.emplace(static_cast<sf::Keyboard::Scancode>(i), KeyState{});
+    }
+}
 
 void InputHandler::clear() {
     for (auto &key: keys_ | std::views::values)
