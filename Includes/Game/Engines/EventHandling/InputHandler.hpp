@@ -15,9 +15,9 @@
 class InputHandler final : EventSubscriber {
 public:
     struct KeyState {
-        bool down = false;
-        bool pressed = false;
-        bool released = false;
+        bool down{false};
+        bool pressed{false};
+        bool released{false};
     };
 
     explicit InputHandler(EventHandler& manager);
