@@ -5,9 +5,6 @@
 #include "../../../../Includes/Game/Engines/EventHandling/InputHandler.hpp"
 #include <ranges>
 
-#include "../../../../Utils/utils.hpp"
-
-
 InputHandler::InputHandler(EventHandler &manager) :
     EventSubscriber(manager)
     {}
