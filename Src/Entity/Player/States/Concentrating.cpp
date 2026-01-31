@@ -3,19 +3,37 @@
 //
 
 #include "../../../../Includes/Entity/Player/States/Concentrating.hpp"
+#include "../../../../Includes/Game/Game.hpp"
 
-#include "../../../../Includes/Entity/Player/Player.hpp"
 
 namespace player {
     Concentrating::Concentrating(Player &player) : PlayerState(player, StateSet::ID::CONCENTRATING) {
-        // CONDITIONS
-        auto exit = [&]{return sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::C);};
         // EDGES
-        addEdge(std::make_unique<Edge>(exit, StateSet::ID::IDLE));
-        // ACTIONS
-        auto colorPlayer = [&]{player.render.setColor(sf::Color::Cyan);};
-        auto resetColor = [&]{player.render.setColor(sf::Color::White);};
-        addEnterAction(colorPlayer);
-        addExitAction(resetColor);
+        addEdge(std::make_unique<Edge>(exit(), StateSet::ID::IDLE));
+        addEnterAction(changeColor());
+        addAction(levitate());
+        addExitAction(resetColor());
+    }
+
+    Condition Concentrating::exit() const {
+        auto &controls = player_.getInput().getControls();
+        auto &input = player_.game.getInput();
+        return [&controls, &input]{return input.key(controls.concentrate).pressed;};
+    }
+
+    Action Concentrating::changeColor() const {
+        return [this] {
+            player_.render.setColor(sf::Color::Cyan);
+        };
+    }
+
+    Action Concentrating::resetColor() const {
+        return [this]{player_.render.setColor(sf::Color::White);};
+    }
+
+    Action Concentrating::levitate() const {
+        return [this] {
+            player_.position.y = 200.f;
+        };
     }
 } // player
