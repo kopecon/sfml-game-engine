@@ -8,7 +8,7 @@
 InputHandler::InputHandler(EventHandler &manager) :
     EventSubscriber(manager) {
     // Populate keys
-    for (int i = 0; i < sf::Keyboard::KeyCount; ++i) {
+    for (int i = 0; i < sf::Keyboard::ScancodeCount; ++i) {
     keys_.emplace(static_cast<sf::Keyboard::Scancode>(i), KeyState{});
     }
 }
