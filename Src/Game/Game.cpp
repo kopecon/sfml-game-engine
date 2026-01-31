@@ -67,6 +67,6 @@ void Game::update() {
     input_.clear();
     time_.update();
     video_.update();
-    eventHandler_.process(video_.getEvents());
     pCurrentWorld_->update();
+    eventHandler_.process(video_.getEvents());
 }
