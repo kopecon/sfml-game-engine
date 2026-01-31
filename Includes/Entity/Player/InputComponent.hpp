@@ -9,7 +9,7 @@
 #include "../../../Utils/customTypes.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Keyboard.hpp"
-#include "../../Game/EventHandler.hpp"
+#include "../../Game/Engines/EventHandling/EventHandler.hpp"
 
 
 #pragma region controls

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "SFML/Window/Event.hpp"
-#include "../../Utils/customTypes.hpp"
+#include "../../../../Utils/customTypes.hpp"
 
 
 class EventHandler {

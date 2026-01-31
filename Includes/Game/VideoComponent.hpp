@@ -9,7 +9,7 @@
 #include "Camera.hpp"
 #include "../../Utils/customTypes.hpp"
 #include "../../Utils/utils.hpp"
-#include "EventHandler.hpp"
+#include "Engines/EventHandling/EventHandler.hpp"
 
 class Game;
 class World;

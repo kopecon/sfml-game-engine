@@ -102,8 +102,8 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/Engines/SceneGraph/Colorable.hpp
         Src/Game/Engines/SceneGraph/RectangleShape.cpp
         Includes/Game/Engines/SceneGraph/RectangleShape.hpp
-        Src/Game/EventHandler.cpp
-        Includes/Game/EventHandler.hpp
+        Src/Game/Engines/EventHandling/EventHandler.cpp
+        Includes/Game/Engines/EventHandling/EventHandler.hpp
         Utils/customTypes.hpp
 )
 

@@ -7,7 +7,7 @@
 
 #include "VideoComponent.hpp"
 #include "AudioComponent.hpp"
-#include "EventHandler.hpp"
+#include "Engines/EventHandling/EventHandler.hpp"
 #include "Engines/PhysicsEngine.hpp"
 #include "TextureComponent.hpp"
 #include "TimeComponent.hpp"
