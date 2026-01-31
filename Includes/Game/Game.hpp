@@ -17,7 +17,6 @@
 class Game {
 public:
 #pragma region constructors
-    Game();
     explicit Game(const std::string &title);
 #pragma endregion
 
@@ -27,6 +26,7 @@ public:
     EventHandler& getEventHandler();
     AudioComponent& getAudio();
     VideoComponent& getVideo();
+    InputHandler& getInput();
     TimeComponent& getTime();
     TextureComponent& getTextures();
     PhysicsEngine& getPhysics();
@@ -46,6 +46,7 @@ private:
     EventHandler eventHandler_{};
     VideoComponent video_;
     AudioComponent audio_{};
+    InputHandler input_{eventHandler_};
     TimeComponent time_{};
     TextureComponent textures_{};
     PhysicsEngine physics_{};

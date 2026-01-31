@@ -27,26 +27,19 @@ struct Controls {
 namespace player {
     class Player;
 
-    class InputComponent {
+    class InputComponent final : public EventSubscriber {
     public:
         explicit InputComponent(Player &player);
         explicit InputComponent(Player &player, const Controls &controls);
-        ~InputComponent();
         void update() const;
+
+        void handleEvent(const sf::Event &event) override;
 
     private:
         // REFERENCES
         Player &player_;
         // CHARACTERISTICS
         Controls controls_{};
-        // HANDLER
-        EventHandler::Subscriber eventSubscriber{0, [this](const sf::Event& event) {
-            if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>()) {
-                handlePressedKey(*keyPressed);
-            }
-        }};
-
-        void handlePressedKey(const sf::Event::KeyPressed& keyPressed);
     };
 }
 

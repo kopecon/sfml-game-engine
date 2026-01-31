@@ -15,11 +15,9 @@ class Game;
 class World;
 
 
-class VideoComponent {
+class VideoComponent final : public EventSubscriber{
 public:
-    explicit VideoComponent(Game& game);
     explicit VideoComponent(Game& game, const std::string &title);
-    ~VideoComponent();
 
     // ACTIONS
     // SETTERS
@@ -52,20 +50,12 @@ private:
     Camera camera_{};
     // EVENTS
     std::vector<sf::Event> frameEvents_;
-    // HANDLERS
-    EventHandler::Subscriber eventSubscriber_{0, [&](const sf::Event& event) {
-        if (event.is<sf::Event::Closed>()) {
-            handleClosing();
-        }
-        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>()) {
-            handlePressedKey(*keyPressed);
-        }
-    }};
     // ACTIONS
     void handleClosing();
     void handlePressedKey(const sf::Event::KeyPressed &keyPressed);
     // UPDATE
     void pollEvents();
+    void handleEvent(const sf::Event &event) override;
 };
 
 

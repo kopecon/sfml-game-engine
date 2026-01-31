@@ -7,12 +7,10 @@
 #include <unordered_map>
 
 
-Game::Game() : video_(*this) {};
-
 Game::Game(const std::string &title):
-title_(title),
-video_(*this, title)
-{}
+    title_(title),
+    video_(*this, title)
+    {}
 
 World& Game::createWorld(std::string name) {
     auto world = std::make_unique<World>(*this, std::move(name));
@@ -47,6 +45,10 @@ AudioComponent & Game::getAudio() {
 
 VideoComponent & Game::getVideo() {
     return video_;
+}
+
+InputHandler & Game::getInput() {
+    return input_;
 }
 
 TimeComponent & Game::getTime() {

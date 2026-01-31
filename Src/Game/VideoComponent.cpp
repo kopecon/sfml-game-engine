@@ -7,25 +7,16 @@
 #include "../../Includes/World/World.hpp"
 
 
-VideoComponent::VideoComponent(Game& game) :
-    game(game) {
-    window_.setFramerateLimit(fps_);
-    game.getEventHandler().subscribe(eventSubscriber_);
-}
-
 VideoComponent::VideoComponent(Game& game, const std::string &title) :
+    EventSubscriber(game.getEventHandler()),
     game(game),
     windowTitle_(title),
     settings_(24, 8, 4, 3, 0),   // depth, stencil, antiAlias, major, minor
     window_(sf::VideoMode(initialWindowSize_), title, sf::Style::Default, windowState_, settings_),
     camera_(window_) {
     window_.setFramerateLimit(fps_);
-    game.getEventHandler().subscribe(eventSubscriber_);
 }
 
-VideoComponent::~VideoComponent() {
-    game.getEventHandler().unsubscribe(eventSubscriber_);
-}
 
 void VideoComponent::recreateWindow() {
     window_.create(sf::VideoMode(initialWindowSize_), windowTitle_, sf::Style::Default, windowState_, settings_);
@@ -119,5 +110,14 @@ void VideoComponent::pollEvents() {
     while (const std::optional event = window_.pollEvent()) {
         if (!event) return;
         frameEvents_.push_back(*event);
+    }
+}
+
+void VideoComponent::handleEvent(const sf::Event &event) {
+    if (event.is<sf::Event::Closed>()) {
+        handleClosing();
+    }
+    if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>()) {
+        handlePressedKey(*keyPressed);
     }
 }

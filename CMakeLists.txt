@@ -105,6 +105,10 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Src/Game/Engines/EventHandling/EventHandler.cpp
         Includes/Game/Engines/EventHandling/EventHandler.hpp
         Utils/customTypes.hpp
+        Src/Game/Engines/EventHandling/InputHandler.cpp
+        Includes/Game/Engines/EventHandling/InputHandler.hpp
+        Includes/Game/Engines/EventHandling/EventSubscriber.hpp
+        Src/Game/Engines/EventHandling/EventSubscriber.cpp
 )
 
 if (PRODUCTION_BUILD)

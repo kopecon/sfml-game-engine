@@ -2,41 +2,27 @@
 // Created by Andrew on 26/01/2026.
 //
 
-#include "../../Includes/Game/EventHandler.hpp"
+#include "../../../../Includes//Game/Engines/EventHandling/EventHandler.hpp"
 
-#include <iostream>
 
-#include "../../../../Utils/utils.hpp"
-
-HandlerID EventHandler::subscribe(Handler handler) {
+void EventHandler::subscribe(EventSubscriber *subscriber) {
     const HandlerID id = lastHandlerID_++;
-    subscribers_.push_back({id, std::move(handler)});
-    return id;
+    subscriber->setID(id);
+    subscribers_.push_back(subscriber);
 }
 
-HandlerID EventHandler::subscribe(Subscriber &subscriber) {
-    const HandlerID id = lastHandlerID_++;
-    subscriber.id = id;
-    subscribers_.push_back(std::move(subscriber));
-    return id;
-}
-
-void EventHandler::unsubscribe(HandlerID id) {
+void EventHandler::unsubscribe(const EventSubscriber *subscriber) {
     if (!subscribers_.empty()) {
-        std::erase_if(subscribers_, [id](const Subscriber& s) {
-            return s.id == id;
+        std::erase_if(subscribers_, [&erased=subscriber](const EventSubscriber* current) {
+            return current->getID() == erased->getID();
         });
     }
 }
 
-void EventHandler::unsubscribe(const Subscriber &subscriber) {
-    unsubscribe(subscriber.id);
-}
-
 void EventHandler::process(const std::vector<sf::Event> &events) const {
     for (const auto &event : events) {
-        for (const auto &[id, handle] : subscribers_) {
-            handle(event);
+        for (const auto &subscriber : subscribers_) {
+            subscriber->handleEvent(event);
         }
     }
 }

@@ -9,18 +9,17 @@
 
 
 #pragma region constructors
-player::InputComponent::InputComponent(Player &player) : player_(player) {
-}
+player::InputComponent::InputComponent(Player &player) :
+    EventSubscriber(player.game.getEventHandler()),
+    player_(player)
+    {}
 
 player::InputComponent::InputComponent(Player &player, const Controls &controls):
+    EventSubscriber(player.game.getEventHandler()),
     player_(player),
-    controls_(controls) {
-    player_.game.getEventHandler().subscribe(eventSubscriber);
-}
+    controls_(controls)
+    {}
 
-player::InputComponent::~InputComponent() {
-    player_.game.getEventHandler().unsubscribe(eventSubscriber);
-}
 #pragma endregion
 
     void player::InputComponent::update() const {
@@ -58,6 +57,6 @@ player::InputComponent::~InputComponent() {
     player_.setDesiredState(IDLE);
 }
 
-void player::InputComponent::handlePressedKey(const sf::Event::KeyPressed &keyPressed) {
-    std::cout << StateSet::name(player_.getCurrentState().getID()) << "\n";
+void player::InputComponent::handleEvent(const sf::Event &event) {
+
 }
