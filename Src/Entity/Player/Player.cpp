@@ -16,14 +16,6 @@ namespace player {
         input_(*this, controls)
         {}
 
-    void Player::setDesiredState(const StateSet::ID id) {
-        stateManager_.getEngine().setDesiredState(id);
-    }
-
-    void Player::setFacingRight(const bool value) {
-        facingRight_ = value;
-    }
-
     void Player::setEyeDryness(const float value) {
         eyeDryness_ = value;
     }
@@ -46,10 +38,6 @@ namespace player {
         return stateManager_.getEngine().getPreviousState();
     }
 
-    bool Player::isFacingRight() const {
-        return facingRight_;
-    }
-
     float Player::getEyeDryness() const {
         return eyeDryness_;
     }
@@ -67,7 +55,6 @@ namespace player {
     }
 
     void Player::update() {
-        input_.update();
         // physics_.setVerbose(true);
         physics_.update();
         stateManager_.update();

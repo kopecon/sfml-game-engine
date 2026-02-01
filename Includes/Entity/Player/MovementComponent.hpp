@@ -16,7 +16,6 @@ namespace player {
     public:
         explicit MovementComponent(Player &player);
         // ACTIONS
-        void turn() const;
         void walk() const;
         void brake() const;
         void jump() const;
@@ -39,14 +38,16 @@ namespace player {
         // REFERENCES
         Player &player_;
         // CHARACTERISTICS
+        bool facingRight_{true};
         sf::Vector2f walkingSpeedMultiplier_{3.f, 2.f};
         sf::Vector2f runningSpeedMultiplier_{6.f, 2.25f};
         sf::Vector2f snap_{0.05f, 0.05f};  // How aggressively player changes speed
         sf::Vector2f speed_{};
         std::function<void()> walk_{[this](){brake();}};  // If walk direction not decided, break.
         // ACTIONS
-        void walkLeft() const;
-        void walkRight() const;
+        void turn();
+        void walkLeft();
+        void walkRight();
     };
 }
 

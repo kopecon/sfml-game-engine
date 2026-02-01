@@ -3,11 +3,13 @@
 
 
 player::Stopping::Stopping(Player &player): PlayerState(player, StateSet::ID::STOPPING) {
-    using enum StateSet::ID;
-    addEdge(std::make_unique<Edge>(IDLE));
-    addEdge(std::make_unique<Edge>(WALKING));
-    addEdge(std::make_unique<Edge>(JUMPING));
-    addEdge(std::make_unique<Edge>(RUNNING));
-    addEdge(std::make_unique<Edge>(ATTACKING));
+    // EDGES
+    makeEdge(brake  , BRAKING  );
+    makeEdge(stop   , STOPPING );
+    makeEdge(jump   , JUMPING  );
+    makeEdge(run    , RUNNING  );
+    makeEdge(walk   , WALKING  );
+    makeEdge(attack , ATTACKING);
+    // ACTIONS
     addAction([&player]{player.getMovement().brake();});
 }

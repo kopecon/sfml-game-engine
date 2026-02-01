@@ -3,11 +3,21 @@
 
 
 player::Walking::Walking(Player &player): PlayerState(player, StateSet::ID::WALKING) {
-    using enum StateSet::ID;
-    addEdge(std::make_unique<Edge>(IDLE));
-    addEdge(std::make_unique<Edge>(RUNNING));
-    addEdge(std::make_unique<Edge>(JUMPING));
-    addEdge(std::make_unique<Edge>(STOPPING));
-    addEdge(std::make_unique<Edge>(ATTACKING));
+    // EDGES
+    makeEdge(stop   , STOPPING );
+    makeEdge(brake  , BRAKING  );
+    makeEdge(jump   , JUMPING  );
+    makeEdge(run    , RUNNING  );
+    makeEdge(attack , ATTACKING);
+    // ACTIONS
+    const Action setDirection = [this] {
+        if (input_.key(controls_.left).down) {
+            player_.getMovement().setLeftWalkingDirection();
+        }
+        else {
+            player_.getMovement().setRightWalkingDirection();
+        }
+    };
+    addAction(setDirection);
     addAction([&player]{player.getMovement().walk();});
 }

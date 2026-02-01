@@ -29,12 +29,11 @@ namespace player {
     public:
         explicit InputComponent(Player &player);
         explicit InputComponent(Player &player, const Controls &controls);
+        // MOVEMENT CONDITIONS
 
         // GETTERS
         [[nodiscard]] Controls& getControls();
         [[nodiscard]] const InputHandler::KeyState& key(const sf::Keyboard::Scancode& key) const;
-        // UPDATE
-        void update() const;
 
     private:
         // REFERENCES

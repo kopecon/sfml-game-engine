@@ -11,11 +11,11 @@ using enum player::StateSet::ID;
 
 player::MovementComponent::MovementComponent(Player &player): player_(player) {}
 
-void player::MovementComponent::turn() const {
+void player::MovementComponent::turn() {
     brake();
     if (areClose(player_.velocity.x, 0.f, 10.f)) {
         player_.render.setScale({-player_.render.getScale().x, player_.render.getScale().y});
-        player_.setFacingRight(!player_.isFacingRight());
+        facingRight_ = !facingRight_;
     }
 }
 
@@ -42,7 +42,7 @@ void player::MovementComponent::setRunningSpeed(const sf::Vector2f speed) {
     runningSpeedMultiplier_ = speed;
 }
 
-void player::MovementComponent::setSnap(sf::Vector2f snap) {
+void player::MovementComponent::setSnap(const sf::Vector2f snap) {
     snap_ = snap;
 }
 
@@ -87,12 +87,12 @@ void player::MovementComponent::update() {
     }
 }
 
-void player::MovementComponent::walkLeft() const {
-    if (player_.isFacingRight()) turn();
+void player::MovementComponent::walkLeft() {
+    if (facingRight_) turn();
     else player_.getPhysics().accelerate(-player_.getMovement().getSpeed());
 }
 
-void player::MovementComponent::walkRight() const {
-    if (!player_.isFacingRight()) turn();
+void player::MovementComponent::walkRight() {
+    if (!facingRight_) turn();
     else player_.getPhysics().accelerate(player_.getMovement().getSpeed());
 }

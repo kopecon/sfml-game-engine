@@ -2,11 +2,21 @@
 #include "../../../../Includes/Entity/Player/Player.hpp"
 
 player::Running::Running(Player &player): PlayerState(player, StateSet::ID::RUNNING) {
-    using enum StateSet::ID;
-    addEdge(std::make_unique<Edge>(IDLE));
-    addEdge(std::make_unique<Edge>(WALKING));
-    addEdge(std::make_unique<Edge>(STOPPING));
-    addEdge(std::make_unique<Edge>(JUMPING));
-    addEdge(std::make_unique<Edge>(ATTACKING));
+    // EDGES
+    makeEdge(stop, STOPPING);
+    makeEdge(brake, BRAKING);
+    makeEdge(attack, ATTACKING);
+    makeEdge(jump, JUMPING);
+    makeEdge([this]{return walk() && !run();}, WALKING);
+    // ACTIONS
+    const Action setDirection = [this] {
+        if (input_.key(controls_.left).down) {
+            player_.getMovement().setLeftWalkingDirection();
+        }
+        else {
+            player_.getMovement().setRightWalkingDirection();
+        }
+    };
+    addAction(setDirection);
     addAction([&player]{player.getMovement().walk();});
 }

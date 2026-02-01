@@ -9,7 +9,8 @@
 namespace player {
     Concentrating::Concentrating(Player &player) : PlayerState(player, StateSet::ID::CONCENTRATING) {
         // EDGES
-        addEdge(std::make_unique<Edge>(exit(), StateSet::ID::IDLE));
+        makeEdge(concentrate, IDLE);
+        // ACTIONS
         addEnterAction(changeColor());
         addAction(levitate());
         addExitAction(resetColor());

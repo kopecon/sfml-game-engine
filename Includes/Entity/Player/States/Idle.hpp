@@ -14,8 +14,7 @@ namespace player {
         explicit Idle(Player &player);
 
     private:
-        Action mainAction() const;
-        Condition goToWinking() const;
+        [[nodiscard]] Action mainAction() const;
     };
 }
 

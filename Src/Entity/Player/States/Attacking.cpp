@@ -6,12 +6,13 @@
 #include "../../../../Includes/Entity/Player/Player.hpp"
 
 player::Attacking::Attacking(Player &player): PlayerState(player, StateSet::ID::ATTACKING) {
-    using enum StateSet::ID;
-    addEdge(std::make_unique<Edge>(IDLE));
-    addEdge(std::make_unique<Edge>(RUNNING));
-    addEdge(std::make_unique<Edge>(WALKING));
-    addEdge(std::make_unique<Edge>(JUMPING));
-    addEdge(std::make_unique<Edge>(STOPPING));
-    addEnterAction([]{std::cout << "Swush!\n";});
+    // CONDITIONS
+    Condition finished = [this]{return input_.key(controls_.attack).released;};
+    const Action makeEdgeToPrevious = [this, finished] {
+        // TODO: TEMPORARY ... this will create redundant edges.
+        makeEdge(finished, player_.getPreviousState().getID());
+    };
+    addEnterAction(makeEdgeToPrevious);
+    // ACTIONS
     addAction([&player]{player.getMovement().brake();});
 }

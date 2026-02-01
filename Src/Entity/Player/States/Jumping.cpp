@@ -5,20 +5,20 @@
 player::Jumping::Jumping(Player &player): PlayerState(player, StateSet::ID::JUMPING) {
     using enum StateSet::ID;
     // Helpers
-    // ReSharper disable once CppDFAUnreachableFunctionCall
+    // ReSharper disable once CppDFAUnreachableFunctionCall (used in conditions)
     auto grounded = [this] {return this->player_.getPhysics().isGrounded();};
-    // ReSharper disable once CppDFAUnreachableFunctionCall
+    // ReSharper disable once CppDFAUnreachableFunctionCall (used in conditions)
     auto previous = [this] {
         return this->player_.getPreviousState().getID();
     };
-    // Conditions
-    auto walking  = [grounded, previous] {return grounded() && previous() == WALKING;};
+    // CONDITIONS
     auto running  = [grounded, previous] {return grounded() && previous() == RUNNING;};
-    // Edges
-    addEdge(std::make_unique<Edge>(running,  RUNNING));
-    addEdge(std::make_unique<Edge>(walking,  WALKING));
-    addEdge(std::make_unique<Edge>(grounded, IDLE));
-    addEdge(std::make_unique<Edge>(ATTACKING));
-    // Actions
+    auto walking  = [grounded, previous] {return grounded() && previous() == WALKING;};
+    // EDGES
+    makeEdge(attack   , ATTACKING);
+    makeEdge(running  , RUNNING  );
+    makeEdge(walking  , WALKING  );
+    makeEdge(grounded , BRAKING  );
+    // ACTIONS
     addEnterAction([&player]{player.getMovement().jump();});
 }

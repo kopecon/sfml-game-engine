@@ -11,6 +11,7 @@
 #include "../../../Includes/Entity/Player/States/Attacking.hpp"
 #include "../../../Includes/Entity/Player/States/Concentrating.hpp"
 #include "../../../Includes/Entity/Player/States/Winking.hpp"
+#include "../../../Includes/Entity/Player/States/Braking.hpp"
 
 
 player::StateManager::StateManager(Player &player) {
@@ -18,6 +19,7 @@ player::StateManager::StateManager(Player &player) {
     stateMachine_.createState<Jumping>(player);
     stateMachine_.createState<Running>(player);
     stateMachine_.createState<Walking>(player);
+    stateMachine_.createState<Braking>(player);
     stateMachine_.createState<Stopping>(player);
     stateMachine_.createState<Winking>(player);
     stateMachine_.createState<Attacking>(player);

@@ -10,7 +10,11 @@ namespace player {
     class Attacking final : public PlayerState {
     public:
         explicit Attacking(Player &player);
+
+    private:
+        Condition idle_{};
     };
 }
+
 
 #endif //BONK_GAME_ATTACKING_HPP

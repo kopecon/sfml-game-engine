@@ -18,7 +18,7 @@ public:
     StateMachine() {initWithNoneState();}
     #pragma endregion
 
-    // ACTIONS
+    // SETTERS
     template<typename T>
     T& addState(std::unique_ptr<T> state)
     requires std::is_base_of_v<State<StateSet>, T> {
@@ -34,11 +34,6 @@ public:
     requires std::is_base_of_v<State<StateSet>, T> {
         auto createdState = std::make_unique<T>(std::forward<Args>(args)...);
         return addState(std::move(createdState));
-    }
-
-    // SETTERS
-    void setDesiredState(const typename StateSet::ID id) {
-        desiredStateID_ = id;
     }
 
     void setVerbose(bool value) {
@@ -83,7 +78,6 @@ private:
     // ACCESS
     State<StateSet> *pCurrentState_{nullptr};
     State<StateSet> *pPreviousState_{nullptr};
-    typename StateSet::ID desiredStateID_{};
     // SCAFFOLDING
     constexpr static StateSet::ID NONE{-1};  //TODO: Temporary.
     // DEBUG SETTINGS
@@ -102,13 +96,12 @@ private:
 
     void transition() {
         auto &currentState = getCurrentState();
-        typename StateSet::ID nextStateID = currentState.getNext(desiredStateID_);
+        typename StateSet::ID nextStateID = currentState.getNext();
         if (nextStateID != currentState.getID()) {
             State<StateSet> &nextState = getNextState(nextStateID);
             if (!nextState.hasEdges()) generateFallBackEdge(nextState);
             exit(currentState);
             enter(nextState);
-            desiredStateID_ = currentState.getID();
         }
     }
 

@@ -7,12 +7,16 @@
 
 
 player::Winking::Winking(Player &player): PlayerState(player, StateSet::ID::WINKING) {
+    // CONDITIONS
     auto wetEyes = [&player]{return player.getEyeDryness() <= 0;};
-    addEdge(std::make_unique<Edge>(wetEyes, StateSet::ID::IDLE));
-    addEdge(std::make_unique<Edge>(StateSet::ID::WALKING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::RUNNING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::JUMPING));
-    addEdge(std::make_unique<Edge>(StateSet::ID::STOPPING));
     addAction([&player] {player.setEyeDryness(player.getEyeDryness()-1);});
     addAction([&player] {player.getMovement().brake();});
+    // EDGES
+    makeEdge(wetEyes     , IDLE         );
+    makeEdge(stop        , STOPPING     );
+    makeEdge(jump        , JUMPING      );
+    makeEdge(run         , RUNNING      );
+    makeEdge(walk        , WALKING      );
+    makeEdge(attack      , ATTACKING    );
+    makeEdge(concentrate , CONCENTRATING);
 }

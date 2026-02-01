@@ -28,7 +28,7 @@ public:
         }
         #pragma endregion
 
-        Condition condition{};
+        Condition condition{[]{return false;}};
         StateSet::ID next{};
     };
 
@@ -59,8 +59,16 @@ public:
     }
 
     // SETTERS
-    void addEdge(std::unique_ptr<Edge> edge) {
+    Edge& addEdge(std::unique_ptr<Edge> edge) {
+        Edge& edgeRef = *edge;
         edges_.push_back(std::move(edge));
+        return edgeRef;
+    }
+
+    template<typename... Args>
+    Edge& makeEdge(Args&&... args) {
+        auto edge = std::make_unique<Edge>(args...);
+        return addEdge(std::move(edge));
     }
 
     void addAction(Action action) {
@@ -98,24 +106,15 @@ public:
         return true;
     }
 
-    typename StateSet::ID getNext(const typename StateSet::ID &nextStateID) {
+    typename StateSet::ID getNext() {
         // 0. Warn that state has no edges
         if (edges_.empty()) {
             if (verbose_) std::cout << "State: " << name_ << " has no edges!\n";
         }
         // 1. Choose edge
         for (const auto &edge : this->edges_) {
-            // 1.a Edge has a specific condition -> resolve defined condition first
-            if (edge->condition) {
-                if (edge->condition()) {
-                    return edge->next;
-                }
-            }
-            // 1.b Edge has no specific condition
-            else {
-                if (nextStateID == edge->next) {
-                    return edge->next;
-                }
+            if (edge->condition()) {
+                return edge->next;
             }
         }
         // 2. No edge conditions met. Staying in this state
