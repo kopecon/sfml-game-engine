@@ -96,7 +96,7 @@ private:
 
     void transition() {
         auto &currentState = getCurrentState();
-        typename StateSet::ID nextStateID = currentState.getNext();
+        typename StateSet::ID nextStateID = currentState.getNextStateID();
         if (nextStateID != currentState.getID()) {
             State<StateSet> &nextState = getNextState(nextStateID);
             if (!nextState.hasEdges()) generateFallBackEdge(nextState);

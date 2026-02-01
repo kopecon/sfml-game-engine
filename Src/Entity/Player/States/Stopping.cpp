@@ -11,5 +11,5 @@ player::Stopping::Stopping(Player &player): PlayerState(player, StateSet::ID::ST
     makeEdge(walk   , WALKING  );
     makeEdge(attack , ATTACKING);
     // ACTIONS
-    addAction([&player]{player.getMovement().brake();});
+    addMainAction([&player]{player.getMovement().brake();});
 }

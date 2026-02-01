@@ -17,6 +17,6 @@ player::Running::Running(Player &player): PlayerState(player, StateSet::ID::RUNN
             player_.getMovement().setRightWalkingDirection();
         }
     };
-    addAction(setDirection);
-    addAction([&player]{player.getMovement().walk();});
+    addMainAction(setDirection);
+    addMainAction([&player]{player.getMovement().walk();});
 }

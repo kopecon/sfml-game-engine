@@ -12,5 +12,5 @@ player::Braking::Braking(Player& player) : PlayerState(player, BRAKING) {
     makeEdge(run, RUNNING);
     makeEdge(idle, IDLE);
     // ACTIONS
-    addAction([this]{player_.getMovement().brake();});
+    addMainAction([this]{player_.getMovement().brake();});
 }

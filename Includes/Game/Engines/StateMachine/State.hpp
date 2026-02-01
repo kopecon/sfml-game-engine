@@ -60,6 +60,7 @@ public:
 
     // SETTERS
     Edge& addEdge(std::unique_ptr<Edge> edge) {
+        // Edges are called in the order they were added in. FIFO.
         Edge& edgeRef = *edge;
         edges_.push_back(std::move(edge));
         return edgeRef;
@@ -71,7 +72,7 @@ public:
         return addEdge(std::move(edge));
     }
 
-    void addAction(Action action) {
+    void addMainAction(Action action) {
         // Actions are called in the order they were added in. FIFO.
         actions_.push_back(std::move(action));
     }
@@ -106,7 +107,7 @@ public:
         return true;
     }
 
-    typename StateSet::ID getNext() {
+    typename StateSet::ID getNextStateID() {
         // 0. Warn that state has no edges
         if (edges_.empty()) {
             if (verbose_) std::cout << "State: " << name_ << " has no edges!\n";

@@ -9,8 +9,8 @@
 player::Winking::Winking(Player &player): PlayerState(player, StateSet::ID::WINKING) {
     // CONDITIONS
     auto wetEyes = [&player]{return player.getEyeDryness() <= 0;};
-    addAction([&player] {player.setEyeDryness(player.getEyeDryness()-1);});
-    addAction([&player] {player.getMovement().brake();});
+    addMainAction([&player] {player.setEyeDryness(player.getEyeDryness()-1);});
+    addMainAction([&player] {player.getMovement().brake();});
     // EDGES
     makeEdge(wetEyes     , IDLE         );
     makeEdge(stop        , STOPPING     );

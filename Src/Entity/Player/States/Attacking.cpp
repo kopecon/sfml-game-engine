@@ -14,5 +14,5 @@ player::Attacking::Attacking(Player &player): PlayerState(player, StateSet::ID::
     };
     addEnterAction(makeEdgeToPrevious);
     // ACTIONS
-    addAction([&player]{player.getMovement().brake();});
+    addMainAction([&player]{player.getMovement().brake();});
 }
