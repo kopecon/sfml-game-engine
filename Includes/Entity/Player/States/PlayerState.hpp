@@ -70,7 +70,7 @@ namespace player {
             return false;
         };
         Condition concentrate = [this] {
-            if (input_.key(controls_.concentrate).down) {
+            if (input_.key(controls_.concentrate).pressed) {
                 return true;
             }
             return false;
