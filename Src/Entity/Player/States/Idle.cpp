@@ -14,7 +14,7 @@ player::Idle::Idle(Player &player) : PlayerState(player, IDLE) {
     makeEdge(attack, ATTACKING);
     makeEdge(concentrate, CONCENTRATING);
     // ACTIONS
-    addAction(mainAction());
+    addMainAction(mainAction());
 }
 
 Action player::Idle::mainAction() const {

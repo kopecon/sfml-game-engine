@@ -12,7 +12,7 @@ namespace player {
         makeEdge(concentrate, IDLE);
         // ACTIONS
         addEnterAction(changeColor());
-        addAction(levitate());
+        addMainAction(levitate());
         addExitAction(resetColor());
     }
 
