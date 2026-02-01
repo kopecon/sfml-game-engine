@@ -13,6 +13,6 @@ player::Winking::Winking(Player &player): PlayerState(player, StateSet::ID::WINK
     addEdge(std::make_unique<Edge>(StateSet::ID::RUNNING));
     addEdge(std::make_unique<Edge>(StateSet::ID::JUMPING));
     addEdge(std::make_unique<Edge>(StateSet::ID::STOPPING));
-    addAction([&player] {player.setEyeDryness(player.getEyeDryness()-1);});
-    addAction([&player] {player.getMovement().brake();});
+    addMainAction([&player] {player.setEyeDryness(player.getEyeDryness()-1);});
+    addMainAction([&player] {player.getMovement().brake();});
 }

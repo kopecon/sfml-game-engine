@@ -13,7 +13,7 @@ player::Idle::Idle(Player &player): PlayerState(player, StateSet::ID::IDLE) {
     addEdge(std::make_unique<Edge>(StateSet::ID::CONCENTRATING));
     addEdge(std::make_unique<Edge>(goToWinking(), StateSet::ID::WINKING));
     // ACTIONS
-    addAction(mainAction());
+    addMainAction(mainAction());
 }
 
 Action player::Idle::mainAction() const {

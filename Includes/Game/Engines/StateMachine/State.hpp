@@ -63,7 +63,7 @@ public:
         edges_.push_back(std::move(edge));
     }
 
-    void addAction(Action action) {
+    void addMainAction(Action action) {
         // Actions are called in the order they were added in. FIFO.
         actions_.push_back(std::move(action));
     }

@@ -8,5 +8,5 @@ player::Running::Running(Player &player): PlayerState(player, StateSet::ID::RUNN
     addEdge(std::make_unique<Edge>(STOPPING));
     addEdge(std::make_unique<Edge>(JUMPING));
     addEdge(std::make_unique<Edge>(ATTACKING));
-    addAction([&player]{player.getMovement().walk();});
+    addMainAction([&player]{player.getMovement().walk();});
 }

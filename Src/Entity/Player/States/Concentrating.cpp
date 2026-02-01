@@ -11,7 +11,7 @@ namespace player {
         // EDGES
         addEdge(std::make_unique<Edge>(exit(), StateSet::ID::IDLE));
         addEnterAction(changeColor());
-        addAction(levitate());
+        addMainAction(levitate());
         addExitAction(resetColor());
     }
 
