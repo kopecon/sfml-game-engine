@@ -29,9 +29,9 @@ The project evolved through multiple refactors as understanding deepened, and ma
 
 - Built primarily as a **learning and experimentation project**
 - Emphasis on:
-  - Clear ownership semantics
-  - Minimal but intentional abstractions
-  - Avoiding “magic” behavior
+    - Clear ownership semantics
+    - Minimal but intentional abstractions
+    - Avoiding “magic” behavior
 - Comments are kept minimal to encourage **self-explanatory code**
 - Refactoring is frequent and expected
 - Commit history reflects experimentation rather than a polished workflow
@@ -52,22 +52,22 @@ While not a full engine, the project explores several core engine concepts:
 - Templated, enum-driven state machines
 - Explicit state transitions with guarded edges
 - Clear separation between:
-  - State logic
-  - Transition conditions
-  - Side effects (enter/exit)
+    - State logic
+    - Transition conditions
+    - Side effects (enter/exit)
 
 ### Rendering & Scene Graph
 - Custom scene graph built on top of SFML
 - Hierarchical `Composite` system with:
-  - Local vs global transforms
-  - Proper bounds propagation
-  - Child-parent relationships
+    - Local vs global transforms
+    - Proper bounds propagation
+    - Child-parent relationships
 - Rendering handled explicitly through traversal
 
 ### Input Handling
 - Exploration of:
-  - Event-based input (SFML events)
-  - Real-time polling
+    - Event-based input (SFML events)
+    - Real-time polling
 - Custom input abstraction to unify both approaches
 - Subscription-based event dispatching
 - Explicit lifetime management to avoid dangling handlers

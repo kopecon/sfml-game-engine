@@ -47,6 +47,7 @@ int main() {
     #pragma endregion
 
     game.getAudio().music.play();
+
     #pragma region window loop
     while (window.isOpen()) {
         game.update();
