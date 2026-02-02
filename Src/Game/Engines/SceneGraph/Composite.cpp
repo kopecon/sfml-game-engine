@@ -2,9 +2,9 @@
 // Created by Andrew on 05/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/SceneGraph/Composite.hpp"
-#include "../../../../Includes/Game/Engines/SceneGraph/Colorable.hpp"
-#include "../../../../Includes/Game/Engines/AnimationEngine/Animatable.hpp"
+#include "Game/Engines/SceneGraph/Composite.hpp"
+#include "Game/Engines/SceneGraph/Colorable.hpp"
+#include "Game/Engines/AnimationEngine/Animatable.hpp"
 #include <iostream>
 
 

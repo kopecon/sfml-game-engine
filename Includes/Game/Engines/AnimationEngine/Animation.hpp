@@ -6,8 +6,9 @@
 #define BONK_GAME_ANIMATION_HPP
 #include <functional>
 #include "SFML/System/Vector2.hpp"
-#include "../../../../Utils/EnumSet.hpp"
 #include "SFML/Graphics/Rect.hpp"
+#include "Utils/EnumSet.hpp"
+
 
 // TODO implement easy statick fps management (constructor init or something).
 // TODO fetching animations.

@@ -4,8 +4,8 @@
 
 #ifndef BONK_GAME_RECTANGLE_SHAPE_HPP
 #define BONK_GAME_RECTANGLE_SHAPE_HPP
-#include "Composite.hpp"
-#include "Colorable.hpp"
+#include "Game/Engines/SceneGraph/Composite.hpp"
+#include "Game/Engines/SceneGraph/Colorable.hpp"
 
 
 class RectangleShape final : public Composite, public Colorable {

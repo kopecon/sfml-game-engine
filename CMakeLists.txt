@@ -29,65 +29,65 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
-        Src/Entity/Player/Player.cpp
-        Includes/Entity/Player/Player.hpp
-        Src/Entity/Scenery/Background.cpp
-        Includes/Entity/Scenery/Background.hpp
-        Src/Game/Camera.cpp
-        Includes/Game/Camera.hpp
+        Src/Game/World/Entity/Player/Player.cpp
+        Includes/Game/World/Entity/Player/Player.hpp
+        Src/Game/World/Entity/Scenery/Background.cpp
+        Includes/Game/World/Entity/Scenery/Background.hpp
+        Src/Game/Components/Video/Camera.cpp
+        Includes/Game/Components/Video/Camera.hpp
         Includes/Game/Engines/AnimationEngine/AnimationEngine.hpp
-        Src/Entity/Player/PhysicsComponent.cpp
-        Includes/Entity/Player/PhysicsComponent.hpp
-        Src/Entity/Player/InputComponent.cpp
-        Includes/Entity/Player/InputComponent.hpp
-        Utils/utils.hpp
-        Src/World/World.cpp
-        Includes/World/World.hpp
-        Src/Entity/Entity.cpp
-        Includes/Entity/Entity.hpp
-        Src/Entity/Scenery/Ground.cpp
-        Includes/Entity/Scenery/Ground.hpp
+        Src/Game/World/Entity/Player/Components/PhysicsComponent.cpp
+        Includes/Game/World/Entity/Player/Components/PhysicsComponent.hpp
+        Src/Game/World/Entity/Player/Components/Input/InputComponent.cpp
+        Includes/Game/World/Entity/Player/Components/Input/InputComponent.hpp
+        Includes/Utils/utils.hpp
+        Src/Game/World/World.cpp
+        Includes/Game/World/World.hpp
+        Src/Game/World/Entity/Entity.cpp
+        Includes/Game/World/Entity/Entity.hpp
+        Src/Game/World/Entity/Scenery/Ground.cpp
+        Includes/Game/World/Entity/Scenery/Ground.hpp
         Src/Game/Game.cpp
         Includes/Game/Game.hpp
-        Src/Game/VideoComponent.cpp
-        Includes/Game/VideoComponent.hpp
-        Src/Game/AudioComponent.cpp
-        Includes/Game/AudioComponent.hpp
-        Src/Game/TimeComponent.cpp
-        Includes/Game/TimeComponent.hpp
-        Includes/Game/TextureComponent.hpp
+        Src/Game/Components/Video/VideoComponent.cpp
+        Includes/Game/Components/Video/VideoComponent.hpp
+        Src/Game/Components/Audio/AudioComponent.cpp
+        Includes/Game/Components/Audio/AudioComponent.hpp
+        Src/Game/Components/Time/TimeComponent.cpp
+        Includes/Game/Components/Time/TimeComponent.hpp
+        Includes/Game/Components/Video/TextureComponent.hpp
         Src/Game/Engines/PhysicsEngine.cpp
         Includes/Game/Engines/PhysicsEngine.hpp
-        Src/Entity/Player/MovementComponent.cpp
-        Includes/Entity/Player/MovementComponent.hpp
-        Src/Entity/Player/CombatComponent.cpp
-        Includes/Entity/Player/CombatComponent.hpp
+        Src/Game/World/Entity/Player/Components/Movement/MovementComponent.cpp
+        Includes/Game/World/Entity/Player/Components/Movement/MovementComponent.hpp
+        Src/Game/World/Entity/Player/Components/Combat/CombatComponent.cpp
+        Includes/Game/World/Entity/Player/Components/Combat/CombatComponent.hpp
         Includes/Game/Engines/StateMachine/State.hpp
-        Includes/Entity/Player/States/StateSet.hpp
-        Utils/EnumSet.hpp
-        Includes/Entity/Player/States/PlayerState.hpp
-        Src/Entity/Player/StateManager.cpp
-        Includes/Entity/Player/StateManager.hpp
-        Src/Entity/Player/States/Idle.cpp
-        Includes/Entity/Player/States/Idle.hpp
-        Src/Entity/Player/States/Walking.cpp
-        Includes/Entity/Player/States/Walking.hpp
-        Src/Entity/Player/States/Jumping.cpp
-        Includes/Entity/Player/States/Jumping.hpp
-        Src/Entity/Player/States/Running.cpp
-        Includes/Entity/Player/States/Running.hpp
-        Src/Entity/Player/States/Stopping.cpp
-        Includes/Entity/Player/States/Stopping.hpp
-        Src/Entity/Player/States/Attacking.cpp
-        Includes/Entity/Player/States/Attacking.hpp
-        Src/Entity/Player/States/Winking.cpp
-        Includes/Entity/Player/States/Winking.hpp
-        Includes/Entity/Player/States/Concentrating.hpp
-        Src/Entity/Player/States/Concentrating.cpp
+        Includes/Game/World/Entity/Player/Components/States/StateSet.hpp
+        Includes/Utils/EnumSet.hpp
+        Includes/Game/World/Entity/Player/Components/States/PlayerState.hpp
+        Src/Game/World/Entity/Player/Components/States/StateManager.cpp
+        Includes/Game/World/Entity/Player/Components/States/StateManager.hpp
+        Src/Game/World/Entity/Player/Components/States/Idle.cpp
+        Includes/Game/World/Entity/Player/Components/States/Idle.hpp
+        Src/Game/World/Entity/Player/Components/States/Walking.cpp
+        Includes/Game/World/Entity/Player/Components/States/Walking.hpp
+        Src/Game/World/Entity/Player/Components/States/Jumping.cpp
+        Includes/Game/World/Entity/Player/Components/States/Jumping.hpp
+        Src/Game/World/Entity/Player/Components/States/Running.cpp
+        Includes/Game/World/Entity/Player/Components/States/Running.hpp
+        Src/Game/World/Entity/Player/Components/States/Stopping.cpp
+        Includes/Game/World/Entity/Player/Components/States/Stopping.hpp
+        Src/Game/World/Entity/Player/Components/States/Attacking.cpp
+        Includes/Game/World/Entity/Player/Components/States/Attacking.hpp
+        Src/Game/World/Entity/Player/Components/States/Winking.cpp
+        Includes/Game/World/Entity/Player/Components/States/Winking.hpp
+        Includes/Game/World/Entity/Player/Components/States/Concentrating.hpp
+        Src/Game/World/Entity/Player/Components/States/Concentrating.cpp
         Src/Game/Engines/SceneGraph/Render.cpp
         Includes/Game/Engines/SceneGraph/Render.hpp
-        Src/Entity/Player/RenderManager.cpp
-        Includes/Entity/Player/RenderManager.hpp
+        Src/Game/World/Entity/Player/Components/Render/RenderManager.cpp
+        Includes/Game/World/Entity/Player/Components/Render/RenderManager.hpp
         Src/Game/Engines/SceneGraph/Composite.cpp
         Includes/Game/Engines/SceneGraph/Composite.hpp
         Src/Game/Engines/AnimationEngine/AnimationSheet.cpp
@@ -95,8 +95,8 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/Engines/AnimationEngine/Animation.hpp
         Includes/Game/Engines/SceneGraph/AnimatedSprite.hpp
         Includes/Game/Engines/AnimationEngine/Animatable.hpp
-        Src/Entity/Player/PlayerSprite.cpp
-        Includes/Entity/Player/PlayerSprite.hpp
+        Src/Game/World/Entity/Player/Components/Render/PlayerSprite.cpp
+        Includes/Game/World/Entity/Player/Components/Render/PlayerSprite.hpp
         Src/Game/Engines/SceneGraph/Sprite.cpp
         Includes/Game/Engines/SceneGraph/Sprite.hpp
         Includes/Game/Engines/SceneGraph/Colorable.hpp
@@ -104,13 +104,13 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/Engines/SceneGraph/RectangleShape.hpp
         Src/Game/Engines/EventHandling/EventHandler.cpp
         Includes/Game/Engines/EventHandling/EventHandler.hpp
-        Utils/customTypes.hpp
+        Includes/Utils/customTypes.hpp
         Src/Game/Engines/EventHandling/InputHandler.cpp
         Includes/Game/Engines/EventHandling/InputHandler.hpp
         Includes/Game/Engines/EventHandling/EventSubscriber.hpp
         Src/Game/Engines/EventHandling/EventSubscriber.cpp
-        Src/Entity/Player/States/Braking.cpp
-        Includes/Entity/Player/States/Braking.hpp
+        Src/Game/World/Entity/Player/Components/States/Braking.cpp
+        Includes/Game/World/Entity/Player/Components/States/Braking.hpp
 )
 
 if (PRODUCTION_BUILD)
@@ -146,3 +146,8 @@ endif ()
 #target_compile_features("${CMAKE_PROJECT_NAME}" PRIVATE cxx_std_23)
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE SFML::Graphics)
 target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE SFML::Audio)
+
+target_include_directories("${CMAKE_PROJECT_NAME}"
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/Includes
+)

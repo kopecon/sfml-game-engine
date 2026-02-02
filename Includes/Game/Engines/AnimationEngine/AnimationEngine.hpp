@@ -7,9 +7,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
-#include "Animation.hpp"
-#include "AnimationSheet.hpp"
-#include "../../../../Utils/utils.hpp"
+#include "Game/Engines/AnimationEngine/Animation.hpp"
+#include "Game/Engines/AnimationEngine/AnimationSheet.hpp"
+#include "Utils/utils.hpp"
 
 
 template<EnumSetConcept AnimationSet>

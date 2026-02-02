@@ -4,7 +4,6 @@
 
 #ifndef BONK_GAME_PHYSICS_ENGINE_HPP
 #define BONK_GAME_PHYSICS_ENGINE_HPP
-#include <string>
 
 #include "SFML/System/Vector2.hpp"
 

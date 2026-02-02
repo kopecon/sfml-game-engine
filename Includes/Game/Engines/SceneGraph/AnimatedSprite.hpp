@@ -6,8 +6,8 @@
 #define BONK_GAME_ANIMATED_SPRITE_HPP
 #include "Composite.hpp"
 #include "Sprite.hpp"
-#include "../../../Game/Engines/AnimationEngine/AnimationEngine.hpp"
-#include "../AnimationEngine/Animatable.hpp"
+#include "Game/Engines/AnimationEngine/AnimationEngine.hpp"
+#include "Game/Engines/AnimationEngine/Animatable.hpp"
 
 
 template<EnumSetConcept AnimationSet>

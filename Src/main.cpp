@@ -1,9 +1,9 @@
 #include <SFML/Graphics.hpp>
-#include "../Includes/Game/Game.hpp"
-#include "../Includes/World/World.hpp"
-#include "../Includes/Entity/Player/Player.hpp"
-#include "../Includes/Entity/Scenery/Background.hpp"
-#include "../Includes/Entity/Scenery/Ground.hpp"
+#include "Game/Game.hpp"
+#include "Game/World/World.hpp"
+#include "Game/World/Entity/Player/Player.hpp"
+#include "Game/World/Entity/Scenery/Background.hpp"
+#include "Game/World/Entity/Scenery/Ground.hpp"
 
 
 int main() {

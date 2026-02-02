@@ -10,7 +10,8 @@
 #include <vector>
 #include <memory>
 
-#include "../../../../Utils/EnumSet.hpp"
+#include "Utils/EnumSet.hpp"
+
 
 // ALIASES
 using Condition = std::function<bool()>;

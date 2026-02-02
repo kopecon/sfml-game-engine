@@ -5,13 +5,13 @@
 #ifndef BONK_GAME_GAME_HPP
 #define BONK_GAME_GAME_HPP
 
-#include "VideoComponent.hpp"
-#include "AudioComponent.hpp"
-#include "Engines/EventHandling/EventHandler.hpp"
-#include "Engines/PhysicsEngine.hpp"
-#include "TextureComponent.hpp"
-#include "TimeComponent.hpp"
-#include "../World/World.hpp"
+#include "Game/Components/Video/VideoComponent.hpp"
+#include "Game/Components/Audio/AudioComponent.hpp"
+#include "Game/Engines/EventHandling/EventHandler.hpp"
+#include "Game/Engines/PhysicsEngine.hpp"
+#include "Game/Components/Video/TextureComponent.hpp"
+#include "Game/Components/Time/TimeComponent.hpp"
+#include "Game/World/World.hpp"
 
 
 class Game {

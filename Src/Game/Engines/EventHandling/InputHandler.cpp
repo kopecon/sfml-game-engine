@@ -2,8 +2,9 @@
 // Created by Andrew on 31/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/EventHandling/InputHandler.hpp"
+#include "Game/Engines/EventHandling/InputHandler.hpp"
 #include <ranges>
+
 
 InputHandler::InputHandler(EventHandler &manager) :
     EventSubscriber(manager) {

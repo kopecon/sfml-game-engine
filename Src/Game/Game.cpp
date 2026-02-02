@@ -2,8 +2,8 @@
 // Created by Andrew on 29/11/2025.
 //
 
-#include "../../Includes/Game/Game.hpp"
-#include "../../Includes/World/World.hpp"
+#include "Game/Game.hpp"
+#include "Game/World/World.hpp"
 #include <unordered_map>
 
 
