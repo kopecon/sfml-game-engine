@@ -5,7 +5,7 @@
 #ifndef BONK_GAME_RENDER_HPP
 #define BONK_GAME_RENDER_HPP
 
-#include "Composite.hpp"
+#include "Game/Engines/SceneGraph/Composite.hpp"
 
 
 namespace entity {

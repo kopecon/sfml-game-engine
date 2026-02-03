@@ -6,8 +6,7 @@
 #define BONK_GAME_EVENT_HANDLER_HPP
 #include <vector>
 
-#include "InputHandler.hpp"
-#include "EventSubscriber.hpp"
+#include "Game/Engines/EventHandling/EventSubscriber.hpp"
 #include "SFML/Window/Event.hpp"
 
 

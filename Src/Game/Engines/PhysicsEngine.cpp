@@ -2,7 +2,8 @@
 // Created by Andrew on 05/12/2025.
 //
 
-#include "../../../Includes/Game/Engines/PhysicsEngine.hpp"
+#include "Game/Engines/PhysicsEngine.hpp"
+
 
 void kinematics::motionEquation(const float &dt, const sf::Vector2f &acceleration, sf::Vector2f &velocity,
     sf::Vector2f &position, const float &friction) {

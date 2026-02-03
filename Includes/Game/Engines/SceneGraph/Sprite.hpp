@@ -4,9 +4,9 @@
 
 #ifndef BONK_GAME_SPRITE_HPP
 #define BONK_GAME_SPRITE_HPP
-#include "Colorable.hpp"
-#include "Composite.hpp"
 #include "SFML/Graphics/Sprite.hpp"
+#include "Game/Engines/SceneGraph/Colorable.hpp"
+#include "Game/Engines/SceneGraph/Composite.hpp"
 
 
 class Sprite : public Composite, public Colorable {

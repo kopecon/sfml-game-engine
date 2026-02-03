@@ -1,7 +1,7 @@
-#include "../../../../Includes/Game/Engines/SceneGraph/Render.hpp"
-#include "../../../../Includes/Game/Engines/SceneGraph/Composite.hpp"
-#include "../../../../Includes/Game/Game.hpp"
-#include "../../../../Includes/Entity/Entity.hpp"
+#include "Game/Engines/SceneGraph/Render.hpp"
+#include "Game/Engines/SceneGraph/Composite.hpp"
+#include "Game/Game.hpp"
+#include "Game/World/Entity/Entity.hpp"
 
 
 Render::Render(entity::Entity &entity) :

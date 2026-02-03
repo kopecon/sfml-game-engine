@@ -2,7 +2,7 @@
 // Created by Andrew on 22/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/SceneGraph/Sprite.hpp"
+#include "Game/Engines/SceneGraph/Sprite.hpp"
 
 
 Sprite::Sprite(const sf::Texture& texture):

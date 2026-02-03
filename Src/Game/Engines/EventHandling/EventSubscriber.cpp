@@ -2,8 +2,8 @@
 // Created by Andrew on 31/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/EventHandling/EventSubscriber.hpp"
-#include "../../../../Includes/Game/Engines/EventHandling/EventHandler.hpp"
+#include "Game/Engines/EventHandling/EventSubscriber.hpp"
+#include "Game/Engines/EventHandling/EventHandler.hpp"
 
 
 EventSubscriber::EventSubscriber(EventHandler &manager): manager_(manager) {

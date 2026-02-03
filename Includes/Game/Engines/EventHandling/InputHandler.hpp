@@ -5,10 +5,9 @@
 #ifndef BONK_GAME_INPUTHANDLER_HPP
 #define BONK_GAME_INPUTHANDLER_HPP
 #include <unordered_map>
-
-#include "EventSubscriber.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Keyboard.hpp"
+#include "Game/Engines/EventHandling/EventSubscriber.hpp"
 
 
 // CHATGPT SOLUTION

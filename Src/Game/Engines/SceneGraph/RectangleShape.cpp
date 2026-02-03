@@ -2,7 +2,7 @@
 // Created by Andrew on 24/01/2026.
 //
 
-#include "../../../../Includes/Game/Engines/SceneGraph/RectangleShape.hpp"
+#include "Game/Engines/SceneGraph/RectangleShape.hpp"
 
 
 RectangleShape::RectangleShape() :
