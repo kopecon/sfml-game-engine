@@ -111,6 +111,7 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Src/Game/Engines/EventHandling/EventSubscriber.cpp
         Src/Game/World/Entity/Player/Components/States/Braking.cpp
         Includes/Game/World/Entity/Player/Components/States/Braking.hpp
+        Includes/Utils/logger.hpp
 )
 
 if (PRODUCTION_BUILD)

@@ -107,17 +107,4 @@ float magnitudeRatio(sf::Vector2<T> expected, sf::Vector2<T> current) {
     return expectedMag / currentMag;
 }
 
-// DEBUGGING
-template<typename T>
-void printVector(std::vector<T> vector) {
-    for (const auto& item : vector) {
-        std::cout << item.id << " ";
-    }
-    std::cout << "\n";
-}
-
-inline void here() {
-    std::cout << "Here\n";
-}
-
 #endif //BONK_GAME_UTILS_HPP

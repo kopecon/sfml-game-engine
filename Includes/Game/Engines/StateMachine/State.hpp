@@ -11,64 +11,72 @@
 #include <memory>
 
 #include "Utils/EnumSet.hpp"
+#include "Utils/logger.hpp"
 
 
 // ALIASES
 using Condition = std::function<bool()>;
 using Action = std::function<void()>;
 
-template <EnumSetConcept StateSet>
+
+template<EnumSetConcept StateSet>
 class State {
 public:
     struct Edge {
-        #pragma region constructors
+#pragma region constructors
         Edge() = default;
-        explicit Edge(const typename StateSet::ID &id) : next(id) {}
+
+        explicit Edge(const typename StateSet::ID &id) : next(id) {
+        }
+
         Edge(Condition condition, const typename StateSet::ID &next) : next(next) {
             this->condition = std::move(condition);
         }
-        #pragma endregion
+#pragma endregion
 
-        Condition condition{[]{return false;}};
+        Condition condition{[] { return false; }};
         StateSet::ID next{};
     };
 
-    #pragma region constructors
+#pragma region constructors
     virtual ~State() = default;
 
-    explicit State(const typename StateSet::ID &id) :
-        id_(id),
-        name_(StateSet::name(id_))
-            {}
-    #pragma endregion
+    explicit State(const typename StateSet::ID &id) : id_(id),
+                                                      name_(StateSet::name(id_)) {
+    }
+#pragma endregion
 
     // ACTIONS
     virtual void onEnter() {
-        if (verbose_) std::cout << "Entered state: " << name_ << "\n";
-        if (verbose_ && enterActions_.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
-        for (const auto &action : enterActions_) {
+        if (verbose_)
+            LOG_INFO("Entered state: " + name_);
+        if (verbose_ && enterActions_.empty())
+            LOG_INFO_ONCE("State: " + name_ + " has no enter actions!");
+        for (const auto &action: enterActions_) {
             action();
         }
     }
 
     virtual void onExit() {
-        if (verbose_) std::cout << "Exited state: " << name_ << "\n";
-        if (verbose_ && exitActions_.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
-        for (const auto &action : exitActions_) {
+        if (verbose_)
+            LOG_INFO("Exited state: " + name_);
+        if (verbose_ && exitActions_.empty())
+            LOG_INFO_ONCE("State: " + name_ + " has no exit actions!");
+        for (const auto &action: exitActions_) {
             action();
         }
     }
 
     // SETTERS
-    Edge& addEdge(std::unique_ptr<Edge> edge) {
+    Edge &addEdge(std::unique_ptr<Edge> edge) {
         // Edges are called in the order they were added in. FIFO.
-        Edge& edgeRef = *edge;
+        Edge &edgeRef = *edge;
         edges_.push_back(std::move(edge));
         return edgeRef;
     }
 
     template<typename... Args>
-    Edge& makeEdge(Args&&... args) {
+    Edge &makeEdge(Args &&... args) {
         auto edge = std::make_unique<Edge>(args...);
         return addEdge(std::move(edge));
     }
@@ -110,11 +118,11 @@ public:
 
     typename StateSet::ID getNextStateID() {
         // 0. Warn that state has no edges
-        if (edges_.empty()) {
-            if (verbose_) std::cout << "State: " << name_ << " has no edges!\n";
-        }
+        if (verbose_ && edges_.empty())
+            LOG_WARN_ONCE("State: " + name_ + " has no edges!\n");
+
         // 1. Choose edge
-        for (const auto &edge : this->edges_) {
+        for (const auto &edge: this->edges_) {
             if (edge->condition()) {
                 return edge->next;
             }
@@ -129,8 +137,9 @@ public:
 
     // UPDATE
     virtual void update() {
-        if (verbose_ && actions_.empty()) std::cout << "State: " << name_ << " has no actions!\n";
-        for (auto const &action : actions_) {
+        if (verbose_ && actions_.empty())
+            LOG_INFO_ONCE("State: " + name_ + " has no actions!");
+        for (auto const &action: actions_) {
             action();
         }
     }
@@ -140,7 +149,7 @@ private:
     typename StateSet::ID id_{};  // Enum value representing the id of the state
     std::string_view name_{};  // String value representing the name of the state
     // EDGES
-    std::vector<std::unique_ptr<Edge>> edges_{};  // Connections to other states
+    std::vector<std::unique_ptr<Edge> > edges_{}; // Connections to other states
     // ACTIONS
     std::vector<Action> actions_{};
     std::vector<Action> enterActions_{};
