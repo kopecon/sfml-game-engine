@@ -11,18 +11,9 @@
 namespace player {
     class Player;
 
-    class StateManager {
+    class StateManager : public StateMachine<StateSet> {
     public:
         explicit StateManager(Player &player);
-        // GETTERS
-        [[nodiscard]] StateMachine<StateSet>& getEngine();
-        [[nodiscard]] const StateMachine<StateSet>& getEngine() const;
-        // UPDATE
-        void update();
-
-    private:
-        // ENGINES
-        StateMachine<StateSet> stateMachine_{};
     };
 }
 

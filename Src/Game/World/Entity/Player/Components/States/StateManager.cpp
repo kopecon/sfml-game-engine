@@ -15,30 +15,17 @@
 
 
 player::StateManager::StateManager(Player &player) {
-    auto &idle = stateMachine_.createState<Idle>(player);
-    stateMachine_.createState<Jumping>(player);
-    stateMachine_.createState<Running>(player);
-    stateMachine_.createState<Walking>(player);
-    stateMachine_.createState<Braking>(player);
-    stateMachine_.createState<Stopping>(player);
-    stateMachine_.createState<Winking>(player);
-    stateMachine_.createState<Attacking>(player);
-    stateMachine_.createState<Concentrating>(player);
-    auto &crouching = stateMachine_.createState<State<StateSet>>(StateSet::ID::CROUCHING);
+    auto &idle = createState<Idle>(player);
+    createState<Jumping>(player);
+    createState<Running>(player);
+    createState<Walking>(player);
+    createState<Braking>(player);
+    createState<Stopping>(player);
+    createState<Winking>(player);
+    createState<Attacking>(player);
+    createState<Concentrating>(player);
+    auto &crouching = createState<State<StateSet>>(StateSet::ID::CROUCHING);
     idle.connect(crouching);
     crouching.connect(idle);
-    stateMachine_.setVerbose(true);
-}
-
-StateMachine<player::StateSet> & player::StateManager::getEngine() {
-    return stateMachine_;
-}
-
-const StateMachine<player::StateSet> & player::StateManager::getEngine() const {
-    // Read only return.
-    return stateMachine_;
-}
-
-void player::StateManager::update() {
-    stateMachine_.update();
+    setVerbose(false);
 }

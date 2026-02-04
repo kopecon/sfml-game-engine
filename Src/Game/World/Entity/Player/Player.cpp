@@ -30,11 +30,11 @@ namespace player {
     }
 
     const State<StateSet>& Player::getCurrentState() const {
-        return stateManager_.getEngine().getCurrentState();
+        return stateManager_.getCurrentState();
     }
 
     const State<StateSet>& Player::getPreviousState() const {
-        return stateManager_.getEngine().getPreviousState();
+        return stateManager_.getPreviousState();
     }
 
     float Player::getEyeDryness() const {
