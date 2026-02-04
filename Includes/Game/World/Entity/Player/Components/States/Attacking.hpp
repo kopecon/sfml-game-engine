@@ -12,7 +12,7 @@ namespace player {
         explicit Attacking(Player &player);
 
     private:
-        Condition idle_{};
+        Trigger idle_{};
     };
 }
 

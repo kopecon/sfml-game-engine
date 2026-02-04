@@ -27,55 +27,55 @@ namespace player {
         InputComponent& input_;
         Controls& controls_;
         // COMMON CONDITIONS
-        Condition idle = [this] { //TODO: temporary version
+        Trigger idle = [this] { //TODO: temporary version
             if (std::abs(player_.velocity.x) <= 10.f) {
                 return true;
             }
             return false;
         };
-        Condition brake = [this] {
+        Trigger brake = [this] {
             if (!input_.key(controls_.left).down && !input_.key(controls_.right).down) {
                 return true;
             }
             return false;
         };
-        Condition walk = [this] {
+        Trigger walk = [this] {
             if (input_.key(controls_.left).down || input_.key(controls_.right).down) {
                 return true;
             }
             return false;
         };
-        Condition run = [this] {
+        Trigger run = [this] {
             if (input_.key(controls_.run).down) {
                 return walk();
             }
             return false;
         };
-        Condition stop = [this] {
+        Trigger stop = [this] {
             if (input_.key(controls_.left).down && input_.key(controls_.right).down) {
                 return true;
             }
             return false;
         };
-        Condition jump = [this] {
+        Trigger jump = [this] {
             if (input_.key(controls_.jump).down) {
                 return true;
             }
             return false;
         };
-        Condition attack = [this] {
+        Trigger attack = [this] {
             if (input_.key(controls_.attack).pressed) {
                 return true;
             }
             return false;
         };
-        Condition concentrate = [this] {
+        Trigger concentrate = [this] {
             if (input_.key(controls_.concentrate).pressed) {
                 return true;
             }
             return false;
         };
-        Condition wink = [this] {
+        Trigger wink = [this] {
             if (player_.getEyeDryness() >= 100) {
                 return true;
             }

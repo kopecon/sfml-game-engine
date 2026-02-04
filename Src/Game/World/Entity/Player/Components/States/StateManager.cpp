@@ -24,8 +24,5 @@ player::StateManager::StateManager(Player &player) {
     createState<Winking>(player);
     createState<Attacking>(player);
     createState<Concentrating>(player);
-    auto &crouching = createState<State<StateSet>>(StateSet::ID::CROUCHING);
-    idle.connect(crouching);
-    crouching.connect(idle);
     setVerbose(false);
 }

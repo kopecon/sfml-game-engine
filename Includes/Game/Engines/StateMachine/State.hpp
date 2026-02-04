@@ -6,16 +6,17 @@
 #define BONK_GAME_STATE_HPP
 
 #include <functional>
+#include <optional>
 #include <iostream>
 #include <vector>
 #include <memory>
 
 #include "Utils/EnumSet.hpp"
 #include "Utils/logger.hpp"
+#include "Game/Engines/StateMachine/Evaluation.hpp"
 
 
 // ALIASES
-using Condition = std::function<bool()>;
 using Action = std::function<void()>;
 
 
@@ -24,18 +25,33 @@ class State {
 public:
     struct Edge {
 #pragma region constructors
-        Edge() = default;
-
-        explicit Edge(const typename StateSet::ID &id) : next(id) {
+        Edge(const typename StateSet::ID &from, Trigger trigger, const typename StateSet::ID &to) : from(from),
+            to(to) {
+            evaluation = std::make_unique<NoEvaluation>(trigger);
         }
 
-        Edge(Condition condition, const typename StateSet::ID &next) : next(next) {
-            this->condition = std::move(condition);
+        Edge(const typename StateSet::ID &from, std::unique_ptr<Evaluation> evaluation,
+             const typename StateSet::ID &to) : from(from),
+                                                evaluation{std::move(evaluation)},
+                                                to(to) {
         }
 #pragma endregion
+        StateSet::ID from{};
+        std::unique_ptr<Evaluation> evaluation{};
+        StateSet::ID to{};
 
-        Condition condition{[] { return false; }};
-        StateSet::ID next{};
+        // GETTERS
+        bool isActive() const {
+            return evaluation->check();
+        }
+
+        std::string getTargets() {
+            auto targets = static_cast<std::string>(StateSet::name(from))
+                           + "-"
+                           + static_cast<std::string>(StateSet::name(to))
+                           + " ";
+            return targets;
+        }
     };
 
 #pragma region constructors
@@ -48,23 +64,22 @@ public:
 
     // ACTIONS
     virtual void onEnter() {
-        if (verbose_)
-            LOG_INFO("Entered state: " + name_);
-        if (verbose_ && enterActions_.empty())
-            LOG_INFO_ONCE("State: " + name_ + " has no enter actions!");
+        LOG_INFO("Entered state: " + name_, verbose_);
+        if (enterActions_.empty())
+            LOG_INFO_ONCE("State: " + name_ + " has no enter actions!", verbose_);
         for (const auto &action: enterActions_) {
             action();
         }
     }
 
     virtual void onExit() {
-        if (verbose_)
-            LOG_INFO("Exited state: " + name_);
-        if (verbose_ && exitActions_.empty())
-            LOG_INFO_ONCE("State: " + name_ + " has no exit actions!");
+        LOG_INFO("Exited state: " + name_, verbose_);
+        if (exitActions_.empty())
+            LOG_INFO_ONCE("State: " + name_ + " has no exit actions!", verbose_);
         for (const auto &action: exitActions_) {
             action();
         }
+        pNextStateID_ = nullptr;
     }
 
     // SETTERS
@@ -77,7 +92,12 @@ public:
 
     template<typename... Args>
     Edge &makeEdge(Args &&... args) {
-        auto edge = std::make_unique<Edge>(args...);
+        auto edge = std::make_unique<Edge>(id_, args...);
+        return addEdge(std::move(edge));
+    }
+
+    Edge &connect(Trigger trigger, const State &state) {
+        auto edge = std::make_unique<Edge>(id_, std::move(trigger), state.id_);
         return addEdge(std::move(edge));
     }
 
@@ -96,16 +116,6 @@ public:
         exitActions_.push_back(std::move(action));
     }
 
-    void connect(const State &state) {
-        auto edge = std::make_unique<Edge>(state.id_);
-        edges_.push_back(std::move(edge));
-    }
-
-    void connect(Condition condition, const State &state) {
-        auto edge = std::make_unique<Edge>(std::move(condition), state.id_);
-        edges_.push_back(std::move(edge));
-    }
-
     void setVerbose(const bool value) {
         verbose_ = value;
     }
@@ -116,32 +126,22 @@ public:
         return true;
     }
 
-    typename StateSet::ID getNextStateID() {
-        // 0. Warn that state has no edges
-        if (verbose_ && edges_.empty())
-            LOG_WARN_ONCE("State: " + name_ + " has no edges!\n");
-
-        // 1. Choose edge
-        for (const auto &edge: this->edges_) {
-            if (edge->condition()) {
-                return edge->next;
-            }
-        }
-        // 2. No edge conditions met. Staying in this state
-        return this->id_;
-    }
-
     [[nodiscard]] typename StateSet::ID getID() const {
         return id_;
     }
 
+    [[nodiscard]] const typename StateSet::ID *getNextStateID() {
+        return pNextStateID_;
+    }
+
     // UPDATE
-    virtual void update() {
-        if (verbose_ && actions_.empty())
-            LOG_INFO_ONCE("State: " + name_ + " has no actions!");
+    void update() {
+        if (actions_.empty())
+            LOG_INFO_ONCE("State: " + name_ + " has no actions!", verbose_);
         for (auto const &action: actions_) {
             action();
         }
+        checkEdges();
     }
 
 private:
@@ -150,12 +150,42 @@ private:
     std::string name_{}; // String value representing the name of the state
     // EDGES
     std::vector<std::unique_ptr<Edge> > edges_{}; // Connections to other states
+    Edge *pActiveEdge_{nullptr};
+    const typename StateSet::ID *pNextStateID_{nullptr};
     // ACTIONS
     std::vector<Action> actions_{};
     std::vector<Action> enterActions_{};
     std::vector<Action> exitActions_{};
     // DEBUG SETTINGS
     bool verbose_{false};
+
+    // UPDATE
+    void checkEdges() {
+        if (pActiveEdge_) {
+            const auto targets = pActiveEdge_->getTargets();
+            const auto evaluation = pActiveEdge_->evaluation->evaluate();
+            if (evaluation == Evaluation::Result::ONGOING) {
+                LOG_INFO(targets + "edge evaluation is ongoing.", verbose_);
+            } else if (evaluation == Evaluation::Result::PASSED) {
+                pNextStateID_ = &pActiveEdge_->to;
+                pActiveEdge_ = nullptr;
+                LOG_INFO(targets + "edge evaluation passed!", verbose_);
+            } else if (evaluation == Evaluation::Result::FAILED) {
+                pActiveEdge_ = nullptr;
+                LOG_WARN(targets + "edge evaluation failed!", verbose_);
+            }
+            return;
+        }
+
+        if (verbose_ && edges_.empty())
+            LOG_WARN_ONCE("State: " + name_ + " has no edges!\n", verbose_);
+
+        for (const auto &edge: this->edges_) {
+            if (edge->isActive()) {
+                pActiveEdge_ = edge.get();
+            }
+        }
+    }
 };
 
 #endif //BONK_GAME_STATE_HPP

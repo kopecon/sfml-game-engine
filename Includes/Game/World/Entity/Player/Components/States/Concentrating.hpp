@@ -13,7 +13,7 @@ namespace player {
         explicit Concentrating(Player &player);
 
     private:
-        Condition exit() const;
+        Trigger exit() const;
         Action changeColor() const;
         Action resetColor() const;
         Action levitate() const;

@@ -8,7 +8,7 @@
 
 player::Attacking::Attacking(Player &player): PlayerState(player, StateSet::ID::ATTACKING) {
     // CONDITIONS
-    Condition finished = [this]{return input_.key(controls_.attack).released;};
+    Trigger finished = [this]{return input_.key(controls_.attack).released;};
     const Action makeEdgeToPrevious = [this, finished] {
         // TODO: TEMPORARY ... this will create redundant edges.
         makeEdge(finished, player_.getPreviousState().getID());

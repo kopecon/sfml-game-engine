@@ -16,7 +16,7 @@ namespace player {
         addExitAction(resetColor());
     }
 
-    Condition Concentrating::exit() const {
+    Trigger Concentrating::exit() const {
         auto &input = player_.getInput();
         return [&input]{return input.key(input.getControls().concentrate).pressed;};
     }

@@ -36,7 +36,7 @@ public:
         return addState(std::move(createdState));
     }
 
-    void setVerbose(bool value) {
+    void setVerbose(const bool value) {
         verbose_ = value;
         for (const auto &it: states_) {
             it.second.get()->setVerbose(value);
@@ -44,6 +44,18 @@ public:
     }
 
     // GETTERS
+    [[nodiscard]] State<StateSet> &getState(typename StateSet::ID stateID) {
+        auto it = states_.find(stateID);
+
+        if (it == states_.end()) {
+            LOG_ERROR("Desired state "
+                + static_cast<std::string>(StateSet::name(stateID))
+                + " is not included!");
+            return getCurrentState();
+        }
+        return *it->second;
+    }
+
     [[nodiscard]] State<StateSet> &getCurrentState() {
         assert(pCurrentState_); // Should not happen. Initiated with "none" state.
         return *pCurrentState_;
@@ -84,9 +96,13 @@ private:
     bool verbose_{false};
 
     // ACTIONS
-    void enter(State<StateSet> &state) {
-        state.onEnter();
-        setCurrentState(state);
+    void transition() {
+        if (const typename StateSet::ID *pNextStateID = getCurrentState().getNextStateID()) {
+            State<StateSet> &nextState = getState(*pNextStateID);
+            // If next state has no edges generate fallback edge to prevent stuck states
+            if (!nextState.hasEdges()) generateFallBackEdge(nextState);
+            changeState(nextState);
+        }
     }
 
     void exit(State<StateSet> &state) {
@@ -94,15 +110,9 @@ private:
         setPreviousState(state);
     }
 
-    void transition() {
-        auto &currentState = getCurrentState();
-        typename StateSet::ID nextStateID = currentState.getNextStateID();
-        if (nextStateID != currentState.getID()) {
-            State<StateSet> &nextState = getNextState(nextStateID);
-            if (!nextState.hasEdges()) generateFallBackEdge(nextState);
-            exit(currentState);
-            enter(nextState);
-        }
+    void enter(State<StateSet> &state) {
+        state.onEnter();
+        setCurrentState(state);
     }
 
     void initWithNoneState() {
@@ -122,11 +132,11 @@ private:
 
     void generateFallBackEdge(State<StateSet> &state) {
         // Intended as a last resort to prevent stuck states. Temporary solution. Implement better state graph validating.
-        state.addEdge(std::make_unique<typename State<StateSet>::Edge>(getCurrentState().getID()));
+        state.makeEdge([] { return true; }, getPreviousState().getID());
 #ifndef NDEBUG
         LOG_ERROR("Warning: State "
             + static_cast<std::string>(StateSet::name(state.getID()))
-                + " has no edges. Auto-generated fallback to "
+            + " has no edges. Auto-generated fallback to "
             + static_cast<std::string>(StateSet::name(getCurrentState().getID())));
 #endif
     }
@@ -150,18 +160,9 @@ private:
         }
     }
 
-    // GETTERS
-    State<StateSet> &getNextState(typename StateSet::ID stateID) {
-        auto it = states_.find(stateID);
-        if (it == states_.end()) {
-            if (verbose_)
-                LOG_ERROR("Desired state "
-                + static_cast<std::string>(StateSet::name(stateID))
-                + " is not included!");
-
-            return getCurrentState();
-        }
-        return *it->second;
+    void changeState(State<StateSet> &next) {
+        exit(getCurrentState());
+        enter(next);
     }
 };
 

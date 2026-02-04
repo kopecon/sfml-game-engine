@@ -12,7 +12,9 @@ player::Idle::Idle(Player &player) : PlayerState(player, IDLE) {
     makeEdge(jump, JUMPING);
     makeEdge(wink, WINKING);
     makeEdge(attack, ATTACKING);
-    makeEdge(concentrate, CONCENTRATING);
+    auto timeEval = std::make_unique<TimedEvaluation>(concentrate);
+    auto timeEdge = std::make_unique<Edge>(getID(), std::move(timeEval), CONCENTRATING);
+    addEdge(std::move(timeEdge));
     // ACTIONS
     addMainAction(mainAction());
 }
