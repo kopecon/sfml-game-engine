@@ -137,8 +137,8 @@ public:
 
 private:
     // IDENTITY
-    typename StateSet::ID id_{};  // Enum value representing the id of the state
-    std::string_view name_{};  // String value representing the name of the state
+    typename StateSet::ID id_{}; // Enum value representing the id of the state
+    std::string name_{}; // String value representing the name of the state
     // EDGES
     std::vector<std::unique_ptr<Edge>> edges_{};  // Connections to other states
     // ACTIONS
