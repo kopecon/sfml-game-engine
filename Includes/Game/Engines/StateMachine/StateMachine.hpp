@@ -127,7 +127,9 @@ private:
 
     void bootstrap(State<StateSet> &first) {
         // This is one-way connection that gets executed immediately.
-        states_.at(NONE)->connect([] { return true; }, first);
+        if (auto &noneState = *states_.at(NONE); !noneState.hasEdges()) {
+            noneState.connect([] { return true; }, first);
+        }
     }
 
     void generateFallBackEdge(State<StateSet> &state) {
