@@ -6,10 +6,10 @@
 #include "SFML/System/Time.hpp"
 
 
-float TimeComponent::get() const {
-    return dt;
+float TimeComponent::dt() const {
+    return dt_;
 }
 
 void TimeComponent::update() {
-    dt = clock.restart().asSeconds(); // seconds since last frame
+    dt_ = clock_.restart().asSeconds(); // seconds since last frame
 }

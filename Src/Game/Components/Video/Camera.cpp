@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 14/11/2025.
-//
-
 #include "Game/Components/Video/Camera.hpp"
 #include "Game/World/Entity/Entity.hpp"
 
@@ -17,7 +13,7 @@ Camera::Camera(const sf::Window &window) {
 void Camera::followTarget() {
     if (pTarget) { //TODO: MANAGE DELETION OF TARGET
         view.setCenter({
-            pTarget->position + targetFollowOffset
+            pTarget->physics().properties().position + targetFollowOffset
         });
     }
 }

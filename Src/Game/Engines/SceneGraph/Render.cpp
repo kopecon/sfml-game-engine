@@ -1,7 +1,5 @@
 #include "Game/Engines/SceneGraph/Render.hpp"
-#include "Game/Engines/SceneGraph/Composite.hpp"
 #include "Game/Game.hpp"
-#include "Game/World/Entity/Entity.hpp"
 
 
 Render::Render(entity::Entity &entity) :
@@ -18,20 +16,20 @@ void Render::loop() const {
     const auto cameraRBorder = cameraCenter.x + cameraWidth / 2.f;
     const auto cameraLBorder = cameraCenter.x - cameraWidth / 2.f;
 
-    const auto renderRBorder = entity_.position.x + entity_.render.getGlobalBounds().size.x / 2.f;
-    const auto renderLBorder = entity_.position.x - entity_.render.getGlobalBounds().size.x / 2.f;
+    const auto renderRBorder = entity_.physics().properties().position.x + getGlobalBounds().size.x / 2.f;
+    const auto renderLBorder = entity_.physics().properties().position.x - getGlobalBounds().size.x / 2.f;
 
     if (cameraRBorder > renderRBorder || cameraLBorder < renderLBorder) {
-        entity_.position = {
+        entity_.physics().properties().position = {
             cameraCenter.x,
-            entity_.position.y};
+            entity_.physics().properties().position.y};
     }
 }
 
 
 void Render::update() {
-    play(entity_.game.getTime().get());
-    setPosition(entity_.position);
+    play(entity_.game.getTime().dt());
+    setPosition(entity_.physics().properties().position);
 }
 
 void Render::drawSelf(sf::RenderTarget &target, sf::RenderStates states) const {}

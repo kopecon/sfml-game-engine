@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 05/12/2025.
-//
-
 #include "Game/Engines/PhysicsEngine.hpp"
 
 

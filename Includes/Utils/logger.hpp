@@ -1,9 +1,6 @@
-//
-// Created by Andrew on 04/02/2026.
-//
-
 #ifndef BONK_GAME_LOGGER_HPP
 #define BONK_GAME_LOGGER_HPP
+
 #include <iostream>
 #include <unordered_set>
 
@@ -33,9 +30,11 @@ namespace logger {
     }
 
     inline void logOnce(const std::string_view msg, const char* color = RESET, const bool show = true) {
-        static std::unordered_set<std::string> seen;
-        if (seen.insert(std::string(msg)).second) {
-            log(msg, color, show);
+        if (show) {
+            static std::unordered_set<std::string> seen;
+            if (seen.insert(std::string(msg)).second) {
+                log(msg, color, show);
+            }
         }
     }
 

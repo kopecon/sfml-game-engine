@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Game/Game.hpp"
 #include "Game/World/World.hpp"
-#include "Game/World/Entity/Player/Player.hpp"
+#include "Game/World/Entity/Actor/Player/Player.hpp"
+#include "Game/World/Entity/Actor/Player/Components/Render/PlayerSprite.hpp"
 #include "Game/World/Entity/Scenery/Background.hpp"
 #include "Game/World/Entity/Scenery/Ground.hpp"
 
@@ -22,31 +23,23 @@ int main() {
     #pragma endregion
 
     #pragma region player
-    Controls p1controls;
-    p1controls.left        = sf::Keyboard::Scancode::A     ;
-    p1controls.right       = sf::Keyboard::Scancode::D     ;
-    p1controls.jump        = sf::Keyboard::Scancode::W     ;
-    p1controls.run         = sf::Keyboard::Scancode::LShift;
-    p1controls.attack      = sf::Keyboard::Scancode::F     ;
-    p1controls.crouch      = sf::Keyboard::Scancode::S     ;
-    p1controls.concentrate = sf::Keyboard::Scancode::C     ;
 
-    Controls p2controls;
-    p2controls.left        = sf::Keyboard::Scancode::Left   ;
-    p2controls.right       = sf::Keyboard::Scancode::Right  ;
-    p2controls.jump        = sf::Keyboard::Scancode::Up     ;
-    p2controls.run         = sf::Keyboard::Scancode::RShift ;
-    p2controls.attack      = sf::Keyboard::Scancode::Numpad0;
-
-    auto &player1 = worldForest.createEntityAt<player::Player>({-0.f, 10.f}, p1controls);
-    auto &player2 = worldForest.createEntityAt<player::Player>({ 100.f, 10.f}, p2controls);
+    auto &player1 = worldForest.createEntityAt<player::Player>({-0.f, 10.f});
+    auto &player2 = worldForest.createEntityAt<player::Player>({ 100.f, 10.f});
+    player2.bindings().bind(InputSlot::S1, sf::Keyboard::Scancode::Up);
+    player2.bindings().bind(InputSlot::S2, sf::Keyboard::Scancode::Left);
+    player2.bindings().bind(InputSlot::S3, sf::Keyboard::Scancode::Down);
+    player2.bindings().bind(InputSlot::S4, sf::Keyboard::Scancode::Right);
+    player2.bindings().bind(InputSlot::S5, sf::Keyboard::Scancode::RShift);
+    player2.bindings().bind(InputSlot::S6, sf::Keyboard::Scancode::Numpad0);
+    player2.bindings().bind(InputSlot::S7, sf::Keyboard::Scancode::Numpad1);
     game.getVideo().getCamera().pTarget = &player1;
-    player2.render.setColor(sf::Color({0,200,255}));
+    player2.getRenderManager().getMainSprite().setColor(sf::Color({0,200,255}));
     // worldForest.remove(player1);
     worldForest.remove(player2);
     #pragma endregion
 
-    game.getAudio().music.play();
+    // game.getAudio().music.play();
 
     #pragma region window loop
     while (window.isOpen()) {

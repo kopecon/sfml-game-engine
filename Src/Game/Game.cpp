@@ -1,10 +1,7 @@
-//
-// Created by Andrew on 29/11/2025.
-//
-
+#include <unordered_map>
 #include "Game/Game.hpp"
 #include "Game/World/World.hpp"
-#include <unordered_map>
+#include "Utils/logger.hpp"
 
 
 Game::Game(const std::string &title):
@@ -14,10 +11,10 @@ Game::Game(const std::string &title):
 
 World& Game::createWorld(std::string name) {
     auto world = std::make_unique<World>(*this, std::move(name));
-    const std::string key = world->name;
+    const std::string key = world->getName();
     auto [it, inserted] = worlds_.emplace(key, std::move(world));
     World& worldRef = *it->second;
-    pCurrentWorld_ = &worldRef;  //TODO: temporary
+    if (!pCurrentWorld_) pCurrentWorld_ = &worldRef;
     return worldRef;
 }
 
@@ -29,7 +26,8 @@ World* Game::getWorld(std::string name) {
     const auto NAME = text::up(std::move(name));
     const auto it = worlds_.find(NAME);
     if (it == worlds_.end()) {
-        std::cerr << "World with name: " << name << " was not found.\n";
+        const auto msg = "World with name: " + name + " was not found.";
+        LOG_ERROR(msg);
         return nullptr;
     }
     return it->second.get();
@@ -43,23 +41,27 @@ AudioComponent & Game::getAudio() {
     return audio_;
 }
 
+const VideoComponent & Game::getVideo() const {
+    return video_;
+}
+
 VideoComponent & Game::getVideo() {
     return video_;
 }
 
-InputHandler & Game::getInput() {
+const InputHandler & Game::getInput() const {
     return input_;
 }
 
-TimeComponent & Game::getTime() {
+const TimeComponent & Game::getTime() const {
     return time_;
 }
 
-TextureComponent & Game::getTextures() {
+const TextureComponent & Game::getTextures() const {
     return textures_;
 }
 
-PhysicsEngine & Game::getPhysics() {
+const PhysicsEngine & Game::getPhysics() const {
     return physics_;
 }
 

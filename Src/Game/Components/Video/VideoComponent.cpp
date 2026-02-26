@@ -22,7 +22,7 @@ void VideoComponent::recreateWindow() {
     window_.create(sf::VideoMode(initialWindowSize_), windowTitle_, sf::Style::Default, windowState_, settings_);
 }
 
-const sf::RenderWindow& VideoComponent::getWindow() {
+const sf::RenderWindow& VideoComponent::getWindow() const {
     return window_;
 }
 
@@ -36,6 +36,10 @@ sf::Vector2f VideoComponent::getWindowToScreenRatio() const {
 
 sf::Vector2u VideoComponent::getScreenSize() {
     return sf::VideoMode::getDesktopMode().size;
+}
+
+const Camera & VideoComponent::getCamera() const {
+    return camera_;
 }
 
 Camera & VideoComponent::getCamera() {
@@ -58,8 +62,7 @@ void VideoComponent::update() {
     window_.clear();
 
     for (auto const &entity : *game.getCurrentWorld().getEntities() | std::views::values) {
-        entity->render.update();  // TODO: review and find proper place to update render
-        window_.draw(entity->render);
+        window_.draw(entity->getRender());
     }
 
     auto test_shape = sf::CircleShape(10.f);

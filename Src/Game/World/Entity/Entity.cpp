@@ -1,9 +1,3 @@
-//
-// Created by Andrew on 27/11/2025.
-//
-
-#include <utility>
-#include <iostream>
 #include "Game/World/Entity/Entity.hpp"
 #include "Game/World/World.hpp"
 
@@ -19,8 +13,7 @@ namespace entity {
         id_(ID),
         name_(std::move(name)),
         world(world),
-        game(world.game),
-        render(*this)
+        game(world.game)
         {}
 #pragma endregion
 
@@ -35,8 +28,19 @@ namespace entity {
 #pragma endregion
 
     void Entity::rename(std::string entityName) {
-        //TODO: check nonexistence before renaming
+        // Name needs to be unique.
         name_ = std::move(entityName);
+    }
+
+    entityID Entity::getID() const {return id_;}
+
+    PhysicsComponent & Entity::physics() {
+        return physics_;
+    }
+
+    const Render & Entity::getRender() {
+        render_.update();
+        return render_;
     }
 
     std::string_view Entity::getName() {
@@ -46,7 +50,5 @@ namespace entity {
     std::string Entity::getClassName() {
         return "Entity";
     }
-
-    entityID Entity::getID() const {return id_;}
 }
 

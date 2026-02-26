@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 01/12/2025.
-//
-
 #ifndef BONK_GAME_SCENERY_HPP
 #define BONK_GAME_SCENERY_HPP
 

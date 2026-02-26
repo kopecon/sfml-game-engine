@@ -1,15 +1,8 @@
-//
-// Created by Andrew on 27/11/2025.
-//
-
 #ifndef BONK_GAME_ENTITY_HPP
 #define BONK_GAME_ENTITY_HPP
 
-#include <string>
-#include <SFML/Graphics/Shape.hpp>
-
+#include "Game/World/Entity/Components/PhysicsComponent.hpp"
 #include "Game/Engines/SceneGraph/Render.hpp"
-#include "Game/Engines/SceneGraph/Composite.hpp"
 
 
 using entityID = std::uint64_t;
@@ -22,39 +15,48 @@ namespace entity {
     class Entity {
         const entityID id_;
         std::string name_{};
-    public:
-        #pragma region constructors
-        virtual ~Entity();
-        Entity(World &world, entityID ID, std::string name);
-        #pragma endregion
 
-        #pragma region operators
+    public:
+#pragma region constructors
+        virtual ~Entity();
+
+        Entity(World &world, entityID ID, std::string name);
+#pragma endregion
+
+#pragma region operators
         bool operator==(const Entity &other) const;
 
         bool operator!=(const Entity &other) const;
-        #pragma endregion
+#pragma endregion
 
         // REFERENCES
-        World &world;
-        Game  &game;
-        // CHARACTERISTICS
-        sf::Vector2f position{};
-        sf::Vector2f velocity{};
-        sf::Vector2f acceleration{};
-        // RENDER
-        Render render;
+        const World &world;
+        const Game &game;
         // FLAGS
         bool removalFlag = false;
 
+        // SETTERS
         void rename(std::string entityName);
 
-        std::string_view getName();
-
+        // GETTERS
         [[nodiscard]] entityID getID() const;
+
+        [[nodiscard]] PhysicsComponent &physics();
+
+        [[nodiscard]] const Render& getRender();
+
+        [[nodiscard]] std::string_view getName();
 
         [[nodiscard]] static std::string getClassName();
 
+
+        // UPDATES
         virtual void update() = 0;
+
+    protected:
+        // COMPONENTS
+        PhysicsComponent physics_{*this};
+        Render render_{*this};
     };
 }
 
