@@ -17,10 +17,10 @@ namespace player {
 
     protected:
         [[nodiscard]] Player &player() {
-            return static_cast<Player &>(this->target_);
+            return static_cast<Player &>(this->owner_);
         }
         [[nodiscard]] const Player &player() const {
-            return static_cast<const Player &>(this->target_);
+            return static_cast<const Player &>(this->owner_);
         }
     };
 } // player

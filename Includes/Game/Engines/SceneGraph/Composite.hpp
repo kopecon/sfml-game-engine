@@ -21,6 +21,8 @@ public:
     explicit Composite();
 #pragma endregion
 
+    bool visible{true};
+
     // ACTIONS
     void play(float dt);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -34,6 +36,7 @@ public:
     }
     void rename(std::string name);
     void setColor(const sf::Color &color);
+    void setSize(sf::Vector2f targetSize);
     void showOutline(sf::Color color = sf::Color::Red);
     // GETTERS
     virtual Animatable* asAnimatable();

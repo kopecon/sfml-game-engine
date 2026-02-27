@@ -1,5 +1,6 @@
 #ifndef BONK_GAME_STATE_MACHINE_HPP
 #define BONK_GAME_STATE_MACHINE_HPP
+
 #include <cassert>
 #include <memory>
 #include <unordered_map>

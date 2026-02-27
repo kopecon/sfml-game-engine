@@ -56,8 +56,8 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/Components/Video/TextureComponent.hpp
         Src/Game/Engines/PhysicsEngine.cpp
         Includes/Game/Engines/PhysicsEngine.hpp
-        Src/Game/World/Entity/Actor/Player/Components/Movement/MovementComponent.cpp
-        Includes/Game/World/Entity/Actor/Player/Components/Movement/MovementComponent.hpp
+        Src/Game/World/Entity/Actor/Components/MovementComponent.cpp
+        Includes/Game/World/Entity/Actor/Components/MovementComponent.hpp
         Src/Game/World/Entity/Actor/Player/Components/Combat/CombatComponent.cpp
         Includes/Game/World/Entity/Actor/Player/Components/Combat/CombatComponent.hpp
         Includes/Game/Engines/StateMachine/State.hpp
@@ -72,8 +72,6 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Includes/Game/World/Entity/Actor/Player/Components/StateMachine/States/Jumping.hpp
         Src/Game/World/Entity/Actor/Player/Components/StateMachine/States/Running.cpp
         Includes/Game/World/Entity/Actor/Player/Components/StateMachine/States/Running.hpp
-        Src/Game/World/Entity/Actor/Player/Components/StateMachine/States/Stopping.cpp
-        Includes/Game/World/Entity/Actor/Player/Components/StateMachine/States/Stopping.hpp
         Src/Game/World/Entity/Actor/Player/Components/StateMachine/States/Attacking.cpp
         Includes/Game/World/Entity/Actor/Player/Components/StateMachine/States/Attacking.hpp
         Src/Game/World/Entity/Actor/Player/Components/StateMachine/States/Winking.cpp
@@ -120,6 +118,8 @@ add_executable("${CMAKE_PROJECT_NAME}" Src/main.cpp
         Src/Game/Engines/EventHandling/InputBindings.cpp
         Includes/Game/Engines/EventHandling/InputBindings.hpp
         Src/Game/World/Entity/Actor/Actor.cpp
+        Includes/Game/Engines/SceneGraph/ParallaxLayer.cpp
+        Includes/Game/Engines/SceneGraph/ParallaxLayer.hpp
 )
 
 if (PRODUCTION_BUILD)

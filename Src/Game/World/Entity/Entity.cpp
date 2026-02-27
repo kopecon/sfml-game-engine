@@ -38,7 +38,7 @@ namespace entity {
         return physics_;
     }
 
-    const Render & Entity::getRender() {
+    Render & Entity::getRender() {
         render_.update();
         return render_;
     }

@@ -21,7 +21,7 @@ namespace entity {
         #pragma endregion
 
         // ACTIONS
-        void accelerate(const sf::Vector2f &targetVelocity, sf::Vector2f snap, sf::Vector2f maxSpeed);
+        void accelerate(const sf::Vector2f &targetVelocity, sf::Vector2f snap = {10.f, 10.f});
         // SETTERS
         void enableGravity();
         void disableGravity();

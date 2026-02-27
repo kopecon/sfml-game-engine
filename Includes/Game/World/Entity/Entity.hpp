@@ -43,7 +43,7 @@ namespace entity {
 
         [[nodiscard]] PhysicsComponent &physics();
 
-        [[nodiscard]] const Render& getRender();
+        [[nodiscard]] Render& getRender();
 
         [[nodiscard]] std::string_view getName();
 

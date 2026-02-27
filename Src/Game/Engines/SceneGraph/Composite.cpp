@@ -2,6 +2,7 @@
 #include "Game/Engines/SceneGraph/Colorable.hpp"
 #include "Game/Engines/AnimationEngine/Animatable.hpp"
 #include "Utils/logger.hpp"
+#include "Utils/utils.hpp"
 
 
 #pragma region constructors
@@ -20,10 +21,12 @@ void Composite::play(const float dt) {
 }
 
 void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.transform *= getTransform(); // PROPAGATE TRANSFORM
-    drawSelf(target, states);
-    drawChildren(target, states);
-    drawOutline(target, states);
+    if (visible) {
+        states.transform *= getTransform(); // PROPAGATE TRANSFORM
+        drawSelf(target, states);
+        drawChildren(target, states);
+        drawOutline(target, states);
+    }
 }
 
 void Composite::rename(std::string name) {
@@ -44,6 +47,17 @@ void Composite::setColor(const sf::Color &color) {
     }
 }
 
+void Composite::setSize(const sf::Vector2f targetSize) {
+    const auto originalSize = getGlobalBounds().size;
+
+    const auto scale2D = hd::divide(targetSize, originalSize);
+
+    // Keep aspect ratio
+    float scale = std::min(scale2D.x, scale2D.y); // use std::min for "fit" mode, std::max for "cover" mode
+
+    setScale({scale, scale});
+}
+
 void Composite::showOutline(const sf::Color color) {
     const auto bounds = getLocalBounds();
     auto boundary = std::make_unique<sf::RectangleShape>();
@@ -51,7 +65,7 @@ void Composite::showOutline(const sf::Color color) {
     boundary->setPosition(bounds.position);
     boundary->setFillColor(sf::Color::Transparent);
     boundary->setOutlineColor(color);
-    boundary->setOutlineThickness(5.f);
+    boundary->setOutlineThickness(1.f);
     outline_ = std::move(boundary);
 }
 
@@ -104,9 +118,9 @@ sf::FloatRect Composite::getGlobalBounds() const {
 }
 
 sf::Vector2f Composite::getCenter() const {
-    const auto localBounds = getLocalBounds();
-    const auto x = localBounds.position.x + localBounds.size.x / 2.f;
-    const auto y = localBounds.position.y + localBounds.size.y / 2.f;
+    const auto bounds = getLocalBounds();
+    const auto x = bounds.position.x + bounds.size.x / 2.f;
+    const auto y = bounds.position.y + bounds.size.y / 2.f;
     return {x, y};
 }
 

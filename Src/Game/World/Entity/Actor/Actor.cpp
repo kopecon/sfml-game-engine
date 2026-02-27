@@ -28,6 +28,14 @@ const InputBindings &actor::Actor::bindings() const {
     return bindings_;
 }
 
+actor::MovementComponent & actor::Actor::movement() {
+    return movement_;
+}
+
+const actor::MovementComponent & actor::Actor::movement() const {
+    return movement_;
+}
+
 std::string actor::Actor::getClassName() {
     return "Actor";
 }

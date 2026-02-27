@@ -19,24 +19,12 @@ namespace player {
     }
 #pragma endregion
 
-    void Player::setEyeDryness(const float value) {
-        eyeDryness_ = value;
-    }
-
     std::string Player::getClassName() {
         return "Player";
     }
 
-    sf::Vector2f Player::getCharacterSize() const {
-        return {height_, width_};
-    }
-
-    float Player::getEyeDryness() const {
-        return eyeDryness_;
-    }
-
-    MovementComponent &Player::getMovement() {
-        return movement_;
+    Stats & Player::stats() {
+        return stats_;
     }
 
     RenderManager &Player::getRenderManager() {

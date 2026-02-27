@@ -11,8 +11,8 @@ player::Braking::Braking(Player& player) : DefaultState(player, BRAKING) {
 }
 
 void player::Braking::brake() {
-    if (auto &physics = this->player().physics(); physics.isGrounded()) {
-        this->player().getMovement().move({0.f, 0.f});
+    if (auto &physics = player().physics(); physics.isGrounded()) {
+        owner_.movement().move({0.f, 0.f});
         if (physics.properties().velocity.x <= 50.f) {
             physics.totalStop();
         }

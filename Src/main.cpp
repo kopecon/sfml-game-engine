@@ -18,8 +18,9 @@ int main() {
     #pragma endregion
 
     #pragma region background
+    // (void) worldForest.createEntityAt<scenery::Background>({VideoComponent::BASE_CENTER.x, worldForest.groundLevel});
     (void) worldForest.createEntity<scenery::Background>();
-    (void) worldForest.createEntityAt<scenery::Ground>({0.f, worldForest.groundLevel});
+    (void) worldForest.createEntityAt<scenery::Ground>({VideoComponent::BASE_CENTER.x, worldForest.groundLevel});
     #pragma endregion
 
     #pragma region player

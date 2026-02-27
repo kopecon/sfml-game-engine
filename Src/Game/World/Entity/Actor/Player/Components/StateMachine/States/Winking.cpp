@@ -4,7 +4,7 @@
 
 player::Winking::Winking(Player &player): DefaultState(player, DefaultStateSet::ID::WINKING) {
     // CONDITIONS
-    const auto wetEyes = eval::Conditioned([&player]{return player.getEyeDryness() <= 0;});
+    const auto wetEyes = eval::Conditioned([&player]{return player.stats().eyeDryness <= 0;});
     // EDGES
     makeEdge(wetEyes     , IDLE         );
     makeEdge(jump_       , JUMPING      );
@@ -17,5 +17,7 @@ player::Winking::Winking(Player &player): DefaultState(player, DefaultStateSet::
 }
 
 void player::Winking::wink() {
-    this->player().setEyeDryness(this->player().getEyeDryness()-1);
+    if (animator().getCurrentAnimation().getStatus() == AnimationStatus::FINISHED) {
+        player().stats().eyeDryness = 0.f;
+    }
 }

@@ -2,8 +2,7 @@
 
 
 player::Running::Running(Player &player)
-    : DefaultState(player, DefaultStateSet::ID::RUNNING),
-      movement_(player.getMovement()) {
+    : DefaultState(player, DefaultStateSet::ID::RUNNING) {
     // EDGES
     makeEdge(eval::SlotsNotHeld({{boost_}}), WALKING);
     makeEdge(brake_, BRAKING);
@@ -13,14 +12,9 @@ player::Running::Running(Player &player)
     addAction(MAIN_ACTION(run));
 }
 
-void player::Running::onEnter(const Context context) {
-    DefaultState::onEnter(context);
-    movement_.setSpeed(movement_.getRunningSpeed());
-}
-
 void player::Running::run() {
     if (this->player().physics().isGrounded()) {
-        movement_.move(movement_.getSpeed());
+        owner_.movement().move(speed_);
     }
     if (player().physics().isStill()) {
         animator().setAnimation(IDLE);
@@ -30,10 +24,7 @@ void player::Running::run() {
 }
 
 void player::Running::adjustAnimationFPS() {
-    const auto speedRatio = magnitudeRatio(
-        player().getMovement().getRunningSpeed(),
-        player().physics().properties().velocity
-    );
+    const auto speedRatio = magnitudeRatio(speed_, player().physics().properties().velocity);
     auto &currentAnimation = animator().getCurrentAnimation();
     currentAnimation.setSPF(1.f / static_cast<float>(currentAnimation.getFPR()) * speedRatio * 0.7f);
 }

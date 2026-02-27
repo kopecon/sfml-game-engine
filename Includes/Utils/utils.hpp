@@ -68,29 +68,6 @@ namespace hadamard {
 namespace hd = hadamard;
 namespace elements = hadamard;
 
-namespace scalar {
-    template<typename sfVector, typename S>
-        requires (std::is_base_of_v<sf::Vector2i, sfVector>
-                  || std::is_base_of_v<sf::Vector2u, sfVector>
-                  || std::is_base_of_v<sf::Vector2f, sfVector>)
-    sfVector multiply(const sfVector &vector, const S &scalar) {
-        sfVector result{};
-        result.x = (vector.x * static_cast<float>(scalar));
-        result.y = (vector.y * static_cast<float>(scalar));
-        return result;
-    }
-
-    template<typename sfVector, typename S>
-        requires (std::is_base_of_v<sf::Vector2i, sfVector>
-                  || std::is_base_of_v<sf::Vector2u, sfVector>
-                  || std::is_base_of_v<sf::Vector2f, sfVector>)
-    sf::Vector2f divide(const sfVector &vector, const S &scalar) {
-        sf::Vector2f result{};
-        result.x = (vector.x / scalar);
-        result.y = (vector.y / scalar);
-        return result;
-    }
-}
 
 template<typename T>
 float magnitudeRatio(sf::Vector2<T> expected, sf::Vector2<T> current) {

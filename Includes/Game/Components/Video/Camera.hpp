@@ -10,14 +10,17 @@ namespace entity {
 
 class Camera {
 public:
-    Camera();
-    explicit Camera(const sf::Window &window);
+    explicit Camera(sf::RenderTexture &renderTexture);
 
-    sf::View view{};
-    float zoom{0.8f};
     entity::Entity *pTarget{nullptr};
-    sf::Vector2f targetFollowOffset{0.f, -140.f}; // Fixed value is just temporary
+    sf::View view{};
+    float zoom{1.f};
 
+    void update();
+
+private:
+    sf::RenderTexture &renderTexture_;
+    sf::Vector2f targetFollowOffset_{0.f, -64.f}; // TODO: Manage magic number
     void followTarget();
 };
 

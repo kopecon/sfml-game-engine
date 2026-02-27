@@ -10,9 +10,7 @@ namespace player {
         explicit Running(Player &player);
 
     private:
-        MovementComponent &movement_;
-
-        void onEnter(Context context) override;
+        sf::Vector2f speed_{400.f, 0.f};
 
         void run();
 

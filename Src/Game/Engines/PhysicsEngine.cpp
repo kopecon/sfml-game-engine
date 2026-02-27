@@ -1,9 +1,9 @@
 #include "Game/Engines/PhysicsEngine.hpp"
 
 
-void kinematics::motionEquation(const float &dt, const sf::Vector2f &acceleration, sf::Vector2f &velocity,
-    sf::Vector2f &position, const float &friction) {
-    const auto totalAcceleration = acceleration - velocity*friction;
-    velocity += totalAcceleration*dt;
-    position += velocity*dt + totalAcceleration*dt*dt/2.f;
+void kinematics::motionEquation(const float &dt, sf::Vector2f acceleration, sf::Vector2f &velocity,
+                                sf::Vector2f &position, const float &friction) {
+    acceleration = acceleration - velocity * friction;
+    velocity += acceleration * dt;
+    position += velocity * dt + acceleration * dt * dt / 2.f;
 }

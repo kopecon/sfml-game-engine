@@ -1,23 +1,25 @@
-//
-// Created by Andrew on 22/01/2026.
-//
-
 #ifndef BONK_GAME_SPRITE_HPP
 #define BONK_GAME_SPRITE_HPP
+
 #include "SFML/Graphics/Sprite.hpp"
 #include "Game/Engines/SceneGraph/Colorable.hpp"
 #include "Game/Engines/SceneGraph/Composite.hpp"
 
 
+class Camera;
+
 class Sprite : public Composite, public Colorable {
 protected:
     std::unique_ptr<sf::Sprite> sprite_{nullptr};
+
 public:
     explicit Sprite(const sf::Texture &texture);
 
     Colorable* asColorable() override;
 
     void applyColor(sf::Color color) override;
+
+    void repeat(sf::Vector2u repeats);
 
     [[nodiscard]] sf::Sprite& getSprite();
 

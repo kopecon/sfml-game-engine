@@ -23,10 +23,10 @@ namespace player {
     protected:
         // COMMON CONDITIONS
         eval::Conditioned idle_{
-            [this] { return std::abs(target_.physics().properties().velocity.x) <= 10.f; }
+            [this] { return std::abs(owner_.physics().properties().velocity.x) <= 10.f; }
         };
         eval::Conditioned wink_{
-            [this] { return player().getEyeDryness() >= 100; }
+            [this] { return player().stats().eyeDryness >= 100; }
         };
 
         // ASSIGN SLOTS

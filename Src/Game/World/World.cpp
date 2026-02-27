@@ -7,7 +7,6 @@
 #pragma region constructors
 World::World(Game &game, std::string name)
     : game(game),
-      groundLevel(static_cast<float>(game.getVideo().getWindowSize().y) * 0.7f / 2.f),
       name_(text::up(std::move(name))) {
 }
 #pragma endregion

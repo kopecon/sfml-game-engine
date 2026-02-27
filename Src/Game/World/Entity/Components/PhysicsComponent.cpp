@@ -13,7 +13,7 @@ void entity::PhysicsComponent::setVerbose(const bool value) {
     verbose_ = value;
 }
 
-entity::PhysicsComponent::Properties & entity::PhysicsComponent::properties() {
+entity::PhysicsComponent::Properties &entity::PhysicsComponent::properties() {
     return properties_;
 }
 
@@ -34,8 +34,7 @@ void entity::PhysicsComponent::verticalStop() {
 
 #pragma endregion
 
-void entity::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity,
-    const sf::Vector2f snap, const sf::Vector2f maxSpeed) {
+void entity::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity, const sf::Vector2f snap) {
     const float &airFriction = entity_.world.airFriction;
     const float &groundFriction = entity_.world.groundFriction;
     const sf::Vector2f environment{groundFriction, airFriction};
@@ -43,7 +42,7 @@ void entity::PhysicsComponent::accelerate(const sf::Vector2f &targetVelocity,
     const sf::Vector2f velDiff = targetVelocity - properties_.velocity;
     properties_.acceleration = hd::multiply(
         snap,
-        maxSpeed,
+        // maxSpeed,
         velDiff,
         environment);
 }
@@ -63,7 +62,8 @@ bool entity::PhysicsComponent::isGrounded() const {
            && (properties_.velocity.y >= 0.f);
 }
 
-bool entity::PhysicsComponent::isStill() { // Should be made const in the future
+bool entity::PhysicsComponent::isStill() {
+    // Should be made const in the future
     return hd::areClose(properties().velocity, {0, 0});
 }
 
@@ -79,8 +79,8 @@ void entity::PhysicsComponent::update() {
         ground();
     }
 
-    properties_.acceleration = {0.f, 0.f}; // Reset acceleration
     if (verbose_) printPhysics();
+    properties_.acceleration = {0.f, 0.f}; // Reset acceleration
 }
 
 void entity::PhysicsComponent::ground() {
@@ -96,8 +96,14 @@ void entity::PhysicsComponent::applyGravity() {
 }
 
 void entity::PhysicsComponent::printPhysics() const {
-    std::cout << "Px: " << properties_.position.x << " Vx: " << properties_.velocity.x << " Ax: " << properties_.acceleration.x <<
-            "\n";
-    std::cout << "Py: " << properties_.position.y << " Vy: " << properties_.velocity.y << " Ay: " << properties_.acceleration.y <<
-            "\n";
+    // It is a little buggy but works well enough
+    std::cout << std::format(
+            "P: {:05.1f}|{:05.1f} "
+            "V: {:05.1f}|{:05.1f} "
+            "A: {:05.1f}|{:05.1f}\r",
+            properties_.position.x, properties_.position.y,
+            properties_.velocity.x, properties_.velocity.y,
+            properties_.acceleration.x, properties_.acceleration.y
+        );
+    std::cout.flush();  // Ensure immediate output
 }

@@ -1,17 +1,15 @@
 #include "Game/World//Entity/Scenery/Ground.hpp"
 #include "Game/Game.hpp"
+#include "Game/Engines/SceneGraph/ParallaxLayer.hpp"
 #include "Game/Engines/SceneGraph/Sprite.hpp"
 #include "Game/World/World.hpp"
 
 
 namespace scenery {
-
 #pragma region constructors
-    Ground::Ground(World &world, const entityID ID, std::string name) :
-        Entity(world, ID, std::move(name))
-        {
-            buildRender();
-        }
+    Ground::Ground(World &world, const entityID ID, std::string name) : Entity(world, ID, std::move(name)) {
+        buildRender();
+    }
 
     std::string Ground::getClassName() {
         return "Ground";
@@ -23,26 +21,17 @@ namespace scenery {
         auto &bottomTex = game.getTextures().bottomGround;
 
         auto top = std::make_unique<Sprite>(topTex);
-        top->rename("top");
         auto bottom = std::make_unique<Sprite>(bottomTex);
+
+        top->rename("top");
         bottom->rename("bottom");
-        // Stretch to window size * 3 and repeat texture.
-        top->getSprite().setTextureRect(
-            sf::IntRect({0, 0},
-                sf::Vector2i(
-                    static_cast<int>(game.getVideo().getWindowSize().x)*3,
-                    static_cast<int>(top->getGlobalBounds().size.y)
-                )
-            )
-        );
-        bottom->getSprite().setTextureRect(
-            sf::IntRect({0, 0},
-                sf::Vector2i(
-                    static_cast<int>(game.getVideo().getWindowSize().x)*3,
-                    static_cast<int>(bottom->getGlobalBounds().size.y)
-                )
-            )
-        );
+
+        auto size = static_cast<float>(VideoComponent::GAME_RESOLUTION.y) / 4;
+        top->setSize({size, size});
+        bottom->setSize({size, size});
+
+        top->repeat({VideoComponent::GAME_RESOLUTION.x / static_cast<int>(size) * 3, 1});
+        bottom->repeat({VideoComponent::GAME_RESOLUTION.x / static_cast<int>(size) * 3, 1});
 
         bottom->move({top->getPosition().x, top->getPosition().y + top->getGlobalBounds().size.y});
 
@@ -50,9 +39,17 @@ namespace scenery {
         render_.add(std::move(bottom));
         render_.setColor(color);
         render_.setOrigin({render_.getCenter().x, 0});
+        // render_.visible = false;
+    }
+
+    void Ground::loop() const {
+        for (auto *layer: layers_) {
+            layer->update();
+        }
     }
 
     void Ground::update() {
         render_.loop();
+        loop();
     }
 }

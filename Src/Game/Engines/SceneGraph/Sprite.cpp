@@ -1,12 +1,14 @@
 #include "Game/Engines/SceneGraph/Sprite.hpp"
+#include "Game/Components/Video/Camera.hpp"
+#include "Game/Components/Video/VideoComponent.hpp"
 
 
-Sprite::Sprite(const sf::Texture& texture):
-    sprite_(std::make_unique<sf::Sprite>(texture)) {
+Sprite::Sprite(const sf::Texture &texture)
+    : sprite_(std::make_unique<sf::Sprite>(texture)) {
     rename("sprite");
 }
 
-Colorable* Sprite::asColorable() {
+Colorable *Sprite::asColorable() {
     return this;
 }
 
@@ -14,11 +16,25 @@ void Sprite::applyColor(const sf::Color color) {
     sprite_->setColor(color);
 }
 
-sf::Sprite& Sprite::getSprite() {
+void Sprite::repeat(const sf::Vector2u repeats) {
+    auto &sprite = getSprite();
+    const auto spriteSize = static_cast<sf::Vector2i>(sprite.getGlobalBounds().size);
+    sprite.setTextureRect(
+        sf::IntRect({0, 0},
+                    sf::Vector2i(
+                        static_cast<int>(spriteSize.x * repeats.x),
+                        static_cast<int>(spriteSize.y * repeats.y)
+                    )
+        )
+    );
+}
+
+sf::Sprite &Sprite::getSprite() {
+    assert(sprite_);
     return *sprite_;
 }
 
-const sf::Sprite & Sprite::getSprite() const {
+const sf::Sprite &Sprite::getSprite() const {
     // Read only return
     return *sprite_;
 }

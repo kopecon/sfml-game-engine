@@ -1,16 +1,16 @@
 #include "Game/World/Entity/Scenery/Background.hpp"
 #include "Game/Game.hpp"
+#include "Game/Engines/SceneGraph/ParallaxLayer.hpp"
 #include "Game/Engines/SceneGraph/Sprite.hpp"
 #include "Game/World/World.hpp"
 
 
 namespace scenery {
-
 #pragma region constructors
-    Background::Background(World &world, const entityID ID, std::string name) :
-        Entity(world, ID, std::move(name)) {
-            buildRender();
-        }
+    Background::Background(World &world, const entityID ID, std::string name)
+        : Entity(world, ID, std::move(name)) {
+        buildRender();
+    }
 
     std::string Background::getClassName() {
         return "Background";
@@ -19,27 +19,30 @@ namespace scenery {
 
     void Background::buildRender() {
         auto &texture = game.getTextures().background;
-        auto sprite = std::make_unique<Sprite>(texture);
+        auto sprite = std::make_unique<ParallaxLayer>(texture, game.getVideo().getCamera(), 1.f);
         sprite->rename("background");
-        const auto spriteSize = sprite->getGlobalBounds().size;
+
         // Fit sprite to window
-        sprite->setScale(
-            hd::divide(game.getVideo().getWindowSize(), spriteSize)
-        );
-        // Make 3 "copies"
-        sprite->getSprite().setTextureRect(
-            sf::IntRect({0, 0},
-                sf::Vector2i(
-                    static_cast<int>(spriteSize.x)*3,
-                    static_cast<int>(spriteSize.y)
-                )
-            )
-        );
+        constexpr auto worldSize = VideoComponent::GAME_RESOLUTION;
+
+        const sf::Vector2u texSize = sprite->getSprite().getTexture().getSize();
+
+        const auto scale = hd::divide(worldSize, texSize);
+
+        sprite->setScale(scale);
+
+        layers_.push_back(sprite.get());
         render_.add(std::move(sprite));
-        render_.setOrigin(render_.getCenter());
+        // render_.visible = false;
+    }
+
+    void Background::loop() const {
+        for (auto *layer: layers_) {
+            layer->update();
+        }
     }
 
     void Background::update() {
-        render_.loop();
+        loop();
     }
 }

@@ -30,7 +30,7 @@ template<EnumSetConcept StateSet>
 class State {
 public:
     using Handle = StateHandle<StateSet>;
-    using Target = actor::Actor;
+    using Owner = actor::Actor;
 
 protected:
     using Context = StateMachineContext<StateSet>;
@@ -60,8 +60,8 @@ public:
 #pragma region constructors
     virtual ~State() = default;
 
-    explicit State(Target &target, const typename StateSet::ID &id)
-        : target_(target),
+    explicit State(Owner &owner, const typename StateSet::ID &id)
+        : owner_(owner),
           handle_(id) {
     }
 #pragma endregion
@@ -175,7 +175,7 @@ public:
 
 protected:
     // REFERENCE
-    Target &target_;
+    Owner &owner_;
     // CONTEXT
     Context context_{};
 

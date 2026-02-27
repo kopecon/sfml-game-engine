@@ -8,14 +8,24 @@
 #include "SFML/System/Vector2.hpp"
 
 namespace kinematics {
-    void motionEquation (const float &dt, const sf::Vector2f &acceleration, sf::Vector2f &velocity,
-                         sf::Vector2f &position, const float &friction);
+    void motionEquation(
+        const float &dt,
+        sf::Vector2f acceleration,
+        sf::Vector2f &velocity,
+        sf::Vector2f &position,
+        const float &friction
+    );
 }
 
 class PhysicsEngine {
 public:
-    void (*motionEquation)(const float &dt, const sf::Vector2f &acceleration, sf::Vector2f &velocity, sf::Vector2f &position,
-                   const float &friction) = kinematics::motionEquation;
+    void (*motionEquation)(
+        const float &dt,
+        sf::Vector2f acceleration,
+        sf::Vector2f &velocity,
+        sf::Vector2f &position,
+        const float &friction
+    ) = kinematics::motionEquation;
 };
 
 

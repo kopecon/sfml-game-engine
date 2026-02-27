@@ -16,5 +16,5 @@ player::Idle::Idle(Player &player) : DefaultState(player, IDLE) {
 }
 
 void player::Idle::dryEyes() {
-    this->player().setEyeDryness(this->player().getEyeDryness() + 0.1f);
+    player().stats().eyeDryness += owner_.getTime() * 20.f;
 }

@@ -2,9 +2,10 @@
 #define BONK_GAME_ACTOR_HPP
 
 #include "Game/Game.hpp"
+#include "Game/World/Entity/Entity.hpp"
+#include "Game/World/Entity/Actor/Components/MovementComponent.hpp"
 #include "Game/Engines/EventHandling/InputBindings.hpp"
 #include "Game/Engines/StateMachine/Evaluable.hpp"
-#include "Game/World/Entity/Entity.hpp"
 #include "Game/Engines/StateMachine/StateMachine.hpp"
 
 
@@ -25,6 +26,10 @@ namespace actor {
 
         [[nodiscard]] const InputBindings &bindings() const override;
 
+        [[nodiscard]] MovementComponent &movement();
+
+        [[nodiscard]] const MovementComponent &movement() const;
+
         [[nodiscard]] static std::string getClassName();
 
         void update() override;
@@ -33,6 +38,7 @@ namespace actor {
         // COMPONENTS
         InputBindings bindings_{game.getInput()};
         StateMachine stateMachine_{};
+        MovementComponent movement_{*this};
     };
 }
 
