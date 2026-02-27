@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 24/01/2026.
-//
-
 #include "Game/Engines/SceneGraph/RectangleShape.hpp"
 
 

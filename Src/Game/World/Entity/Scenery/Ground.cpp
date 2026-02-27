@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 27/11/2025.
-//
-
 #include "Game/World//Entity/Scenery/Ground.hpp"
 #include "Game/Game.hpp"
 #include "Game/Engines/SceneGraph/Sprite.hpp"
@@ -25,9 +21,6 @@ namespace scenery {
     void Ground::buildRender() {
         auto &topTex = game.getTextures().topGround;
         auto &bottomTex = game.getTextures().bottomGround;
-
-        topTex.setRepeated(true);
-        bottomTex.setRepeated(true);
 
         auto top = std::make_unique<Sprite>(topTex);
         top->rename("top");
@@ -53,13 +46,13 @@ namespace scenery {
 
         bottom->move({top->getPosition().x, top->getPosition().y + top->getGlobalBounds().size.y});
 
-        render.add(std::move(top));
-        render.add(std::move(bottom));
-        render.setColor(color);
-        render.setOrigin({render.getCenter().x, 0});
+        render_.add(std::move(top));
+        render_.add(std::move(bottom));
+        render_.setColor(color);
+        render_.setOrigin({render_.getCenter().x, 0});
     }
 
     void Ground::update() {
-        render.loop();
+        render_.loop();
     }
 }

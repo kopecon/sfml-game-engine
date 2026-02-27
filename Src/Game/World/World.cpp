@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 27/11/2025.
-//
-
 #include <utility>
 #include "Game/World/World.hpp"
 #include "Game/Game.hpp"
@@ -9,16 +5,20 @@
 
 
 #pragma region constructors
-World::World(Game &game, std::string name):
-game(game),
-name(text::up(std::move(name))),
-groundLevel(static_cast<float>(game.getVideo().getWindowSize().y)*0.7f/2.f)
-{}
+World::World(Game &game, std::string name)
+    : game(game),
+      groundLevel(static_cast<float>(game.getVideo().getWindowSize().y) * 0.7f / 2.f),
+      name_(text::up(std::move(name))) {
+}
 #pragma endregion
 
 
+std::string World::getName() const {
+    return name_;
+}
+
 void World::update() {
-    for (const auto &entity : entities | std::views::values) {
+    for (const auto &entity: entities_ | std::views::values) {
         entity->update();
         // Remove flagged entities
         if (entity->removalFlag) {

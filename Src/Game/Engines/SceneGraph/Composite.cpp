@@ -1,11 +1,7 @@
-//
-// Created by Andrew on 05/01/2026.
-//
-
 #include "Game/Engines/SceneGraph/Composite.hpp"
 #include "Game/Engines/SceneGraph/Colorable.hpp"
 #include "Game/Engines/AnimationEngine/Animatable.hpp"
-#include <iostream>
+#include "Utils/logger.hpp"
 
 
 #pragma region constructors
@@ -18,7 +14,7 @@ void Composite::play(const float dt) {
         animated->animate(dt);
     }
     // Children animation
-    for (const auto &pChild : children_) {
+    for (const auto &pChild: children_) {
         pChild->play(dt);
     }
 }
@@ -31,6 +27,7 @@ void Composite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 void Composite::rename(std::string name) {
+    // Name has to be unique
     name_ = std::move(name);
 }
 
@@ -40,7 +37,7 @@ void Composite::setColor(const sf::Color &color) {
         colorable->applyColor(color);
     }
     // Color children
-    for (const auto &child : getChildren()) {
+    for (const auto &child: getChildren()) {
         if (const auto colorable = child->asColorable()) {
             colorable->applyColor(color);
         }
@@ -58,11 +55,11 @@ void Composite::showOutline(const sf::Color color) {
     outline_ = std::move(boundary);
 }
 
-Animatable * Composite::asAnimatable() {
+Animatable *Composite::asAnimatable() {
     return nullptr;
 }
 
-Colorable * Composite::asColorable() {
+Colorable *Composite::asColorable() {
     return nullptr;
 }
 
@@ -72,7 +69,7 @@ sf::FloatRect Composite::getLocalBounds() const {
     sf::Vector2f minPos;
     sf::Vector2f maxSize;
 
-    auto absorb = [&](const sf::FloatRect& bounds) {
+    auto absorb = [&](const sf::FloatRect &bounds) {
         const sf::Vector2f childMinPos = bounds.position;
         const sf::Vector2f childMaxSize = bounds.position + bounds.size;
 
@@ -92,7 +89,7 @@ sf::FloatRect Composite::getLocalBounds() const {
         absorb(*selfBounds);
     }
 
-    for (const auto& child : children_) {
+    for (const auto &child: children_) {
         absorb(child->getGlobalBounds());
     }
 
@@ -117,8 +114,22 @@ std::string_view Composite::getName() const {
     return name_;
 }
 
-std::vector<std::unique_ptr<Composite>>& Composite::getChildren() {
+std::vector<std::unique_ptr<Composite> > &Composite::getChildren() {
     return children_;
+}
+
+Composite &Composite::get(std::string name) const {
+    const auto it = std::ranges::find_if(
+        children_,
+        [&name](const std::unique_ptr<Composite> &item) {
+            return item->getName() == name;
+        });
+
+    if (it == children_.end()) {
+        LOG_ERROR("Item not found");
+    }
+
+    return *it->get();
 }
 
 std::optional<sf::FloatRect> Composite::getSelfGlobalBounds() const {
@@ -126,7 +137,7 @@ std::optional<sf::FloatRect> Composite::getSelfGlobalBounds() const {
 }
 
 void Composite::drawChildren(sf::RenderTarget &target, const sf::RenderStates states) const {
-    for (const auto &child : children_) {
+    for (const auto &child: children_) {
         target.draw(*child, states);
     }
 }

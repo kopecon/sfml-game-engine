@@ -1,81 +1,130 @@
-//
-// Created by Andrew on 26/12/2025.
-//
-
 #ifndef BONK_GAME_STATE_HPP
 #define BONK_GAME_STATE_HPP
 
 #include <functional>
-#include <iostream>
 #include <vector>
+#include <optional>
 #include <memory>
 
-#include "Utils/EnumSet.hpp"
+#include "Game/Engines/StateMachine/StateMachineContext.hpp"
+#include "Game/Engines/StateMachine/StateHandle.hpp"
+#include "Game/Engines/StateMachine/Evaluation.hpp"
 
 
 // ALIASES
-using Condition = std::function<bool()>;
 using Action = std::function<void()>;
+#define ACTION(method) [this]{this->method();}
 
-template <EnumSetConcept StateSet>
+enum class ActionTypes { ENTER, MAIN, EXIT };
+
+#define ENTER_ACTION(method) {ActionTypes::ENTER, [this]{this->method();}}
+#define MAIN_ACTION(method)  {ActionTypes::MAIN , [this]{this->method();}}
+#define EXIT_ACTION(method)  {ActionTypes::EXIT , [this]{this->method();}}
+
+
+namespace actor {
+    class Actor;
+}
+
+template<EnumSetConcept StateSet>
 class State {
 public:
-    struct Edge {
-        #pragma region constructors
-        Edge() = default;
-        explicit Edge(const typename StateSet::ID &id) : next(id) {}
-        Edge(Condition condition, const typename StateSet::ID &next) : next(next) {
-            this->condition = std::move(condition);
-        }
-        #pragma endregion
+    using Handle = StateHandle<StateSet>;
+    using Target = actor::Actor;
 
-        Condition condition{[]{return false;}};
-        StateSet::ID next{};
+protected:
+    using Context = StateMachineContext<StateSet>;
+
+public:
+    struct Edge {
+#pragma region constructors
+        Edge(const typename StateSet::ID &from, std::unique_ptr<eval::Evaluation> eval, const typename StateSet::ID &to)
+            : from(from),
+              evaluation(std::move(eval)),
+              to(to) {
+        }
+#pragma endregion
+        Handle from{};
+        std::unique_ptr<eval::Evaluation> evaluation;
+        Handle to{};
+
+        [[nodiscard]] std::string getTargets() const {
+            auto targets = static_cast<std::string>(from.name())
+                           + "-"
+                           + static_cast<std::string>(to.name())
+                           + " ";
+            return targets;
+        }
     };
 
-    #pragma region constructors
+#pragma region constructors
     virtual ~State() = default;
 
-    explicit State(const typename StateSet::ID &id) :
-        id_(id),
-        name_(StateSet::name(id_))
-            {}
-    #pragma endregion
+    explicit State(Target &target, const typename StateSet::ID &id)
+        : target_(target),
+          handle_(id) {
+    }
+#pragma endregion
 
     // ACTIONS
-    virtual void onEnter() {
-        if (verbose_) std::cout << "Entered state: " << name_ << "\n";
-        if (verbose_ && enterActions_.empty()) std::cout << "State: " << name_ << " has no enter actions!\n";
-        for (const auto &action : enterActions_) {
+    virtual void onEnter(const Context context) {
+        context_ = context;
+        LOG_INFO("Entered state: " + static_cast<std::string>(handle_.name()), verbose_);
+        if (enterActions_.empty())
+            LOG_INFO_ONCE("State: " + static_cast<std::string>(handle_.name()) + " has no enter actions!", verbose_);
+        for (const auto &action: enterActions_) {
             action();
         }
     }
 
     virtual void onExit() {
-        if (verbose_) std::cout << "Exited state: " << name_ << "\n";
-        if (verbose_ && exitActions_.empty()) std::cout << "State: " << name_ << " has no exit actions!\n";
-        for (const auto &action : exitActions_) {
+        LOG_INFO("Exited state: " + static_cast<std::string>(handle_.name()), verbose_);
+        if (exitActions_.empty())
+            LOG_INFO_ONCE("State: " + static_cast<std::string>(handle_.name()) + " has no exit actions!", verbose_);
+        for (const auto &action: exitActions_) {
             action();
         }
     }
 
     // SETTERS
-    Edge& addEdge(std::unique_ptr<Edge> edge) {
+    Edge &addEdge(std::unique_ptr<Edge> edge) {
         // Edges are called in the order they were added in. FIFO.
-        Edge& edgeRef = *edge;
+        Edge &edgeRef = *edge;
         edges_.push_back(std::move(edge));
         return edgeRef;
     }
 
-    template<typename... Args>
-    Edge& makeEdge(Args&&... args) {
-        auto edge = std::make_unique<Edge>(args...);
-        return addEdge(std::move(edge));
+    template<typename EvaluationType>
+    Edge &makeEdge(EvaluationType &&eval, typename StateSet::ID id) {
+    using EvalDecayed = std::decay_t<EvaluationType>;
+
+    std::unique_ptr<eval::Evaluation> pEvaluation;
+    // CLONE EVALUATION
+    if constexpr (std::derived_from<EvalDecayed, eval::Evaluation>) {
+    pEvaluation = eval.clone();
+    }
+    // TAKE OWNERSHIP OF IN-PLACE CREATED EVALUATION
+    else if constexpr (EvaluationUniquePtr<EvalDecayed>) {
+    pEvaluation = std::forward<EvaluationType>(eval);
+    }
+    // INVALID TYPE OF EVALUATION
+    else {
+    static_assert(std::derived_from<EvalDecayed, eval::Evaluation>,
+    "Invalid type passed to makeEdge");
+    }
+
+    auto edge = std::make_unique<Edge>(handle_.id(), std::move(pEvaluation), id);
+    return addEdge(std::move(edge));
+    }
+
+    template<typename EvaluationType>
+    Edge &connect(EvaluationType &&eval, const State &state) {
+        return makeEdge(std::forward<EvaluationType>(eval), state.handle());
     }
 
     void addMainAction(Action action) {
         // Actions are called in the order they were added in. FIFO.
-        actions_.push_back(std::move(action));
+        mainActions_.push_back(std::move(action));
     }
 
     void addEnterAction(Action action) {
@@ -88,14 +137,14 @@ public:
         exitActions_.push_back(std::move(action));
     }
 
-    void connect(const State &state) {
-        auto edge = std::make_unique<Edge>(state.id_);
-        edges_.push_back(std::move(edge));
-    }
-
-    void connect(Condition condition, const State &state) {
-        auto edge = std::make_unique<Edge>(std::move(condition), state.id_);
-        edges_.push_back(std::move(edge));
+    void addAction(const std::pair<ActionTypes, Action> &action) {
+        if (action.first == ActionTypes::ENTER) {
+            addEnterAction(action.second);
+        } else if (action.first == ActionTypes::MAIN) {
+            addMainAction(action.second);
+        } else if (action.first == ActionTypes::EXIT) {
+            addExitAction(action.second);
+        }
     }
 
     void setVerbose(const bool value) {
@@ -104,45 +153,39 @@ public:
 
     // GETTERS
     [[nodiscard]] bool hasEdges() const {
-        if (edges_.empty()) return false;
-        return true;
+        return !edges_.empty();
     }
 
-    typename StateSet::ID getNextStateID() {
-        // 0. Warn that state has no edges
-        if (edges_.empty()) {
-            if (verbose_) std::cout << "State: " << name_ << " has no edges!\n";
-        }
-        // 1. Choose edge
-        for (const auto &edge : this->edges_) {
-            if (edge->condition()) {
-                return edge->next;
-            }
-        }
-        // 2. No edge conditions met. Staying in this state
-        return this->id_;
+    [[nodiscard]] const Handle &handle() const {
+        return handle_;
     }
 
-    [[nodiscard]] typename StateSet::ID getID() const {
-        return id_;
+    [[nodiscard]] const std::vector<std::unique_ptr<Edge>> &getEdges() const {
+        return edges_;
     }
 
     // UPDATE
-    virtual void update() {
-        if (verbose_ && actions_.empty()) std::cout << "State: " << name_ << " has no actions!\n";
-        for (auto const &action : actions_) {
+    void update() const {
+        if (mainActions_.empty())
+            LOG_INFO_ONCE("State: " + static_cast<std::string>(handle_.name()) + " has no actions!", verbose_);
+        for (auto const &action: mainActions_) {
             action();
         }
     }
 
+protected:
+    // REFERENCE
+    Target &target_;
+    // CONTEXT
+    Context context_{};
+
 private:
     // IDENTITY
-    typename StateSet::ID id_{};  // Enum value representing the id of the state
-    std::string_view name_{};  // String value representing the name of the state
+    const Handle handle_;
     // EDGES
-    std::vector<std::unique_ptr<Edge>> edges_{};  // Connections to other states
+    std::vector<std::unique_ptr<Edge> > edges_{}; // Connections to other states
     // ACTIONS
-    std::vector<Action> actions_{};
+    std::vector<Action> mainActions_{};
     std::vector<Action> enterActions_{};
     std::vector<Action> exitActions_{};
     // DEBUG SETTINGS

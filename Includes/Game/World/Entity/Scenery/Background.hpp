@@ -1,11 +1,7 @@
-//
-// Created by Andrew on 13/11/2025.
-//
-
 #ifndef BONK_GAME_BACKGROUND_HPP
 #define BONK_GAME_BACKGROUND_HPP
-#include <SFML/Graphics.hpp>
 
+#include <SFML/Graphics.hpp>
 #include "Game/World/Entity/Entity.hpp"
 
 

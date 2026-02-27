@@ -1,13 +1,10 @@
-//
-// Created by Andrew on 29/11/2025.
-//
-
 #ifndef BONK_GAME_GAME_HPP
 #define BONK_GAME_GAME_HPP
 
 #include "Game/Components/Video/VideoComponent.hpp"
 #include "Game/Components/Audio/AudioComponent.hpp"
 #include "Game/Engines/EventHandling/EventHandler.hpp"
+#include "Game/Engines/EventHandling/InputHandler.hpp"
 #include "Game/Engines/PhysicsEngine.hpp"
 #include "Game/Components/Video/TextureComponent.hpp"
 #include "Game/Components/Time/TimeComponent.hpp"
@@ -23,15 +20,16 @@ public:
     // SETTERS
     World& createWorld(std::string name);
     // GETTERS
-    EventHandler& getEventHandler();
-    AudioComponent& getAudio();
-    VideoComponent& getVideo();
-    InputHandler& getInput();
-    TimeComponent& getTime();
-    TextureComponent& getTextures();
-    PhysicsEngine& getPhysics();
-    World* getWorld(std::string name);
-    World& getCurrentWorld() const;
+    [[nodiscard]] EventHandler& getEventHandler();
+    [[nodiscard]] AudioComponent& getAudio();
+    [[nodiscard]] const VideoComponent& getVideo() const;
+    [[nodiscard]] VideoComponent& getVideo();
+    [[nodiscard]] const InputHandler& getInput() const;
+    [[nodiscard]] const TimeComponent& getTime() const;
+    [[nodiscard]] const TextureComponent& getTextures() const;
+    [[nodiscard]] const PhysicsEngine& getPhysics() const;
+    [[nodiscard]] World* getWorld(std::string name);
+    [[nodiscard]] World& getCurrentWorld() const;
     // UPDATE
     void update();
 

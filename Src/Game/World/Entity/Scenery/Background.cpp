@@ -1,7 +1,3 @@
-//
-// Created by Andrew on 13/11/2025.
-//
-
 #include "Game/World/Entity/Scenery/Background.hpp"
 #include "Game/Game.hpp"
 #include "Game/Engines/SceneGraph/Sprite.hpp"
@@ -23,8 +19,6 @@ namespace scenery {
 
     void Background::buildRender() {
         auto &texture = game.getTextures().background;
-        texture.setRepeated(true);
-
         auto sprite = std::make_unique<Sprite>(texture);
         sprite->rename("background");
         const auto spriteSize = sprite->getGlobalBounds().size;
@@ -41,11 +35,11 @@ namespace scenery {
                 )
             )
         );
-        render.add(std::move(sprite));
-        render.setOrigin(render.getCenter());
+        render_.add(std::move(sprite));
+        render_.setOrigin(render_.getCenter());
     }
 
     void Background::update() {
-        render.loop();
+        render_.loop();
     }
 }

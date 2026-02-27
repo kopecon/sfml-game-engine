@@ -1,9 +1,6 @@
-//
-// Created by Andrew on 29/11/2025.
-//
-
 #ifndef BONK_GAME_VIDEO_COMPONENT_HPP
 #define BONK_GAME_VIDEO_COMPONENT_HPP
+
 #include <SFML/Graphics.hpp>
 #include "Utils/customTypes.hpp"
 #include "Utils/utils.hpp"
@@ -19,16 +16,16 @@ class VideoComponent final : public EventSubscriber{
 public:
     explicit VideoComponent(Game& game, const std::string &title);
 
-    // ACTIONS
     // SETTERS
     void recreateWindow();
     // GETTERS
-    const sf::RenderWindow& getWindow();
-    sf::Vector2u getWindowSize() const;
+    [[nodiscard]] const sf::RenderWindow& getWindow() const;
+    [[nodiscard]] sf::Vector2u getWindowSize() const;
     [[nodiscard]] sf::Vector2f getWindowToScreenRatio() const;
-    static sf::Vector2u getScreenSize();
-    Camera& getCamera();
-    std::vector<sf::Event>& getEvents();
+    [[nodiscard]] static sf::Vector2u getScreenSize();
+    [[nodiscard]] const Camera& getCamera() const;
+    [[nodiscard]] Camera& getCamera();
+    [[nodiscard]] std::vector<sf::Event>& getEvents();
     // UPDATE
     void update();
 
